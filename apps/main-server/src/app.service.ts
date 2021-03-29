@@ -1,8 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
+import { ClientProxy } from '@nestjs/microservices';
 
 @Injectable()
 export class AppService {
-  getHello(): string {
-    return 'Hello World!';
+  constructor(@Inject('ORDER_SERVICE') private client: ClientProxy) {}
+
+  public accumulate(data: number[]) {
+    return this.client.send<number, number[]>({ cmd: 'sum' }, data);
   }
 }
