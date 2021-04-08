@@ -1,9 +1,8 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { UserService } from './user.service';
+import { UserController } from './user.controller';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import { UserModule } from './user/user.module';
-import * as constants from './constants';
+import * as constants from '../constants';
 
 @Module({
   imports: [
@@ -20,9 +19,8 @@ import * as constants from './constants';
         },
       },
     ]),
-    UserModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [UserController],
+  providers: [UserService],
 })
-export class AppModule {}
+export class UserModule {}
