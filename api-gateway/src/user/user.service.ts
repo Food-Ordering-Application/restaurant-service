@@ -8,8 +8,8 @@ import * as constants from '../constants';
 export class UserService {
   constructor(@Inject(constants.USER_SERVICE) private client: ClientProxy) {}
 
-  create(createUserDto: CreateUserDto) {
-    return this.client.send('createCustomer', createUserDto);
+  async create(createUserDto: CreateUserDto) {
+    return await this.client.send('createCustomer', createUserDto).toPromise();
   }
 
   findAll() {
