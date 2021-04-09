@@ -27,24 +27,23 @@ export class UserController {
 
   @Post()
   async createUser(@Body() createUserDto: CreateUserDto) {
-    const createUserResponse: IUserServiceCreateResponse = await this.userServiceClient
+    const createCustomerResponse: IUserServiceCreateResponse = await this.userServiceClient
       .send('createCustomer', createUserDto)
       .toPromise();
-    if (createUserResponse.status !== HttpStatus.CREATED) {
+    if (createCustomerResponse.status !== HttpStatus.CREATED) {
       throw new HttpException(
         {
-          message: createUserResponse.message,
+          message: createCustomerResponse.message,
           data: null,
-          errors: createUserResponse.errors,
+          errors: createCustomerResponse.errors,
         },
-        createUserResponse.status,
+        createCustomerResponse.status,
       );
     }
-
     return {
-      message: createUserResponse.message,
+      message: createCustomerResponse.message,
       data: {
-        user: createUserResponse.user,
+        user: createCustomerResponse.user,
       },
       errors: null,
     };
