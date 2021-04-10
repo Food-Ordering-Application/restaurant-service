@@ -1,58 +1,49 @@
 import {
   Controller,
-  Get,
   Post,
   Body,
-  Patch,
-  Param,
-  Delete,
   Logger,
   Inject,
   HttpStatus,
   HttpException,
-  ConflictException,
+  UseGuards,
+  Request,
 } from '@nestjs/common';
 import { CreateCustomerDto } from './dto/create-customer.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
 import * as constants from '../constants';
 import { ClientProxy } from '@nestjs/microservices';
 import { IUserServiceCreateResponse } from './interfaces/user-service-create-response.interface';
-import { ApiBody, ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
+import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { CreateCustomerResponseDto } from './dto/create-customer-response.dto';
+import { LoginCustomerDto } from './dto/login-customer.dto';
+import { LoginCustomerResponseDto } from './dto/login-customer-response.dto';
+import { CustomerService } from './customer.service';
+import { LocalAuthGuard } from 'src/auth/guards/local-auth.guard';
+import { AuthService } from 'src/auth/auth.service';
 
 @ApiTags('customers')
 @Controller('customer')
-export class UserController {
-  private logger = new Logger('UserController');
+export class CustomerController {
+  private logger = new Logger('CustomerController');
 
   constructor(
-    @Inject(constants.USER_SERVICE) private userServiceClient: ClientProxy,
+    private customerService: CustomerService,
+    private authService: AuthService,
   ) {}
 
   @ApiCreatedResponse({ type: CreateCustomerResponseDto })
-  @ApiBody({ type: CreateCustomerDto })
   @Post()
   async registerCustomer(
     @Body() createCustomerDto: CreateCustomerDto,
   ): Promise<CreateCustomerResponseDto> {
-    const createCustomerResponse: IUserServiceCreateResponse = await this.userServiceClient
-      .send('createCustomer', createCustomerDto)
-      .toPromise();
-    if (createCustomerResponse.status !== HttpStatus.CREATED) {
-      throw new HttpException(
-        {
-          message: createCustomerResponse.message,
-        },
-        createCustomerResponse.status,
-      );
-    }
-    return {
-      statusCode: 201,
-      message: createCustomerResponse.message,
-      data: {
-        user: createCustomerResponse.user,
-      },
-    };
+    return this.customerService.createCustomer(createCustomerDto);
+  }
+
+  @ApiOkResponse({ type: LoginCustomerResponseDto })
+  @UseGuards(LocalAuthGuard)
+  @Post('/login')
+  async loginCustomer(@Request() req): Promise<LoginCustomerResponseDto> {
+    return this.authService.login(req.user);
   }
 
   // @Get()

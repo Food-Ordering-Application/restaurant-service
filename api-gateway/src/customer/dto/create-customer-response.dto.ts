@@ -7,7 +7,7 @@ export class CreateCustomerResponseDto {
    * @example 201
    */
   statusCode: number;
-  @ApiProperty({ example: 'user_create_success', type: 'string' })
+  @ApiProperty({ example: 'User created successfully', type: 'string' })
   message: string;
   @ApiProperty({
     example: {

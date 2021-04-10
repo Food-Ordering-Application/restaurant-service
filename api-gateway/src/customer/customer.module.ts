@@ -1,8 +1,9 @@
-import { Module } from '@nestjs/common';
-import { UserService } from './user.service';
-import { UserController } from './user.controller';
+import { forwardRef, Module } from '@nestjs/common';
+import { CustomerService } from './customer.service';
+import { CustomerController } from './customer.controller';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import * as constants from '../constants';
+import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
   imports: [
@@ -19,8 +20,10 @@ import * as constants from '../constants';
         },
       },
     ]),
+    forwardRef(() => AuthModule),
   ],
-  controllers: [UserController],
-  providers: [UserService],
+  controllers: [CustomerController],
+  providers: [CustomerService],
+  exports: [CustomerService],
 })
-export class UserModule {}
+export class CustomerModule {}
