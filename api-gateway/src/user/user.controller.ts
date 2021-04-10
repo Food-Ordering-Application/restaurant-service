@@ -11,13 +11,16 @@ import {
   HttpStatus,
   HttpException,
 } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
+import { CreateCustomerDto } from './dto/create-customer.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import * as constants from '../constants';
 import { ClientProxy } from '@nestjs/microservices';
 import { IUserServiceCreateResponse } from './interfaces/user-service-create-response.interface';
+import { ApiBody, ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
+import { CreateCustomerResponseDto } from './dto/create-customer-response.dto';
 
-@Controller('user')
+@ApiTags('customers')
+@Controller('customer')
 export class UserController {
   private logger = new Logger('UserController');
 
@@ -25,10 +28,14 @@ export class UserController {
     @Inject(constants.USER_SERVICE) private userServiceClient: ClientProxy,
   ) {}
 
+  @ApiCreatedResponse({ type: CreateCustomerResponseDto })
+  @ApiBody({ type: CreateCustomerDto })
   @Post()
-  async createUser(@Body() createUserDto: CreateUserDto) {
+  async registerCustomer(
+    @Body() createCustomerDto: CreateCustomerDto,
+  ): Promise<CreateCustomerResponseDto> {
     const createCustomerResponse: IUserServiceCreateResponse = await this.userServiceClient
-      .send('createCustomer', createUserDto)
+      .send('createCustomer', createCustomerDto)
       .toPromise();
     if (createCustomerResponse.status !== HttpStatus.CREATED) {
       throw new HttpException(
