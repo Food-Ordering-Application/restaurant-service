@@ -10,6 +10,7 @@ import {
   Inject,
   HttpStatus,
   HttpException,
+  ConflictException,
 } from '@nestjs/common';
 import { CreateCustomerDto } from './dto/create-customer.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -41,18 +42,16 @@ export class UserController {
       throw new HttpException(
         {
           message: createCustomerResponse.message,
-          data: null,
-          errors: createCustomerResponse.errors,
         },
         createCustomerResponse.status,
       );
     }
     return {
+      statusCode: 201,
       message: createCustomerResponse.message,
       data: {
         user: createCustomerResponse.user,
       },
-      errors: null,
     };
   }
 

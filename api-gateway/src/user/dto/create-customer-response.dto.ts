@@ -2,6 +2,11 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IUser } from '../interfaces/user.interface';
 
 export class CreateCustomerResponseDto {
+  /**
+   * Status code
+   * @example 201
+   */
+  statusCode: number;
   @ApiProperty({ example: 'user_create_success', type: 'string' })
   message: string;
   @ApiProperty({
@@ -16,6 +21,6 @@ export class CreateCustomerResponseDto {
   data: {
     user: IUser;
   };
-  @ApiProperty({ example: null, nullable: true })
-  errors: { [key: string]: any };
+  // @ApiProperty({ example: null, nullable: true })
+  // errors: { [key: string]: any };
 }
