@@ -1,8 +1,9 @@
 version: '3'
 services:
   #UserServicePostgres Database
-  userServicePostgres:
-    container_name: userServicePostgres
+  userservicepostgres:
+    container_name: userservicepostgres
+    restart: always
     image: postgres:latest
     ports:
       - '5432:5432'
@@ -11,9 +12,36 @@ services:
       - dataPostgres:/var/lib/postgresql/data
     env_file:
       - ./env/docker.env
-    # networks:
-    #   - postgres
 
+  #UserMicroservice
+  userservice:
+    container_name: userservice
+    build: ./microservices/user-service
+    restart: always
+    volumes:
+      - ./microservices/user-service/src:/app/src
+      - /app/node_modules
+    env_file:
+      - ./microservices/user-service/.env
+    depends_on:
+      - userservicepostgres
+      - rabbitmq
+
+  #ApiGateway
+  apigateway:
+    container_name: apigateway
+    restart: always
+    build: ./api-gateway
+    volumes:
+      - ./api-gateway/src:/app/src
+      - /app/node_modules
+    env_file:
+      - ./api-gateway/.env
+    ports:
+      - '8000:8000'
+    depends_on:
+      - rabbitmq
+      - userservice
   #PGAdmin
   pgadmin:
     container_name: pgadmin
@@ -25,14 +53,13 @@ services:
       - dataPgAdmin:/root/.pgadmin
     env_file:
       - ./env/docker.env
-    # networks:
-    #   - postgres
 
   #RabbitMQ
   rabbitmq:
     image: rabbitmq:3-management
     container_name: 'rabbitmq'
-    hostname: my-rabbit
+    tty: true
+    restart: always
     env_file:
       - ./env/docker.env
     ports:

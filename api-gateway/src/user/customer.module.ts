@@ -12,7 +12,7 @@ import { AuthModule } from 'src/auth/auth.module';
         name: constants.USER_SERVICE,
         transport: Transport.RMQ,
         options: {
-          urls: ['amqp://localhost:5672'],
+          urls: ['amqp://admin:admin@rabbitmq:5672'],
           queue: 'cats_queue',
           queueOptions: {
             durable: false,
