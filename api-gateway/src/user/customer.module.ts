@@ -4,20 +4,25 @@ import { CustomerController } from './customer.controller';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import * as constants from '../constants';
 import { AuthModule } from 'src/auth/auth.module';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
-    ClientsModule.register([
+    ClientsModule.registerAsync([
       {
         name: constants.USER_SERVICE,
-        transport: Transport.RMQ,
-        options: {
-          urls: ['amqp://admin:admin@rabbitmq:5672'],
-          queue: 'cats_queue',
-          queueOptions: {
-            durable: false,
+        imports: [ConfigModule],
+        inject: [ConfigService],
+        useFactory: (configService: ConfigService) => ({
+          transport: Transport.RMQ,
+          options: {
+            urls: ['amqp://admin:admin@rabbitmq:5672'],
+            queue: configService.get('USERS_AMQP_QUEUE'),
+            queueOptions: {
+              durable: false,
+            },
           },
-        },
+        }),
       },
     ]),
     forwardRef(() => AuthModule),
@@ -27,3 +32,17 @@ import { AuthModule } from 'src/auth/auth.module';
   exports: [CustomerService],
 })
 export class CustomerModule {}
+
+// [
+//   {
+//     name: constants.USER_SERVICE,
+//     transport: Transport.RMQ,
+// options: {
+//   urls: ['amqp://admin:admin@rabbitmq:5672'],
+//   queue: 'cats_queue',
+//   queueOptions: {
+//     durable: false,
+//   },
+// },
+//   },
+// ]
