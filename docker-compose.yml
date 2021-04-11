@@ -1,35 +1,51 @@
 version: '3'
 services:
-  postgres:
-    container_name: postgres
+  #UserServicePostgres Database
+  userServicePostgres:
+    container_name: userServicePostgres
     image: postgres:latest
     ports:
       - '5432:5432'
+    restart: always
     volumes:
       - dataPostgres:/var/lib/postgresql/data
     env_file:
-      - docker.env
-    networks:
-      - postgres
+      - ./env/docker.env
+    # networks:
+    #   - postgres
 
+  #PGAdmin
   pgadmin:
-    links:
-      - postgres:postgres
     container_name: pgadmin
     image: dpage/pgadmin4
+    restart: always
     ports:
       - '8080:80'
     volumes:
       - dataPgAdmin:/root/.pgadmin
     env_file:
-      - docker.env
-    networks:
-      - postgres
+      - ./env/docker.env
+    # networks:
+    #   - postgres
 
+  #RabbitMQ
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: 'rabbitmq'
+    hostname: my-rabbit
+    env_file:
+      - ./env/docker.env
+    ports:
+      - 5672:5672
+      - 15672:15672
+    volumes:
+      - dataRabbitMQ:/var/lib/rabbitmq/
+      - logRabbitMQ:/var/log/rabbitmq
 volumes:
   dataPostgres:
   dataPgAdmin:
-
-networks:
-  postgres:
-    driver: bridge
+  dataRabbitMQ:
+  logRabbitMQ:
+# networks:
+#   postgres:
+#     driver: bridge
