@@ -29,7 +29,7 @@ export class CustomerController {
   constructor(
     private customerService: CustomerService,
     private authService: AuthService,
-  ) {}
+  ) { }
 
   @ApiCreatedResponse({ type: CreateCustomerResponseDto })
   @Post()
@@ -42,7 +42,9 @@ export class CustomerController {
   @ApiOkResponse({ type: LoginCustomerResponseDto })
   @UseGuards(LocalAuthGuard)
   @Post('/login')
-  async loginCustomer(@Request() req): Promise<LoginCustomerResponseDto> {
+  async loginCustomer(@Request() req,
+    @Body() loginCustomerDto: LoginCustomerDto,
+  ): Promise<LoginCustomerResponseDto> {
     return this.authService.login(req.user);
   }
 
