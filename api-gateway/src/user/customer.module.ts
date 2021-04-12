@@ -16,7 +16,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
         useFactory: (configService: ConfigService) => ({
           transport: Transport.RMQ,
           options: {
-            urls: ['amqp://admin:admin@rabbitmq:5672'],
+            urls: [configService.get('AMQP_URL') as string],
             queue: configService.get('USERS_AMQP_QUEUE'),
             queueOptions: {
               durable: false,
