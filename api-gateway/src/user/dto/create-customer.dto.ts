@@ -2,9 +2,9 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsString } from 'class-validator';
 
 export class CreateCustomerDto {
-  @ApiProperty({ example: 'Hienhhcc', uniqueItems: true, required: true })
+  @ApiProperty({ example: '0123456789', uniqueItems: true, required: true })
   @IsString()
-  username: string;
+  phoneNumber: string;
   @ApiProperty({ minLength: 6, example: 'daylapasscuatui', required: true })
   @IsString()
   password: string;

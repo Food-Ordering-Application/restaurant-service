@@ -13,7 +13,7 @@ export class CreateCustomerResponseDto {
     example: {
       user: {
         id: '0c1df8c8-40b1-41b4-a897-702e09f1fd60',
-        username: 'Hienhhcc',
+        phoneNumber: '0123456789',
       },
     },
     nullable: true,

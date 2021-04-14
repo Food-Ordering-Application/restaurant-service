@@ -12,8 +12,10 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async validateCustomer(username: string, pass: string): Promise<any> {
-    const user = await this.customerService.findCustomerByUsername(username);
+  async validateCustomer(phoneNumber: string, pass: string): Promise<any> {
+    const user = await this.customerService.findCustomerByPhoneNumber(
+      phoneNumber,
+    );
 
     if (user) {
       const isMatch = await bcrypt.compare(pass, user.password);
@@ -26,7 +28,7 @@ export class AuthService {
   }
 
   async login(user: any) {
-    const payload = { username: user.username, sub: user.userId };
+    const payload = { phoneNumber: user.phoneNumber, sub: user.userId };
     return {
       statusCode: 200,
       message: 'Customer login successfully',

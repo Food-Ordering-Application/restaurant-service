@@ -40,9 +40,9 @@ export class CustomerService {
     return `This action returns all user`;
   }
 
-  async findCustomerByUsername(username: string) {
+  async findCustomerByPhoneNumber(phoneNumber: string) {
     const findCustomerResponse: IUserServiceCreateResponse = await this.userServiceClient
-      .send('findCustomerByUsername', username)
+      .send('findCustomerByPhoneNumber', phoneNumber)
       .toPromise();
     if (findCustomerResponse.status !== HttpStatus.OK) {
       throw new HttpException(
