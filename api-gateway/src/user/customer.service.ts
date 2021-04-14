@@ -1,15 +1,14 @@
 import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
-import { CreateCustomerDto } from './dto/create-customer.dto';
+import { CreateCustomerDto } from './dto/create-customer/create-customer.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import * as constants from '../constants';
 import { IUserServiceCreateResponse } from './interfaces/user-service-create-customer-response.interface';
-import { CreateCustomerResponseDto } from './dto/create-customer-response.dto';
+import { CreateCustomerResponseDto } from './dto/create-customer/create-customer-response.dto';
 import { IUser } from './interfaces/user.interface';
-import { SendPhoneNumberOTPVerifyResponseDto } from './dto/send-otp-response.dto';
+import { SendPhoneNumberOTPVerifyResponseDto } from './dto/send-otp/send-otp-response.dto';
 import { IUserServiceSendOTPVerifyCustomerResponse } from './interfaces/user-service-send-otp-verify-customer-response.dto';
-import { VerifyCustomerPhoneNumberDto } from './dto/verify-customer-phone-number.dto';
-import { VerifyCustomerPhoneNumberResponseDto } from './dto/verify-customer-phone-number-response.dto';
+import { VerifyCustomerPhoneNumberResponseDto } from './dto/verify-customer-phone-number/verify-customer-phone-number-response.dto';
 import { IUserServiceVerifyCustomerPhoneNumberResponse } from './interfaces/user-service-verify-customer-phone-number.interface';
 
 @Injectable()
@@ -96,13 +95,5 @@ export class CustomerService {
       );
     }
     return findCustomerResponse.user;
-  }
-
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} user`;
   }
 }

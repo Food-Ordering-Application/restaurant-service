@@ -18,8 +18,8 @@ export class HttpExceptionFilter implements ExceptionFilter {
     response.status(status).json({
       statusCode: status,
       message: exceptionResponse.message,
-      timestamp: new Date().toISOString(),
-      path: request.url,
+      // timestamp: new Date().toISOString(),
+      // path: request.url,
     });
   }
 }

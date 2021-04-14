@@ -5,20 +5,44 @@ import {
   Logger,
   UseGuards,
   Request,
+  HttpStatus,
+  HttpCode,
 } from '@nestjs/common';
-import { CreateCustomerDto } from './dto/create-customer.dto';
-import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { CreateCustomerResponseDto } from './dto/create-customer-response.dto';
-import { LoginCustomerResponseDto } from './dto/login-customer-response.dto';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiConflictResponse,
+  ApiCreatedResponse,
+  ApiHeader,
+  ApiInternalServerErrorResponse,
+  ApiOkResponse,
+  ApiTags,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
+import {
+  CreateCustomerConflictResponseDto,
+  CreateCustomerResponseDto,
+  CreateCustomerDto,
+} from './dto/create-customer/index';
+import {
+  LoginCustomerDto,
+  LoginCustomerResponseDto,
+  LoginCustomerUnauthorizedResponseDto,
+} from './dto/login-customer/index';
 import { CustomerService } from './customer.service';
 import { LocalAuthGuard } from 'src/auth/guards/local-auth.guard';
 import { AuthService } from 'src/auth/auth.service';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { SendPhoneNumberOTPVerifyResponseDto } from './dto/send-otp-response.dto';
-import { VerifyCustomerPhoneNumberDto } from './dto/verify-customer-phone-number.dto';
-import { VerifyCustomerPhoneNumberResponseDto } from './dto/verify-customer-phone-number-response.dto';
+import { SendPhoneNumberOTPVerifyResponseDto } from './dto/send-otp';
+import {
+  VerifyCustomerPhoneNumberDto,
+  VerifyCustomerPhoneNumberUnauthorizedResponseDto,
+  VerifyCustomerPhoneNumberResponseDto,
+} from './dto/verify-customer-phone-number';
+import { InternalServerErrorResponseDto } from './dto/internal-server-error.dto';
 
 @ApiTags('customers')
+@ApiInternalServerErrorResponse({ type: InternalServerErrorResponseDto })
 @Controller('customer')
 export class CustomerController {
   private logger = new Logger('CustomerController');
@@ -30,6 +54,8 @@ export class CustomerController {
 
   // Đăng ký Customer
   @ApiCreatedResponse({ type: CreateCustomerResponseDto })
+  @ApiConflictResponse({ type: CreateCustomerConflictResponseDto })
+  @ApiBody({ type: CreateCustomerDto })
   @Post()
   async registerCustomer(
     @Body() createCustomerDto: CreateCustomerDto,
@@ -39,7 +65,10 @@ export class CustomerController {
 
   // Đăng nhập Customer
   @ApiOkResponse({ type: LoginCustomerResponseDto })
+  @ApiUnauthorizedResponse({ type: LoginCustomerUnauthorizedResponseDto })
+  @ApiBody({ type: LoginCustomerDto })
   @UseGuards(LocalAuthGuard)
+  @HttpCode(200)
   @Post('/login')
   async loginCustomer(@Request() req): Promise<LoginCustomerResponseDto> {
     return this.authService.login(req.user);
@@ -47,7 +76,9 @@ export class CustomerController {
 
   // Gửi mã OTP
   @ApiOkResponse({ type: SendPhoneNumberOTPVerifyResponseDto })
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
+  @HttpCode(200)
   @Post('/send-otp')
   async sendOTPVerify(
     @Request() req,
@@ -57,6 +88,12 @@ export class CustomerController {
 
   // Verified OTP
   @ApiOkResponse({ type: VerifyCustomerPhoneNumberResponseDto })
+  @ApiUnauthorizedResponse({
+    type: VerifyCustomerPhoneNumberUnauthorizedResponseDto,
+  })
+  @ApiBody({ type: VerifyCustomerPhoneNumberDto })
+  @ApiBearerAuth()
+  @HttpCode(200)
   @UseGuards(JwtAuthGuard)
   @Post('/verify-otp')
   async verifyCustomerPhoneNumber(
@@ -68,24 +105,4 @@ export class CustomerController {
       verifyOtpDto.otp,
     );
   }
-
-  // @Get()
-  // findAll() {
-  //   return this.userService.findAll();
-  // }
-
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   return this.userService.findOne(+id);
-  // }
-
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-  //   return this.userService.update(+id, updateUserDto);
-  // }
-
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.userService.remove(+id);
-  // }
 }

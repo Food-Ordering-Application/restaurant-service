@@ -1,10 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IUser } from '../interfaces/user.interface';
+import { ILoginCustomerData } from 'src/user/interfaces/login-customer-data.interface';
 
 export class LoginCustomerResponseDto {
   @ApiProperty({ example: 200, description: 'Return status code' })
   statusCode: number;
-  @ApiProperty({ example: 'Operation success', type: 'string' })
+  @ApiProperty({ example: 'Operation successs', type: 'string' })
   message: string;
   @ApiProperty({
     example: {
@@ -17,8 +17,5 @@ export class LoginCustomerResponseDto {
     },
     nullable: true,
   })
-  data: {
-    user: IUser;
-    access_token: string;
-  };
+  data: ILoginCustomerData;
 }
