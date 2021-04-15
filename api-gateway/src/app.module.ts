@@ -5,6 +5,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
 import { CustomerModule } from './user/customer.module';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
+import { CaslModule } from './casl/casl.module';
 import * as Joi from 'joi';
 
 @Module({
@@ -17,6 +18,7 @@ import * as Joi from 'joi';
       }),
       envFilePath: 'src/.env',
     }),
+    CaslModule,
   ],
   controllers: [AppController],
   providers: [AppService],

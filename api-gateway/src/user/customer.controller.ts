@@ -40,6 +40,11 @@ import {
   VerifyCustomerPhoneNumberResponseDto,
 } from './dto/verify-customer-phone-number';
 import { InternalServerErrorResponseDto } from './dto/internal-server-error.dto';
+import { PoliciesGuard } from 'src/casl/guards/policy.guard';
+import { CheckPolicies } from 'src/casl/decorators/check-policy.decorator';
+import { AppAbility } from 'src/casl/casl-ability.factory';
+import { Action } from 'src/shared/enum/actions.enum';
+import { Customer } from 'src/shared/classes';
 
 @ApiTags('customers')
 @ApiInternalServerErrorResponse({ type: InternalServerErrorResponseDto })
@@ -96,6 +101,8 @@ export class CustomerController {
   @HttpCode(200)
   @UseGuards(JwtAuthGuard)
   @Post('/verify-otp')
+  @UseGuards(PoliciesGuard)
+  @CheckPolicies((ability: AppAbility) => ability.can(Action.Read, Customer))
   async verifyCustomerPhoneNumber(
     @Request() req,
     @Body() verifyOtpDto: VerifyCustomerPhoneNumberDto,
