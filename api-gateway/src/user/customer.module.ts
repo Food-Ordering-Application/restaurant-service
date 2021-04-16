@@ -5,6 +5,8 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
 import * as constants from '../constants';
 import { AuthModule } from 'src/auth/auth.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { CaslAbilityFactory } from 'src/casl/casl-ability.factory';
+import { CaslModule } from 'src/casl/casl.module';
 
 @Module({
   imports: [
@@ -26,6 +28,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       },
     ]),
     forwardRef(() => AuthModule),
+    CaslModule,
   ],
   controllers: [CustomerController],
   providers: [CustomerService],

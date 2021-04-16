@@ -2,11 +2,11 @@ import { forwardRef, Module } from '@nestjs/common';
 import { CustomerModule } from 'src/user/customer.module';
 import { AuthService } from './auth.service';
 import { PassportModule } from '@nestjs/passport';
-import { LocalStrategy } from './strategies/local.strategy';
+import { CustomerLocalStrategy } from './strategies/local-strategies/customer-local.strategy';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JWT_SECRET } from '../constants';
-import { JwtStrategy } from './strategies/jwt.strategy';
+import { CustomerJwtStrategy } from './strategies/jwt-strategies/customer-jwt.strategy';
 
 @Module({
   imports: [
@@ -22,7 +22,7 @@ import { JwtStrategy } from './strategies/jwt.strategy';
       }),
     }),
   ],
-  providers: [AuthService, LocalStrategy, JwtStrategy],
+  providers: [AuthService, CustomerLocalStrategy, CustomerJwtStrategy],
   exports: [AuthService],
 })
 export class AuthModule {}

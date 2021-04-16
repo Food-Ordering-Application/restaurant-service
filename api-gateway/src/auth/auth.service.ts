@@ -28,7 +28,11 @@ export class AuthService {
   }
 
   async login(user: any) {
-    const payload = { phoneNumber: user.phoneNumber, sub: user.id };
+    const payload = {
+      phoneNumber: user.phoneNumber,
+      sub: user.id,
+      isCustomer: true,
+    };
     return {
       statusCode: 200,
       message: 'Customer login successfully',

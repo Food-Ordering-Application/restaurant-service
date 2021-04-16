@@ -30,9 +30,9 @@ import {
   LoginCustomerUnauthorizedResponseDto,
 } from './dto/login-customer/index';
 import { CustomerService } from './customer.service';
-import { LocalAuthGuard } from 'src/auth/guards/local-auth.guard';
+import { LocalAuthGuard } from 'src/auth/guards/locals/local-auth.guard';
 import { AuthService } from 'src/auth/auth.service';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { JwtAuthGuard } from 'src/auth/guards/jwts/jwt-auth.guard';
 import { SendPhoneNumberOTPVerifyResponseDto } from './dto/send-otp';
 import {
   VerifyCustomerPhoneNumberDto,
@@ -99,14 +99,14 @@ export class CustomerController {
   @ApiBody({ type: VerifyCustomerPhoneNumberDto })
   @ApiBearerAuth()
   @HttpCode(200)
-  @UseGuards(JwtAuthGuard)
-  @Post('/verify-otp')
-  @UseGuards(PoliciesGuard)
+  @UseGuards(JwtAuthGuard, PoliciesGuard)
   @CheckPolicies((ability: AppAbility) => ability.can(Action.Read, Customer))
+  @Post('/verify-otp')
   async verifyCustomerPhoneNumber(
     @Request() req,
     @Body() verifyOtpDto: VerifyCustomerPhoneNumberDto,
   ): Promise<VerifyCustomerPhoneNumberResponseDto> {
+    this.logger.log(req.user);
     return this.customerService.verifyCustomerPhoneNumber(
       req.user,
       verifyOtpDto.otp,
