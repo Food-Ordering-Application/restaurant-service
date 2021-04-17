@@ -1,5 +1,5 @@
 import { IUser } from './user.interface';
 
-export interface ICreateCustomerData {
+export interface ICustomerData {
   user: IUser;
 }

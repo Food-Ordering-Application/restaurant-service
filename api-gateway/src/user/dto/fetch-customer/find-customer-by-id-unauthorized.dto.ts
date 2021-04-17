@@ -1,16 +1,15 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { ICustomerData } from 'src/user/interfaces/create-customer-data.interface';
 
-export class CreateCustomerConflictResponseDto {
-  @ApiProperty({ example: 409 })
+export class FindCustomerByIdUnauthorizedResponseDto {
+  @ApiProperty({ example: 403 })
   statusCode: number;
-  @ApiProperty({ example: 'User already exists', type: 'string' })
+  @ApiProperty({ example: 'Unauthorized', type: 'string' })
   message: string;
   @ApiProperty({
     example: {
       user: null,
     },
-    nullable: true,
   })
   data: ICustomerData;
 }

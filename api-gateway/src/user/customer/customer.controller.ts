@@ -5,17 +5,18 @@ import {
   Logger,
   UseGuards,
   Request,
-  HttpStatus,
   HttpCode,
+  Get,
+  Param,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiBody,
   ApiConflictResponse,
   ApiCreatedResponse,
-  ApiHeader,
   ApiInternalServerErrorResponse,
   ApiOkResponse,
+  ApiParam,
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
@@ -23,28 +24,26 @@ import {
   CreateCustomerConflictResponseDto,
   CreateCustomerResponseDto,
   CreateCustomerDto,
-} from '../dto/create-customer/index';
-import {
   LoginCustomerDto,
   LoginCustomerResponseDto,
   LoginCustomerUnauthorizedResponseDto,
-} from '../dto/login-customer/index';
+  SendPhoneNumberOTPVerifyResponseDto,
+  VerifyCustomerPhoneNumberDto,
+  VerifyCustomerPhoneNumberUnauthorizedResponseDto,
+  VerifyCustomerPhoneNumberResponseDto,
+  FindCustomerByIdResponseDto,
+} from '../dto/index';
 import { CustomerService } from './customer.service';
 import { LocalAuthGuard } from 'src/auth/guards/locals/local-auth.guard';
 import { AuthService } from 'src/auth/auth.service';
 import { JwtAuthGuard } from 'src/auth/guards/jwts/jwt-auth.guard';
-import { SendPhoneNumberOTPVerifyResponseDto } from '../dto/send-otp';
-import {
-  VerifyCustomerPhoneNumberDto,
-  VerifyCustomerPhoneNumberUnauthorizedResponseDto,
-  VerifyCustomerPhoneNumberResponseDto,
-} from '../dto/verify-customer-phone-number';
 import { InternalServerErrorResponseDto } from '../../shared/dto/internal-server-error.dto';
 import { PoliciesGuard } from 'src/casl/guards/policy.guard';
 import { CheckPolicies } from 'src/casl/decorators/check-policy.decorator';
 import { AppAbility } from 'src/casl/casl-ability.factory';
 import { Action } from 'src/shared/enum/actions.enum';
 import { Customer } from 'src/shared/classes';
+import { FindCustomerByIdUnauthorizedResponseDto } from '../dto/fetch-customer/find-customer-by-id-unauthorized.dto';
 
 @ApiTags('users')
 @ApiInternalServerErrorResponse({ type: InternalServerErrorResponseDto })
@@ -111,5 +110,32 @@ export class CustomerController {
       req.user,
       verifyOtpDto.otp,
     );
+  }
+
+  // Fetch customer data
+  @ApiOkResponse({ type: FindCustomerByIdResponseDto })
+  @ApiUnauthorizedResponse({ type: FindCustomerByIdUnauthorizedResponseDto })
+  @ApiBearerAuth()
+  @ApiParam({
+    name: 'customerId',
+    type: 'String',
+    required: true,
+  })
+  @UseGuards(JwtAuthGuard, PoliciesGuard)
+  @CheckPolicies((ability: AppAbility) => ability.can(Action.Read, Customer))
+  @Get('/:customerId')
+  async findCustomerById(
+    @Request() req,
+    @Param() params,
+  ): Promise<FindCustomerByIdResponseDto> {
+    // Nếu không phải chính user đó
+    if (req.user.userId !== params.customerId) {
+      return {
+        statusCode: 403,
+        message: 'Unauthorized',
+        data: null,
+      };
+    }
+    return this.customerService.findCustomerById(params.customerId);
   }
 }

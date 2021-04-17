@@ -1,15 +1,15 @@
 import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
-import { CreateCustomerDto } from '../dto/create-customer/create-customer.dto';
-import { UpdateUserDto } from '../dto/update-user.dto';
+import {
+  CreateCustomerDto,
+  CreateCustomerResponseDto,
+  SendPhoneNumberOTPVerifyResponseDto,
+  VerifyCustomerPhoneNumberResponseDto,
+  FindCustomerByIdResponseDto,
+} from '../dto/index';
 import * as constants from '../../constants';
-import { IUserServiceCreateResponse } from '../interfaces/user-service-create-customer-response.interface';
-import { CreateCustomerResponseDto } from '../dto/create-customer/create-customer-response.dto';
-import { IUser } from '../interfaces/user.interface';
-import { SendPhoneNumberOTPVerifyResponseDto } from '../dto/send-otp/send-otp-response.dto';
-import { IUserServiceSendOTPVerifyCustomerResponse } from '../interfaces/user-service-send-otp-verify-customer-response.dto';
-import { VerifyCustomerPhoneNumberResponseDto } from '../dto/verify-customer-phone-number/verify-customer-phone-number-response.dto';
-import { IUserServiceVerifyCustomerPhoneNumberResponse } from '../interfaces/user-service-verify-customer-phone-number.interface';
+import { IUser } from '../interfaces/index';
+import { IUserServiceResponse, ISimpleResponse } from '../interfaces/index';
 
 @Injectable()
 export class CustomerService {
@@ -20,7 +20,7 @@ export class CustomerService {
   async createCustomer(
     createCustomerDto: CreateCustomerDto,
   ): Promise<CreateCustomerResponseDto> {
-    const createCustomerResponse: IUserServiceCreateResponse = await this.userServiceClient
+    const createCustomerResponse: IUserServiceResponse = await this.userServiceClient
       .send('createCustomer', createCustomerDto)
       .toPromise();
 
@@ -44,7 +44,7 @@ export class CustomerService {
   async sendPhoneNumberOTPVerify(
     user: IUser,
   ): Promise<SendPhoneNumberOTPVerifyResponseDto> {
-    const sendPhoneNumberOTPVerifyResponse: IUserServiceSendOTPVerifyCustomerResponse = await this.userServiceClient
+    const sendPhoneNumberOTPVerifyResponse: ISimpleResponse = await this.userServiceClient
       .send('sendPhoneNumberOTPVerify', user)
       .toPromise();
     if (sendPhoneNumberOTPVerifyResponse.status !== HttpStatus.OK) {
@@ -65,7 +65,7 @@ export class CustomerService {
     user: IUser,
     otp: string,
   ): Promise<VerifyCustomerPhoneNumberResponseDto> {
-    const verifyCustomerPhoneNumberResponse: IUserServiceVerifyCustomerPhoneNumberResponse = await this.userServiceClient
+    const verifyCustomerPhoneNumberResponse: ISimpleResponse = await this.userServiceClient
       .send('verifyCustomerPhoneNumber', { ...user, otp })
       .toPromise();
     if (verifyCustomerPhoneNumberResponse.status !== HttpStatus.OK) {
@@ -83,7 +83,7 @@ export class CustomerService {
   }
 
   async findCustomerByPhoneNumber(phoneNumber: string): Promise<IUser> {
-    const findCustomerResponse: IUserServiceCreateResponse = await this.userServiceClient
+    const findCustomerResponse: IUserServiceResponse = await this.userServiceClient
       .send('findCustomerByPhoneNumber', phoneNumber)
       .toPromise();
     if (findCustomerResponse.status !== HttpStatus.OK) {
@@ -95,5 +95,28 @@ export class CustomerService {
       );
     }
     return findCustomerResponse.user;
+  }
+
+  async findCustomerById(
+    customerId: string,
+  ): Promise<FindCustomerByIdResponseDto> {
+    const findCustomerById: IUserServiceResponse = await this.userServiceClient
+      .send('findCustomerById', customerId)
+      .toPromise();
+    if (findCustomerById.status !== HttpStatus.OK) {
+      throw new HttpException(
+        {
+          message: findCustomerById.message,
+        },
+        findCustomerById.status,
+      );
+    }
+    return {
+      statusCode: 200,
+      message: findCustomerById.message,
+      data: {
+        user: findCustomerById.user,
+      },
+    };
   }
 }
