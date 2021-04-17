@@ -9,7 +9,7 @@ import { DaysOfWeek } from '../enums/day.enum';
 import { Restaurant } from './restaurant.entity';
 
 @Entity()
-export class OpenHours {
+export class OpenHour {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -27,8 +27,8 @@ export class OpenHours {
   fromMinute: number;
 
   @Column()
-  toHour: string;
+  toHour: number;
 
   @Column()
-  toMinute: string;
+  toMinute: number;
 }

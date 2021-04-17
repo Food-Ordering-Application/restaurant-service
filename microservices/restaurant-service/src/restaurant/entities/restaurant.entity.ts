@@ -11,7 +11,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Category } from './category.entity';
-import { OpenHours } from './openhours.entity';
+import { OpenHour } from './openhours.entity';
 import { RestaurantAddress } from './restaurant-address.entity';
 
 @Entity()
@@ -49,8 +49,8 @@ export class Restaurant {
   )
   address: RestaurantAddress;
 
-  @OneToMany(() => OpenHours, (openHours) => openHours.restaurant)
-  openhours: OpenHours[];
+  @OneToMany(() => OpenHour, (openHours) => openHours.restaurant)
+  openhours: OpenHour[];
 
   @ManyToMany(() => Category, (category) => category.restaurants)
   @JoinTable()
