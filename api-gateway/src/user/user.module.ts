@@ -1,11 +1,10 @@
 import { forwardRef, Module } from '@nestjs/common';
-import { CustomerService } from './customer.service';
-import { CustomerController } from './customer.controller';
+import { CustomerService } from './customer/customer.service';
+import { CustomerController } from './customer/customer.controller';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import * as constants from '../constants';
 import { AuthModule } from 'src/auth/auth.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { CaslAbilityFactory } from 'src/casl/casl-ability.factory';
 import { CaslModule } from 'src/casl/casl.module';
 
 @Module({
@@ -34,7 +33,7 @@ import { CaslModule } from 'src/casl/casl.module';
   providers: [CustomerService],
   exports: [CustomerService],
 })
-export class CustomerModule {}
+export class UserModule {}
 
 // [
 //   {

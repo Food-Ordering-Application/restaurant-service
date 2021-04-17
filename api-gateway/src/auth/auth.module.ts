@@ -1,5 +1,5 @@
 import { forwardRef, Module } from '@nestjs/common';
-import { CustomerModule } from 'src/user/customer.module';
+import { UserModule } from 'src/user/user.module';
 import { AuthService } from './auth.service';
 import { PassportModule } from '@nestjs/passport';
 import { CustomerLocalStrategy } from './strategies/local-strategies/customer-local.strategy';
@@ -10,7 +10,7 @@ import { CustomerJwtStrategy } from './strategies/jwt-strategies/customer-jwt.st
 
 @Module({
   imports: [
-    forwardRef(() => CustomerModule),
+    forwardRef(() => UserModule),
     PassportModule,
     ConfigModule,
     JwtModule.registerAsync({

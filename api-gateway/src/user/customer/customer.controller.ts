@@ -23,32 +23,32 @@ import {
   CreateCustomerConflictResponseDto,
   CreateCustomerResponseDto,
   CreateCustomerDto,
-} from './dto/create-customer/index';
+} from '../dto/create-customer/index';
 import {
   LoginCustomerDto,
   LoginCustomerResponseDto,
   LoginCustomerUnauthorizedResponseDto,
-} from './dto/login-customer/index';
+} from '../dto/login-customer/index';
 import { CustomerService } from './customer.service';
 import { LocalAuthGuard } from 'src/auth/guards/locals/local-auth.guard';
 import { AuthService } from 'src/auth/auth.service';
 import { JwtAuthGuard } from 'src/auth/guards/jwts/jwt-auth.guard';
-import { SendPhoneNumberOTPVerifyResponseDto } from './dto/send-otp';
+import { SendPhoneNumberOTPVerifyResponseDto } from '../dto/send-otp';
 import {
   VerifyCustomerPhoneNumberDto,
   VerifyCustomerPhoneNumberUnauthorizedResponseDto,
   VerifyCustomerPhoneNumberResponseDto,
-} from './dto/verify-customer-phone-number';
-import { InternalServerErrorResponseDto } from './dto/internal-server-error.dto';
+} from '../dto/verify-customer-phone-number';
+import { InternalServerErrorResponseDto } from '../../shared/dto/internal-server-error.dto';
 import { PoliciesGuard } from 'src/casl/guards/policy.guard';
 import { CheckPolicies } from 'src/casl/decorators/check-policy.decorator';
 import { AppAbility } from 'src/casl/casl-ability.factory';
 import { Action } from 'src/shared/enum/actions.enum';
 import { Customer } from 'src/shared/classes';
 
-@ApiTags('customers')
+@ApiTags('users')
 @ApiInternalServerErrorResponse({ type: InternalServerErrorResponseDto })
-@Controller('customer')
+@Controller('user/customer')
 export class CustomerController {
   private logger = new Logger('CustomerController');
 
