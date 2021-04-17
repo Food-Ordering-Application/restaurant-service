@@ -1,16 +1,18 @@
 version: '3'
 services:
-  #UserServicePostgres Database
-  userservicepostgres:
-    container_name: userservicepostgres
+  #Postgres Database
+  postgres:
+    container_name: postgres
     restart: always
     image: postgres:latest
+    volumes:
+      - ./pg-init-scripts:/docker-entrypoint-initdb.d
     ports:
       - '5432:5432'
     restart: always
-    volumes:
-      - dataPostgres:/var/lib/postgresql/data
-    env_file:
+    # volumes:
+    #   - dataPostgres:/var/lib/postgresql/data
+    env_file: 
       - ./env/docker.env
 
   #UserMicroservice
@@ -24,7 +26,21 @@ services:
     env_file:
       - ./microservices/user-service/.env
     depends_on:
-      - userservicepostgres
+      - postgres
+      - rabbitmq
+
+  #UserMicroservice
+  restaurantservice:
+    container_name: restaurantservice
+    build: ./microservices/restaurant-service
+    restart: always
+    volumes:
+      - ./microservices/restaurant-service/src:/app/src
+      - /app/node_modules
+    env_file:
+      - ./microservices/restaurant-service/.env
+    depends_on:
+      - postgres
       - rabbitmq
 
   #ApiGateway
@@ -42,6 +58,7 @@ services:
     depends_on:
       - rabbitmq
       - userservice
+      - restaurantservice
   #PGAdmin
   pgadmin:
     container_name: pgadmin

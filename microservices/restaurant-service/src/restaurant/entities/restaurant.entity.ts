@@ -1,6 +1,6 @@
-import { MenuItemTopping } from 'src/menu/entities/menu-item-topping.entity';
-import { Menu } from 'src/menu/entities/menu.entity';
-import { ToppingGroup } from 'src/menu/entities/topping-group.entity';
+import { MenuItemTopping } from '../../menu/entities/menu-item-topping.entity';
+import { Menu } from '../../menu/entities/menu.entity';
+import { ToppingGroup } from '../../menu/entities/topping-group.entity';
 import {
   Column,
   Entity,

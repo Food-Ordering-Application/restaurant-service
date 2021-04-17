@@ -1,4 +1,3 @@
-import { Restaurant } from 'src/restaurant/entities/restaurant.entity';
 import {
   Column,
   Entity,
