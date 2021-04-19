@@ -19,11 +19,7 @@ export class MenuItemTopping {
   @JoinColumn()
   menuItem: MenuItem;
 
-  @ManyToOne(() => Restaurant, (restaurant) => restaurant.menuItemToppings)
-  restaurant: Restaurant;
-
-  @OneToOne(() => ToppingItem, (toppingItem) => toppingItem.menuItemTopping)
-  @JoinColumn()
+  @ManyToOne(() => ToppingItem, (toppingItem) => toppingItem.menuItemToppings)
   toppingItem: ToppingItem;
 
   @Column()

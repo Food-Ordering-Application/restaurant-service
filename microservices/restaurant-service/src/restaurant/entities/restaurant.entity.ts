@@ -12,7 +12,6 @@ import {
 } from 'typeorm';
 import { Category } from './category.entity';
 import { OpenHour } from './openhours.entity';
-import { RestaurantAddress } from './restaurant-address.entity';
 
 @Entity()
 export class Restaurant {
@@ -25,8 +24,14 @@ export class Restaurant {
   @Column()
   name: string;
 
+  @Column()
+  phone: string;
+
   @Column({ nullable: true })
-  imageUrl: string;
+  coverImageUrl: string;
+
+  @Column({ nullable: true })
+  verifiedImageUrl: string;
 
   @Column({ nullable: true })
   videoUrl: string;
@@ -37,17 +42,23 @@ export class Restaurant {
   @Column({ default: 0 })
   rating: number;
 
+  @Column({ nullable: true })
+  address: string;
+
+  @Column({ default: 'TPHCM' })
+  city: string;
+
   @Column({ default: 'TPHCM' })
   area: string;
+
+  @Column({ type: 'geometry', spatialFeatureType: 'Point', srid: 4326 })
+  geom: { type: string; coordinates: number[] };
 
   @Column({ default: true })
   isActive: boolean;
 
-  @OneToOne(
-    () => RestaurantAddress,
-    (restaurantAddress) => restaurantAddress.restaurant,
-  )
-  address: RestaurantAddress;
+  @Column({ default: true })
+  isVerified: boolean;
 
   @OneToMany(() => OpenHour, (openHours) => openHours.restaurant)
   openhours: OpenHour[];
@@ -58,12 +69,6 @@ export class Restaurant {
 
   @OneToOne(() => Menu, (menu) => menu.restaurant)
   menu: Menu;
-
-  @OneToMany(
-    () => MenuItemTopping,
-    (menuItemTopping) => menuItemTopping.restaurant,
-  )
-  menuItemToppings: MenuItemTopping[];
 
   @OneToMany(() => ToppingGroup, (toppingGroup) => toppingGroup.restaurant)
   toppingGroups: ToppingGroup[];
