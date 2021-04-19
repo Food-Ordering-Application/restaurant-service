@@ -1,10 +1,8 @@
-import { Restaurant } from '../../restaurant/entities/restaurant.entity';
 import {
   Column,
   Entity,
   JoinColumn,
   ManyToOne,
-  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { MenuItem } from './menu-item.entity';
@@ -19,11 +17,7 @@ export class MenuItemTopping {
   @JoinColumn()
   menuItem: MenuItem;
 
-  @ManyToOne(() => Restaurant, (restaurant) => restaurant.menuItemToppings)
-  restaurant: Restaurant;
-
-  @OneToOne(() => ToppingItem, (toppingItem) => toppingItem.menuItemTopping)
-  @JoinColumn()
+  @ManyToOne(() => ToppingItem, (toppingItem) => toppingItem.menuItemToppings)
   toppingItem: ToppingItem;
 
   @Column()
