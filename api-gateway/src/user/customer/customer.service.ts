@@ -6,16 +6,15 @@ import {
   SendPhoneNumberOTPVerifyResponseDto,
   VerifyCustomerPhoneNumberResponseDto,
   FindCustomerByIdResponseDto,
-} from '../dto/index';
+} from './dto/index';
 import * as constants from '../../constants';
-import { IUser } from '../interfaces/index';
-import { IUserServiceResponse, ISimpleResponse } from '../interfaces/index';
+import { IUser, IUserServiceResponse, ISimpleResponse } from './interfaces/index';
 
 @Injectable()
 export class CustomerService {
   constructor(
     @Inject(constants.USER_SERVICE) private userServiceClient: ClientProxy,
-  ) {}
+  ) { }
 
   async createCustomer(
     createCustomerDto: CreateCustomerDto,
