@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { ILoginCustomerData } from 'src/user/interfaces/login-customer-data.interface';
+import { ILoginCustomerData } from 'src/user/customer/interfaces/login-customer-data.interface';
 
 export class LoginCustomerResponseDto {
   @ApiProperty({ example: 200, description: 'Return status code' })

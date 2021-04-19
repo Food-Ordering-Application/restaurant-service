@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { ICustomerData } from 'src/user/interfaces/create-customer-data.interface';
+import { ICustomerData } from 'src/user/customer/interfaces/create-customer-data.interface';
 
 export class CreateCustomerConflictResponseDto {
   @ApiProperty({ example: 409 })
