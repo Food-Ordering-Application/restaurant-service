@@ -1,17 +1,29 @@
 version: '3'
 services:
   #Postgres Database
-  postgres:
-    container_name: postgres
+  # postgres:
+  #   container_name: postgres
+  #   restart: always
+  #   image: postgres:latest
+  #   volumes:
+  #     - ./pg-init-scripts:/docker-entrypoint-initdb.d
+  #   ports:
+  #     - '5432:5432'
+  #   restart: always
+  #   # volumes:
+  #   #   - dataPostgres:/var/lib/postgresql/data
+  #   env_file: 
+  #     - ./env/docker.env
+  postgis:
+    container_name: postgis
     restart: always
-    image: postgres:latest
+    image: kartoza/postgis:11.0-2.5
     volumes:
-      - ./pg-init-scripts:/docker-entrypoint-initdb.d
+      # - ./pg-init-scripts:/docker-entrypoint-initdb.d
+      - pg_data:/var/lib/postgresql
     ports:
       - '5432:5432'
     restart: always
-    # volumes:
-    #   - dataPostgres:/var/lib/postgresql/data
     env_file: 
       - ./env/docker.env
 
@@ -26,7 +38,7 @@ services:
     env_file:
       - ./microservices/user-service/.env
     depends_on:
-      - postgres
+      - postgis
       - rabbitmq
 
   #UserMicroservice
@@ -40,7 +52,7 @@ services:
     env_file:
       - ./microservices/restaurant-service/.env
     depends_on:
-      - postgres
+      - postgis
       - rabbitmq
 
   #ApiGateway
@@ -86,6 +98,7 @@ services:
       - dataRabbitMQ:/var/lib/rabbitmq/
       - logRabbitMQ:/var/log/rabbitmq
 volumes:
+  pg_data:
   dataPostgres:
   dataPgAdmin:
   dataRabbitMQ:

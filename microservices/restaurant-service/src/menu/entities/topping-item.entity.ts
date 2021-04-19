@@ -3,7 +3,7 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
-  OneToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { MenuItemTopping } from './menu-item-topping.entity';
@@ -18,11 +18,11 @@ export class ToppingItem {
   @JoinColumn()
   group: ToppingGroup;
 
-  @OneToOne(
+  @OneToMany(
     () => MenuItemTopping,
     (menuItemTopping) => menuItemTopping.toppingItem,
   )
-  menuItemTopping: MenuItemTopping;
+  menuItemToppings: MenuItemTopping[];
 
   @Column()
   description: string;
