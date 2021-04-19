@@ -1,4 +1,3 @@
-import { MenuItemTopping } from '../../menu/entities/menu-item-topping.entity';
 import { Menu } from '../../menu/entities/menu.entity';
 import { ToppingGroup } from '../../menu/entities/topping-group.entity';
 import {
