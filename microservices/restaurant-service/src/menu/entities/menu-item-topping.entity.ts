@@ -1,10 +1,8 @@
-import { Restaurant } from '../../restaurant/entities/restaurant.entity';
 import {
   Column,
   Entity,
   JoinColumn,
   ManyToOne,
-  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { MenuItem } from './menu-item.entity';
