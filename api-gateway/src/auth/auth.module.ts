@@ -1,3 +1,5 @@
+import { MerchantJwtStrategy } from './strategies/jwt-strategies/merchant-jwt.strategy';
+import { MerchantLocalStrategy } from './strategies/local-strategies/merchant-local.strategy';
 import { forwardRef, Module } from '@nestjs/common';
 import { UserModule } from 'src/user/user.module';
 import { AuthService } from './auth.service';
@@ -22,7 +24,7 @@ import { CustomerJwtStrategy } from './strategies/jwt-strategies/customer-jwt.st
       }),
     }),
   ],
-  providers: [AuthService, CustomerLocalStrategy, CustomerJwtStrategy],
+  providers: [AuthService, CustomerLocalStrategy, CustomerJwtStrategy, MerchantLocalStrategy, MerchantJwtStrategy],
   exports: [AuthService],
 })
-export class AuthModule {}
+export class AuthModule { }
