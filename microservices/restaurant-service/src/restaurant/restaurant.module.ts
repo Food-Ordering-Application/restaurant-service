@@ -1,8 +1,11 @@
 import { Module } from '@nestjs/common';
 import { RestaurantService } from './restaurant.service';
 import { RestaurantController } from './restaurant.controller';
+import { Restaurant } from './entities/index';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
+  imports: [TypeOrmModule.forFeature([Restaurant])],
   controllers: [RestaurantController],
   providers: [RestaurantService],
 })
