@@ -1,7 +1,7 @@
 import { Controller } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { GetSomeRestaurantDto, GetRestaurantInformationDto } from './dto';
-import { IRestaurantResponse } from './interfaces';
+import { IRestaurantResponse, IRestaurantsResponse } from './interfaces';
 import { RestaurantService } from './restaurant.service';
 
 @Controller()
@@ -9,7 +9,9 @@ export class RestaurantController {
   constructor(private readonly restaurantService: RestaurantService) {}
 
   @MessagePattern('getSomeRestaurant')
-  getSomeRestaurant(@Payload() getSomeRestaurantDto: GetSomeRestaurantDto) {
+  getSomeRestaurant(
+    @Payload() getSomeRestaurantDto: GetSomeRestaurantDto,
+  ): Promise<IRestaurantsResponse> {
     return this.restaurantService.getSomeRestaurant(getSomeRestaurantDto);
   }
 
