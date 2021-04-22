@@ -1,8 +1,10 @@
+import { IMerchant } from './../user/merchant/interfaces/merchant.interface';
 import { MerchantService } from '../user/merchant/merchant.service';
 import { Injectable, Logger } from '@nestjs/common';
 import { CustomerService } from '../user/customer/customer.service';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
+import { MerchantJwtPayload } from './strategies/jwt-strategies/merchant-jwt-payload.interface';
 
 @Injectable()
 export class AuthService {
@@ -51,16 +53,21 @@ export class AuthService {
     return user;
   }
 
-  async merchantLogin(user: any) {
-    const payload = {
-      id: user.id
+  async merchantLogin(user: IMerchant) {
+    const { id, username } = user;
+    const payload: MerchantJwtPayload = {
+      merchantId: id,
+      merchantUsername: username
     };
 
     return {
       statusCode: 200,
       message: 'Merchant login successfully',
       data: {
-        user: user,
+        user: {
+          id,
+          username
+        },
         access_token: this.jwtService.sign(payload),
       },
     };
