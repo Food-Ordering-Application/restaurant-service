@@ -36,15 +36,15 @@ export default class CreateFakeData implements Seeder {
       // Tạo MenuItem
       const menuItems = await Promise.all([
         factory(MenuItem)({
-          menuId: menu.id,
+          menu: menu,
           menuGroup: menuGroups[0],
         }).createMany(2),
         factory(MenuItem)({
-          menuId: menu.id,
+          menu: menu,
           menuGroup: menuGroups[1],
         }).createMany(2),
         factory(MenuItem)({
-          menuId: menu.id,
+          menu: menu,
           menuGroup: menuGroups[2],
         }).createMany(2),
       ]);
