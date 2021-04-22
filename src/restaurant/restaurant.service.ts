@@ -1,9 +1,9 @@
 import { HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { GetSomeRestaurantDto } from './dto';
+import { GetRestaurantInformationDto, GetSomeRestaurantDto } from './dto';
 import { Restaurant } from './entities';
-import { IRestaurantsResponse } from './interfaces/get-multiple-restaurant-response.interface';
+import { IRestaurantResponse, IRestaurantsResponse } from './interfaces';
 
 @Injectable()
 export class RestaurantService {
@@ -57,6 +57,29 @@ export class RestaurantService {
         status: HttpStatus.INTERNAL_SERVER_ERROR,
         message: error.message,
         restaurants: null,
+      };
+    }
+  }
+
+  async getRestaurantInformation(
+    getRestaurantInformationDto: GetRestaurantInformationDto,
+  ): Promise<IRestaurantResponse> {
+    try {
+      const restaurant = await this.restaurantRepository.findOne({
+        id: getRestaurantInformationDto.restaurantId,
+      });
+      this.logger.log(restaurant);
+      return {
+        status: HttpStatus.OK,
+        message: 'Restaurant fetched successfully',
+        restaurant: restaurant,
+      };
+    } catch (error) {
+      this.logger.error(error);
+      return {
+        status: HttpStatus.INTERNAL_SERVER_ERROR,
+        message: error.message,
+        restaurant: null,
       };
     }
   }
