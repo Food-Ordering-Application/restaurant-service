@@ -41,7 +41,7 @@ export class RestaurantController {
   }
 
   // Lấy thông tin chi tiết 1 nhà hàng
-  @ApiOkResponse({ type: GetSomeRestaurantResponseDto })
+  @ApiOkResponse({ type: GetRestaurantInformationResponseDto })
   @Get('/:restaurantId')
   getRestaurantInformation(
     @Param() params,
