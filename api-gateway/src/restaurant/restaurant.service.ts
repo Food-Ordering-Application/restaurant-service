@@ -1,11 +1,32 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { ClientProxy } from '@nestjs/microservices';
+import { RESTAURANT_SERVICE } from 'src/constants';
 import { CreateRestaurantDto } from './dto/create-restaurant.dto';
 import { UpdateRestaurantDto } from './dto/update-restaurant.dto';
 
 @Injectable()
 export class RestaurantService {
-  create(createRestaurantDto: CreateRestaurantDto) {
-    return 'This action adds a new restaurant';
+  constructor(
+    @Inject(RESTAURANT_SERVICE) private restaurantServiceClient: ClientProxy,
+  ) { }
+
+  async createRestaurant(merchantId: string, createRestaurantDto: CreateRestaurantDto) {
+    const createRestaurantResponse = await this.restaurantServiceClient
+      .send('createRestaurant', { merchantId, createRestaurantDto })
+      .toPromise();
+
+    const { status, message, restaurant } = createRestaurantResponse;
+    if (status !== HttpStatus.CREATED) {
+      throw new HttpException({ message, }, status,);
+    }
+    // TODO
+    return {
+      statusCode: 201,
+      message,
+      data: {
+        restaurant
+      },
+    };
   }
 
   findAll() {

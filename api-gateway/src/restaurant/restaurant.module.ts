@@ -9,14 +9,14 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
   imports: [
     ClientsModule.registerAsync([
       {
-        name: constants.USER_SERVICE,
+        name: constants.RESTAURANT_SERVICE,
         imports: [ConfigModule],
         inject: [ConfigService],
         useFactory: (configService: ConfigService) => ({
           transport: Transport.RMQ,
           options: {
             urls: [configService.get('AMQP_URL') as string],
-            queue: configService.get('RESTAURANT_AMQP_QUEUE'),
+            queue: 'restaurant_queue',// TODO configService.get('RESTAURANT_AMQP_QUEUE'),
             queueOptions: {
               durable: false,
             },
@@ -28,4 +28,4 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
   controllers: [RestaurantController],
   providers: [RestaurantService],
 })
-export class RestaurantModule {}
+export class RestaurantModule { }
