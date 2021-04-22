@@ -12,7 +12,6 @@ interface Context {
 }
 
 define(MenuItemTopping, (faker: typeof Faker, context: Context) => {
-  faker.locale = 'vi';
   const { menuItem, toppingItem } = context;
   const menuItemTopping = new MenuItemTopping();
   menuItemTopping.id = faker.random.uuid();

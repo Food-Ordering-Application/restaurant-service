@@ -8,7 +8,6 @@ interface Context {
 }
 
 define(ToppingGroup, (faker: typeof Faker, context: Context) => {
-  faker.locale = 'vi';
   const { restaurantId } = context;
   const restaurant = new Restaurant();
   restaurant.id = restaurantId;

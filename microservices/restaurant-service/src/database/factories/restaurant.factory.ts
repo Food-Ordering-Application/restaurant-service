@@ -5,7 +5,6 @@ import { Area } from '../../restaurant/enums/index';
 import * as _ from 'lodash';
 
 define(Restaurant, (faker: typeof Faker) => {
-  faker.locale = 'vi';
   const id = faker.random.uuid();
   const owner = faker.random.uuid();
   const name = faker.name.findName();

@@ -7,7 +7,6 @@ interface Context {
 }
 
 define(Category, (faker: typeof Faker, context: Context) => {
-  faker.locale = 'vi';
   const { restaurants } = context;
   const category = new Category();
   category.id = faker.random.uuid();
