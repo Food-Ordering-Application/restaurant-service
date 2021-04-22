@@ -1,6 +1,8 @@
 import { define } from 'typeorm-seeding';
 import Faker from 'faker';
 import { Restaurant } from '../../restaurant/entities/index';
+import { Area } from '../../restaurant/enums/index';
+import * as _ from 'lodash';
 
 define(Restaurant, (faker: typeof Faker) => {
   faker.locale = 'vi';
@@ -15,7 +17,7 @@ define(Restaurant, (faker: typeof Faker) => {
   const rating = faker.random.number({ min: 0, max: 5 });
   const address = faker.address.streetAddress();
   const city = faker.address.city();
-  const area = faker.address.city();
+  const area = _.sample(Object.values(Area)) as Area;
   const isActive = true;
   const isVerified = true;
   const latitude = faker.address.latitude();

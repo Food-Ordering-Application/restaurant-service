@@ -17,7 +17,7 @@ import {
 
 export default class CreateFakeData implements Seeder {
   public async run(factory: Factory, connection: Connection): Promise<any> {
-    const restaurants = await factory(Restaurant)().createMany(20);
+    const restaurants = await factory(Restaurant)().createMany(300);
     for (const restaurant of restaurants) {
       // Với mỗi nhà hàng tạo 7 openHour
       await factory(OpenHour)({ restaurantId: restaurant.id }).createMany(7);
@@ -60,8 +60,6 @@ export default class CreateFakeData implements Seeder {
           toppingGroup: toppingGroups[2],
         }).createMany(3),
       ]);
-
-      console.log(menuItems[0][0]);
 
       // Tạo MenuItemTopping
       const menuItemToppings = await Promise.all([
@@ -208,17 +206,23 @@ export default class CreateFakeData implements Seeder {
       ]);
     }
     // Tạo 4 restaurant-category và mỗi category gán 5 nhà hàng
-    await factory(Category)({ restaurants: restaurants.slice(0, 5) }).create({
-      type: CategoryType.CafeDessert,
+    await factory(Category)({ restaurants: restaurants.slice(0, 50) }).create({
+      type: CategoryType.CAFEDESSERT,
     });
-    await factory(Category)({ restaurants: restaurants.slice(5, 10) }).create({
-      type: CategoryType.Restaurant,
+    await factory(Category)({ restaurants: restaurants.slice(50, 100) }).create(
+      {
+        type: CategoryType.RESTAURANT,
+      },
+    );
+    await factory(Category)({
+      restaurants: restaurants.slice(100, 150),
+    }).create({
+      type: CategoryType.STREETFOOD,
     });
-    await factory(Category)({ restaurants: restaurants.slice(10, 15) }).create({
-      type: CategoryType.StreetFood,
-    });
-    await factory(Category)({ restaurants: restaurants.slice(15, 20) }).create({
-      type: CategoryType.Veterian,
+    await factory(Category)({
+      restaurants: restaurants.slice(150, 200),
+    }).create({
+      type: CategoryType.VETERIAN,
     });
   }
 }
