@@ -21,19 +21,7 @@ export class RestaurantService {
       let restaurants;
       if (!getSomeRestaurantDto.category) {
         restaurants = await this.restaurantRepository.find({
-          select: [
-            'name',
-            'isActive',
-            'numRate',
-            'phone',
-            'rating',
-            'videoUrl',
-            'address',
-            'area',
-            'city',
-            'coverImageUrl',
-            'id',
-          ],
+          select: ['name', 'isActive', 'address', 'coverImageUrl', 'id'],
           where: { area: getSomeRestaurantDto.area },
           relations: ['categories'],
           take: 25,
@@ -45,13 +33,7 @@ export class RestaurantService {
           .select([
             'res.name',
             'res.isActive',
-            'res.numRate',
-            'res.phone',
-            'res.rating',
-            'res.videoUrl',
             'res.address',
-            'res.area',
-            'res.city',
             'res.coverImageUrl',
             'res.id',
           ])
