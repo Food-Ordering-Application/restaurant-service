@@ -1,3 +1,4 @@
+import { MerchantLocalAuthGuard } from './../../auth/guards/locals/merchant-local-auth.guard';
 import {
   Body, Controller, HttpCode, Logger, Post, Request, UseGuards
 } from '@nestjs/common';
@@ -11,11 +12,10 @@ import {
   ApiUnauthorizedResponse
 } from '@nestjs/swagger';
 import { AuthService } from 'src/auth/auth.service';
-import { LocalAuthGuard } from 'src/auth/guards/locals/local-auth.guard';
 import { InternalServerErrorResponseDto } from '../../shared/dto/internal-server-error.dto';
 import {
   CreateMerchantConflictResponseDto,
-  CreateMerchantDto, CreateMerchantResponseDto,
+  CreateMerchantDto, CreateMerchantResponseDto, LoginMerchantDto, LoginMerchantResponseDto, LoginMerchantUnauthorizedResponseDto,
 } from '../merchant/dto/index';
 import { MerchantService } from './merchant.service';
 
@@ -41,16 +41,16 @@ export class MerchantController {
     return this.merchantService.createMerchant(createMerchantDto);
   }
 
-  // // Đăng nhập Merchant
-  // @ApiOkResponse({ type: LoginMerchantResponseDto })
-  // @ApiUnauthorizedResponse({ type: LoginMerchantUnauthorizedResponseDto })
-  // @ApiBody({ type: LoginMerchantDto })
-  // @UseGuards(LocalAuthGuard)
-  // @HttpCode(200)
-  // @Post('/login')
-  // async loginMerchant(@Request() req): Promise<LoginMerchantResponseDto> {
-  //   return this.authService.login(req.user);
-  // }
+  // Đăng nhập Merchant
+  @ApiOkResponse({ type: LoginMerchantResponseDto })
+  @ApiUnauthorizedResponse({ type: LoginMerchantUnauthorizedResponseDto })
+  @ApiBody({ type: LoginMerchantDto })
+  @UseGuards(MerchantLocalAuthGuard)
+  @HttpCode(200)
+  @Post('/login')
+  async loginMerchant(@Request() req): Promise<LoginMerchantResponseDto> {
+    return this.authService.merchantLogin(req.user);
+  }
 
   // // Gửi mã OTP
   // @ApiOkResponse({ type: SendPhoneNumberOTPVerifyResponseDto })

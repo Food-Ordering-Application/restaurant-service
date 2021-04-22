@@ -10,6 +10,7 @@ import { IUserServiceResponse, ISimpleResponse } from '../merchant/interfaces/in
 
 @Injectable()
 export class MerchantService {
+
   constructor(
     @Inject(constants.USER_SERVICE) private userServiceClient: ClientProxy,
   ) { }
@@ -35,46 +36,21 @@ export class MerchantService {
     };
   }
 
-  // async sendPhoneNumberOTPVerify(
-  //   user: IUser,
-  // ): Promise<SendPhoneNumberOTPVerifyResponseDto> {
-  //   const sendPhoneNumberOTPVerifyResponse: ISimpleResponse = await this.userServiceClient
-  //     .send('sendPhoneNumberOTPVerify', user)
-  //     .toPromise();
-  //   if (sendPhoneNumberOTPVerifyResponse.status !== HttpStatus.OK) {
-  //     throw new HttpException(
-  //       {
-  //         message: sendPhoneNumberOTPVerifyResponse.message,
-  //       },
-  //       sendPhoneNumberOTPVerifyResponse.status,
-  //     );
-  //   }
-  //   return {
-  //     statusCode: 200,
-  //     message: sendPhoneNumberOTPVerifyResponse.message,
-  //   };
-  // }
-
-  // async verifyMerchantPhoneNumber(
-  //   user: IUser,
-  //   otp: string,
-  // ): Promise<VerifyMerchantPhoneNumberResponseDto> {
-  //   const verifyMerchantPhoneNumberResponse: ISimpleResponse = await this.userServiceClient
-  //     .send('verifyMerchantPhoneNumber', { ...user, otp })
-  //     .toPromise();
-  //   if (verifyMerchantPhoneNumberResponse.status !== HttpStatus.OK) {
-  //     throw new HttpException(
-  //       {
-  //         message: verifyMerchantPhoneNumberResponse.message,
-  //       },
-  //       verifyMerchantPhoneNumberResponse.status,
-  //     );
-  //   }
-  //   return {
-  //     statusCode: 200,
-  //     message: verifyMerchantPhoneNumberResponse.message,
-  //   };
-  // }
+  async getAuthenticatedMerchant(username: string, password: string): Promise<IMerchant> {
+    const authenticatedMerchantResponse: IUserServiceResponse = await this.userServiceClient
+      .send('getAuthenticatedMerchant', { username, password })
+      .toPromise();
+    const { message, user, status } = authenticatedMerchantResponse;
+    if (status !== HttpStatus.OK) {
+      throw new HttpException(
+        {
+          message
+        },
+        status,
+      );
+    }
+    return user;
+  }
 
   // async findMerchantByPhoneNumber(phoneNumber: string): Promise<IUser> {
   //   const findMerchantResponse: IUserServiceResponse = await this.userServiceClient
