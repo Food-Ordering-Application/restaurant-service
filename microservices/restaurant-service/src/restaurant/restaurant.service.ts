@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { GetRestaurantInformationDto, GetSomeRestaurantDto } from './dto';
 import { Restaurant } from './entities';
 import { IRestaurantResponse, IRestaurantsResponse } from './interfaces';
+import * as helpers from './helpers/helpers';
 
 @Injectable()
 export class RestaurantService {
@@ -17,35 +18,15 @@ export class RestaurantService {
   async getSomeRestaurant(
     getSomeRestaurantDto: GetSomeRestaurantDto,
   ): Promise<IRestaurantsResponse> {
+    const { area, pageNumber, category, search } = getSomeRestaurantDto;
     try {
-      let restaurants;
-      if (!getSomeRestaurantDto.category) {
-        restaurants = await this.restaurantRepository.find({
-          select: ['name', 'isActive', 'address', 'coverImageUrl', 'id'],
-          where: { area: getSomeRestaurantDto.area },
-          relations: ['categories'],
-          take: 25,
-          skip: (getSomeRestaurantDto.pageNumber - 1) * 25,
-        });
-      } else {
-        restaurants = await this.restaurantRepository
-          .createQueryBuilder('res')
-          .select([
-            'res.name',
-            'res.isActive',
-            'res.address',
-            'res.coverImageUrl',
-            'res.id',
-          ])
-          .leftJoinAndSelect('res.categories', 'categories')
-          .where('categories.type = :category AND res.area = :area', {
-            category: getSomeRestaurantDto.category,
-            area: getSomeRestaurantDto.area,
-          })
-          .limit(25)
-          .skip((getSomeRestaurantDto.pageNumber - 1) * 25)
-          .getMany();
-      }
+      const restaurants = await helpers.createGetSomeRestaurantQuery(
+        search,
+        area,
+        category,
+        pageNumber,
+        this.restaurantRepository,
+      );
       return {
         status: HttpStatus.OK,
         message: 'Restaurant fetched successfully',

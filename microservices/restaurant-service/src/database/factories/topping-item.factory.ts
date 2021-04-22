@@ -7,7 +7,6 @@ interface Context {
 }
 
 define(ToppingItem, (faker: typeof Faker, context: Context) => {
-  faker.locale = 'vi';
   const { toppingGroup } = context;
   const toppingItem = new ToppingItem();
   toppingItem.id = faker.random.uuid();
