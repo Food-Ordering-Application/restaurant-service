@@ -12,5 +12,6 @@ export interface IRestaurant {
   address?: string;
   area?: string;
   isActive?: boolean;
+  isVerified?: boolean;
   categories?: ICategory[];
 }

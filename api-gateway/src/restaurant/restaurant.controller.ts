@@ -1,6 +1,17 @@
-import { Controller, Get, Body, Logger, Post, HttpCode } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Body,
+  Logger,
+  Post,
+  HttpCode,
+  Param,
+} from '@nestjs/common';
 import { RestaurantService } from './restaurant.service';
-import { GetSomeRestaurantResponseDto } from './dto/index';
+import {
+  GetRestaurantInformationResponseDto,
+  GetSomeRestaurantResponseDto,
+} from './dto/index';
 import {
   ApiInternalServerErrorResponse,
   ApiOkResponse,
@@ -30,8 +41,12 @@ export class RestaurantController {
   }
 
   // Lấy thông tin chi tiết 1 nhà hàng
-  // @Get('/:restaurantId')
-  // getRestaurantInformation(@Body() createRestaurantDto: CreateRestaurantDto) {
-  //   return this.restaurantService.getRestaurantInformation(createRestaurantDto);
-  // }
+  @ApiOkResponse({ type: GetSomeRestaurantResponseDto })
+  @Get('/:restaurantId')
+  getRestaurantInformation(
+    @Param() params,
+  ): Promise<GetRestaurantInformationResponseDto> {
+    const { restaurantId } = params;
+    return this.restaurantService.getRestaurantInformation(restaurantId);
+  }
 }
