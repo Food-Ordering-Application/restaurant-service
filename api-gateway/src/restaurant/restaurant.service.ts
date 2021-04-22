@@ -1,13 +1,14 @@
 import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import {
+  GetMenuInformationResponseDto,
   GetRestaurantInformationResponseDto,
   GetSomeRestaurantDto,
   GetSomeRestaurantResponseDto,
 } from './dto/index';
-import { IRestaurantsResponse } from './interfaces/get-multiple-restaurant-response.interface';
 import * as constants from '../constants';
 import { ClientProxy } from '@nestjs/microservices';
-import { IRestaurantResponse } from './interfaces/get-restaurant-information-response.interface';
+import { IRestaurantResponse, IRestaurantsResponse } from './interfaces';
+import { IMenuInformationResponse } from './interfaces/get-menu-information-response.interface';
 
 @Injectable()
 export class RestaurantService {
@@ -60,6 +61,33 @@ export class RestaurantService {
       message: getRestaurantInformationResponse.message,
       data: {
         restaurant: getRestaurantInformationResponse.restaurant,
+      },
+    };
+  }
+
+  async getMenuInformation(
+    restaurantId,
+  ): Promise<GetMenuInformationResponseDto> {
+    const getMenuInformationResponse: IMenuInformationResponse = await this.restaurantServiceClient
+      .send('getMenuInformation', { restaurantId })
+      .toPromise();
+
+    const { menu, menuGroups, message, status } = getMenuInformationResponse;
+
+    if (status !== HttpStatus.OK) {
+      throw new HttpException(
+        {
+          message,
+        },
+        status,
+      );
+    }
+    return {
+      statusCode: 200,
+      message,
+      data: {
+        menu,
+        menuGroups,
       },
     };
   }

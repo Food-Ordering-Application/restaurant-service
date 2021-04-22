@@ -1,26 +1,53 @@
-import { Injectable } from '@nestjs/common';
-import { CreateMenuDto } from './dto/create-menu.dto';
-import { UpdateMenuDto } from './dto/update-menu.dto';
+import { HttpStatus, Injectable, Logger } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Menu, MenuGroup, MenuItem } from './entities';
+import { IMenuInformationResponse } from './interfaces';
 
 @Injectable()
 export class MenuService {
-  create(createMenuDto: CreateMenuDto) {
-    return 'This action adds a new menu';
-  }
+  private readonly logger = new Logger('MenuService');
 
-  findAll() {
-    return `This action returns all menu`;
-  }
+  constructor(
+    @InjectRepository(Menu)
+    private menuRepository: Repository<Menu>,
+    @InjectRepository(MenuGroup)
+    private menuGroupRepository: Repository<MenuGroup>,
+    @InjectRepository(MenuItem)
+    private menuItemRepository: Repository<MenuItem>,
+  ) {}
 
-  findOne(id: number) {
-    return `This action returns a #${id} menu`;
-  }
+  async getMenuInformation(
+    restaurantId: string,
+  ): Promise<IMenuInformationResponse> {
+    try {
+      const menu = await this.menuRepository
+        .createQueryBuilder('menu')
+        .leftJoin('menu.restaurant', 'restaurant')
+        .where('restaurant.id = :restaurantId', { restaurantId: restaurantId })
+        .getOne();
 
-  update(id: number, updateMenuDto: UpdateMenuDto) {
-    return `This action updates a #${id} menu`;
-  }
+      const menuGroups = await this.menuGroupRepository
+        .createQueryBuilder('menuG')
+        .leftJoin('menuG.menu', 'menu')
+        .leftJoinAndSelect('menuG.menuItems', 'menuI')
+        .where('menu.id = :menuId', { menuId: menu.id })
+        .getMany();
 
-  remove(id: number) {
-    return `This action removes a #${id} menu`;
+      return {
+        status: HttpStatus.OK,
+        message: 'Restaurant fetched successfully',
+        menu: menu,
+        menuGroups: menuGroups,
+      };
+    } catch (error) {
+      this.logger.error(error);
+      return {
+        status: HttpStatus.INTERNAL_SERVER_ERROR,
+        message: error.message,
+        menu: null,
+        menuGroups: null,
+      };
+    }
   }
 }

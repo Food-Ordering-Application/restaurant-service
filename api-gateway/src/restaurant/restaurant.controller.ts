@@ -9,6 +9,7 @@ import {
 } from '@nestjs/common';
 import { RestaurantService } from './restaurant.service';
 import {
+  GetMenuInformationResponseDto,
   GetRestaurantInformationResponseDto,
   GetSomeRestaurantResponseDto,
 } from './dto/index';
@@ -48,5 +49,13 @@ export class RestaurantController {
   ): Promise<GetRestaurantInformationResponseDto> {
     const { restaurantId } = params;
     return this.restaurantService.getRestaurantInformation(restaurantId);
+  }
+
+  // Lấy thông tin về Menu, MenuGroup, MenuItems của nhà hàng
+  @ApiOkResponse({ type: GetMenuInformationResponseDto })
+  @Get('/:restaurantId/get-menu-information')
+  getMenuInformation(@Param() params): Promise<GetMenuInformationResponseDto> {
+    const { restaurantId } = params;
+    return this.restaurantService.getMenuInformation(restaurantId);
   }
 }
