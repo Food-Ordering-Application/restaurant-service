@@ -6,6 +6,8 @@ import * as constants from '../constants';
 import { AuthModule } from 'src/auth/auth.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { CaslModule } from 'src/casl/casl.module';
+import { MerchantController } from './merchant/merchant.controller';
+import { MerchantService } from './merchant/merchant.service';
 
 @Module({
   imports: [
@@ -29,11 +31,11 @@ import { CaslModule } from 'src/casl/casl.module';
     forwardRef(() => AuthModule),
     CaslModule,
   ],
-  controllers: [CustomerController],
-  providers: [CustomerService],
-  exports: [CustomerService],
+  controllers: [CustomerController, MerchantController],
+  providers: [CustomerService, MerchantService],
+  exports: [CustomerService, MerchantService],
 })
-export class UserModule {}
+export class UserModule { }
 
 // [
 //   {
