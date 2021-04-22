@@ -3,6 +3,7 @@ import { ClientProxy } from '@nestjs/microservices';
 import {
   CreateMerchantDto,
   CreateMerchantResponseDto,
+  FindMerchantByIdResponseDto,
 } from '../merchant/dto/index';
 import * as constants from '../../constants';
 import { IMerchant } from '../merchant/interfaces/index';
@@ -52,41 +53,23 @@ export class MerchantService {
     return user;
   }
 
-  // async findMerchantByPhoneNumber(phoneNumber: string): Promise<IUser> {
-  //   const findMerchantResponse: IUserServiceResponse = await this.userServiceClient
-  //     .send('findMerchantByPhoneNumber', phoneNumber)
-  //     .toPromise();
-  //   if (findMerchantResponse.status !== HttpStatus.OK) {
-  //     throw new HttpException(
-  //       {
-  //         message: findMerchantResponse.message,
-  //       },
-  //       findMerchantResponse.status,
-  //     );
-  //   }
-  //   return findMerchantResponse.user;
-  // }
+  async findMerchantById(merchantId: string): Promise<FindMerchantByIdResponseDto> {
+    const findMerchantById: IUserServiceResponse = await this.userServiceClient
+      .send('findMerchantById', merchantId)
+      .toPromise();
 
-  // async findMerchantById(
-  //   merchantId: string,
-  // ): Promise<FindMerchantByIdResponseDto> {
-  //   const findMerchantById: IUserServiceResponse = await this.userServiceClient
-  //     .send('findMerchantById', merchantId)
-  //     .toPromise();
-  //   if (findMerchantById.status !== HttpStatus.OK) {
-  //     throw new HttpException(
-  //       {
-  //         message: findMerchantById.message,
-  //       },
-  //       findMerchantById.status,
-  //     );
-  //   }
-  //   return {
-  //     statusCode: 200,
-  //     message: findMerchantById.message,
-  //     data: {
-  //       user: findMerchantById.user,
-  //     },
-  //   };
-  // }
+    const { status, message, user } = findMerchantById;
+
+    if (findMerchantById.status !== HttpStatus.OK) {
+      throw new HttpException({ message }, status);
+    }
+
+    return {
+      statusCode: 200,
+      message,
+      data: {
+        user
+      },
+    };
+  }
 }

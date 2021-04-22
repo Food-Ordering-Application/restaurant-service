@@ -4,3 +4,5 @@ export { CreateMerchantConflictResponseDto } from './create-merchant/create-merc
 export { LoginMerchantResponseDto } from './login-merchant/login-merchant-response.dto';
 export { LoginMerchantDto } from './login-merchant/login-merchant.dto';
 export { LoginMerchantUnauthorizedResponseDto } from './login-merchant/login-merchant-unauthorized-response.dto';
+export { FindMerchantByIdUnauthorizedResponseDto } from './fetch-merchant/find-merchant-unauthorized-response.dto';
+export { FindMerchantByIdResponseDto } from './fetch-merchant/find-merchant-response.dto';
