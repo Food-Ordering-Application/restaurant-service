@@ -8,6 +8,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { CaslModule } from 'src/casl/casl.module';
 import { MerchantController } from './merchant/merchant.controller';
 import { MerchantService } from './merchant/merchant.service';
+import { AdminController } from './admin/admin.controller';
+import { AdminService } from './admin/admin.service';
 
 @Module({
   imports: [
@@ -31,22 +33,8 @@ import { MerchantService } from './merchant/merchant.service';
     forwardRef(() => AuthModule),
     CaslModule,
   ],
-  controllers: [CustomerController, MerchantController],
-  providers: [CustomerService, MerchantService],
-  exports: [CustomerService, MerchantService],
+  controllers: [CustomerController, MerchantController, AdminController],
+  providers: [CustomerService, MerchantService, AdminService],
+  exports: [CustomerService, MerchantService, AdminService],
 })
 export class UserModule { }
-
-// [
-//   {
-//     name: constants.USER_SERVICE,
-//     transport: Transport.RMQ,
-// options: {
-//   urls: ['amqp://admin:admin@rabbitmq:5672'],
-//   queue: 'cats_queue',
-//   queueOptions: {
-//     durable: false,
-//   },
-// },
-//   },
-// ]
