@@ -1,5 +1,5 @@
 - Tạo file docker.env giống cấu trúc như docker.example.env trong thư mục env
-- Tạo các file .env giống như .env.example trong các thư mục api-gateway, microservices/*-service
+- Tạo các file .env giống như .env.example trong các thư mục api-gateway, microservices/*-service (user,restaurant,order service)
 - Chạy docker-compose up --build -d
 # Hướng dẫn truy cập database
 
