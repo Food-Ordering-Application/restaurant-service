@@ -16,9 +16,9 @@ export class RestaurantService {
       .toPromise();
 
     const { status, message, restaurant } = createRestaurantResponse;
-    if (status !== HttpStatus.CREATED) {
-      throw new HttpException({ message, }, status,);
-    }
+    // if (status !== HttpStatus.CREATED) {
+    //   throw new HttpException({ message, }, status,);
+    // }
     // TODO
     return {
       statusCode: 201,
