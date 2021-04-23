@@ -16,7 +16,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
           transport: Transport.RMQ,
           options: {
             urls: [configService.get('AMQP_URL') as string],
-            queue: 'restaurant_queue',// TODO configService.get('RESTAURANT_AMQP_QUEUE'),
+            queue: configService.get('RESTAURANT_AMQP_QUEUE'),
             queueOptions: {
               durable: false,
             },

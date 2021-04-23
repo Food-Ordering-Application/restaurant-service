@@ -19,7 +19,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
           transport: Transport.RMQ,
           options: {
             urls: [configService.get('AMQP_URL') as string],
-            queue: 'restaurant_event_queue', // TODO configService.get('RESTAURANT_EVENT_AMQP_QUEUE'),
+            queue: configService.get('RESTAURANT_EVENT_AMQP_QUEUE'),
             queueOptions: {
               durable: false,
             },
@@ -34,7 +34,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
           transport: Transport.RMQ,
           options: {
             urls: [configService.get('AMQP_URL') as string],
-            queue: 'restaurant_queue', //configService.get('RESTAURANT_AMQP_QUEUE'),
+            queue: configService.get('RESTAURANT_AMQP_QUEUE'),
             queueOptions: {
               durable: false,
             },
