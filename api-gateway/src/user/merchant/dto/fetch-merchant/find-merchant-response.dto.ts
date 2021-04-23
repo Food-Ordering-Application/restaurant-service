@@ -4,7 +4,7 @@ import { ApiProperty } from '@nestjs/swagger';
 export class FindMerchantByIdResponseDto {
   @ApiProperty({ example: 201 })
   statusCode: number;
-  @ApiProperty({ example: 'User created successfully', type: 'string' })
+  @ApiProperty({ example: 'Fetch successfully', type: 'string' })
   message: string;
   @ApiProperty({
     example: {
