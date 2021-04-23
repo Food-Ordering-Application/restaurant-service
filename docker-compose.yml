@@ -1,19 +1,5 @@
 version: '3'
 services:
-  #Postgres Database
-  # postgres:
-  #   container_name: postgres
-  #   restart: always
-  #   image: postgres:latest
-  #   volumes:
-  #     - ./pg-init-scripts:/docker-entrypoint-initdb.d
-  #   ports:
-  #     - '5432:5432'
-  #   restart: always
-  #   # volumes:
-  #   #   - dataPostgres:/var/lib/postgresql/data
-  #   env_file: 
-  #     - ./env/docker.env
   postgis:
     container_name: postgis
     restart: always
