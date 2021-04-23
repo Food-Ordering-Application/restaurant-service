@@ -41,6 +41,20 @@ services:
       - postgis
       - rabbitmq
 
+  #OrderMicroservice
+  orderservice:
+    container_name: orderservice
+    build: ./microservices/order-service
+    restart: always
+    volumes:
+      - ./microservices/order-service/src:/app/src
+      - /app/node_modules
+    env_file:
+      - ./microservices/order-service/.env
+    depends_on:
+      - postgis
+      - rabbitmq
+
   #ApiGateway
   apigateway:
     container_name: apigateway
