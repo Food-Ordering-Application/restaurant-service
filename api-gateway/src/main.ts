@@ -22,7 +22,7 @@ async function bootstrap() {
     .addTag('customers')
     .setVersion('1.0')
     .setDescription('The API Descriptions')
-    .addBearerAuth({ type: 'http', scheme: 'bearer' }, 'access-token')
+    .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('api', app, document);

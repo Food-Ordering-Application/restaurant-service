@@ -5,10 +5,7 @@ import { AuthService } from "src/auth/auth.service";
 import { InternalServerErrorResponseDto } from "src/shared/dto/internal-server-error.dto";
 import { AdminLocalAuthGuard } from './../../auth/guards/locals/admin-local-auth.guard';
 import { AdminService } from "./admin.service";
-import { LoginAdminResponseDto } from "./dto/login-admin/login-admin-response.dto";
-import { LoginAdminUnauthorizedResponseDto } from "./dto/login-admin/login-admin-unauthorized-response.dto";
-import { LoginAdminDto } from "./dto/login-admin/login-admin.dto";
-import { VerifyRestaurantDto } from './dto/verify-restaurant/verify-restaurant.dto';
+import { LoginAdminDto, LoginAdminResponseDto, LoginAdminUnauthorizedResponseDto, VerifyRestaurantDto, VerifyRestaurantResponseDto, VerifyRestaurantUnauthorizedResponseDto } from './dto';
 
 @ApiTags('admin')
 @ApiInternalServerErrorResponse({ type: InternalServerErrorResponseDto })
@@ -31,15 +28,14 @@ export class AdminController {
     return this.authService.adminLogin(req.user);
   }
 
-  // @ApiOkResponse({ type: VerifyCustomerPhoneNumberResponseDto })
-  // @ApiUnauthorizedResponse({
-  //   type: VerifyCustomerPhoneNumberUnauthorizedResponseDto,
-  // })
+  @ApiOkResponse({ type: VerifyRestaurantResponseDto })
+  @ApiUnauthorizedResponse({
+    type: VerifyRestaurantUnauthorizedResponseDto,
+  })
   @ApiBody({ type: VerifyRestaurantDto })
   @ApiBearerAuth()
   @HttpCode(200)
   @UseGuards(AdminJwtAuthGuard)
-  // @CheckPolicies((ability: AppAbility) => ability.can(Action.Read, Customer))
   @Post('/verify-restaurant')
   async verifyRestaurant(
     @Body() verifyRestaurantDto: VerifyRestaurantDto,
