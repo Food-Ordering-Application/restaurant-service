@@ -7,7 +7,6 @@ interface Context {
 }
 
 define(MenuGroup, (faker: typeof Faker, context: Context) => {
-  faker.locale = 'vi';
   const { menuId } = context;
   const menu = new Menu();
   menu.id = menuId;

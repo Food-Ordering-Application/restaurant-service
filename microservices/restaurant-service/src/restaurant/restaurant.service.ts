@@ -1,26 +1,67 @@
-import { Injectable } from '@nestjs/common';
-import { CreateRestaurantDto } from './dto/create-restaurant.dto';
-import { UpdateRestaurantDto } from './dto/update-restaurant.dto';
+import { HttpStatus, Injectable, Logger } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { GetRestaurantInformationDto, GetSomeRestaurantDto } from './dto';
+import { Restaurant } from './entities';
+import { IRestaurantResponse, IRestaurantsResponse } from './interfaces';
+import * as helpers from './helpers/helpers';
 
 @Injectable()
 export class RestaurantService {
-  create(createRestaurantDto: CreateRestaurantDto) {
-    return 'This action adds a new restaurant';
+  private readonly logger = new Logger('CustomerService');
+
+  constructor(
+    @InjectRepository(Restaurant)
+    private restaurantRepository: Repository<Restaurant>,
+  ) {}
+
+  async getSomeRestaurant(
+    getSomeRestaurantDto: GetSomeRestaurantDto,
+  ): Promise<IRestaurantsResponse> {
+    const { area, pageNumber, category, search } = getSomeRestaurantDto;
+    try {
+      const restaurants = await helpers.createGetSomeRestaurantQuery(
+        search,
+        area,
+        category,
+        pageNumber,
+        this.restaurantRepository,
+      );
+      return {
+        status: HttpStatus.OK,
+        message: 'Restaurant fetched successfully',
+        restaurants: restaurants,
+      };
+    } catch (error) {
+      this.logger.error(error);
+      return {
+        status: HttpStatus.INTERNAL_SERVER_ERROR,
+        message: error.message,
+        restaurants: null,
+      };
+    }
   }
 
-  findAll() {
-    return `This action returns all restaurant`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} restaurant`;
-  }
-
-  update(id: number, updateRestaurantDto: UpdateRestaurantDto) {
-    return `This action updates a #${id} restaurant`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} restaurant`;
+  async getRestaurantInformation(
+    getRestaurantInformationDto: GetRestaurantInformationDto,
+  ): Promise<IRestaurantResponse> {
+    try {
+      const restaurant = await this.restaurantRepository.findOne({
+        id: getRestaurantInformationDto.restaurantId,
+      });
+      this.logger.log(restaurant);
+      return {
+        status: HttpStatus.OK,
+        message: 'Restaurant fetched successfully',
+        restaurant: restaurant,
+      };
+    } catch (error) {
+      this.logger.error(error);
+      return {
+        status: HttpStatus.INTERNAL_SERVER_ERROR,
+        message: error.message,
+        restaurant: null,
+      };
+    }
   }
 }

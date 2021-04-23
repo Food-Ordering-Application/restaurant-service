@@ -62,7 +62,9 @@ export class Restaurant {
   @OneToMany(() => OpenHour, (openHours) => openHours.restaurant)
   openhours: OpenHour[];
 
-  @ManyToMany(() => Category, (category) => category.restaurants)
+  @ManyToMany(() => Category, (category) => category.restaurants, {
+    eager: true,
+  })
   @JoinTable()
   categories: Category[];
 

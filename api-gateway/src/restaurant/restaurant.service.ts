@@ -1,26 +1,94 @@
-import { Injectable } from '@nestjs/common';
-import { CreateRestaurantDto } from './dto/create-restaurant.dto';
-import { UpdateRestaurantDto } from './dto/update-restaurant.dto';
+import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
+import {
+  GetMenuInformationResponseDto,
+  GetRestaurantInformationResponseDto,
+  GetSomeRestaurantDto,
+  GetSomeRestaurantResponseDto,
+} from './dto/index';
+import * as constants from '../constants';
+import { ClientProxy } from '@nestjs/microservices';
+import { IRestaurantResponse, IRestaurantsResponse } from './interfaces';
+import { IMenuInformationResponse } from './interfaces/get-menu-information-response.interface';
 
 @Injectable()
 export class RestaurantService {
-  create(createRestaurantDto: CreateRestaurantDto) {
-    return 'This action adds a new restaurant';
+  constructor(
+    @Inject(constants.RESTAURANT_SERVICE)
+    private restaurantServiceClient: ClientProxy,
+  ) {}
+
+  async getSomeRestaurant(
+    getSomeRestaurantDto: GetSomeRestaurantDto,
+  ): Promise<GetSomeRestaurantResponseDto> {
+    const getSomeRestaurantResponse: IRestaurantsResponse = await this.restaurantServiceClient
+      .send('getSomeRestaurant', getSomeRestaurantDto)
+      .toPromise();
+
+    if (getSomeRestaurantResponse.status !== HttpStatus.OK) {
+      throw new HttpException(
+        {
+          message: getSomeRestaurantResponse.message,
+        },
+        getSomeRestaurantResponse.status,
+      );
+    }
+    return {
+      statusCode: 200,
+      message: getSomeRestaurantResponse.message,
+      data: {
+        restaurants: getSomeRestaurantResponse.restaurants,
+      },
+    };
   }
 
-  findAll() {
-    return `This action returns all restaurant`;
+  async getRestaurantInformation(
+    restaurantId,
+  ): Promise<GetRestaurantInformationResponseDto> {
+    const getRestaurantInformationResponse: IRestaurantResponse = await this.restaurantServiceClient
+      .send('getRestaurantInformation', { restaurantId })
+      .toPromise();
+
+    if (getRestaurantInformationResponse.status !== HttpStatus.OK) {
+      throw new HttpException(
+        {
+          message: getRestaurantInformationResponse.message,
+        },
+        getRestaurantInformationResponse.status,
+      );
+    }
+    return {
+      statusCode: 200,
+      message: getRestaurantInformationResponse.message,
+      data: {
+        restaurant: getRestaurantInformationResponse.restaurant,
+      },
+    };
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} restaurant`;
-  }
+  async getMenuInformation(
+    restaurantId,
+  ): Promise<GetMenuInformationResponseDto> {
+    const getMenuInformationResponse: IMenuInformationResponse = await this.restaurantServiceClient
+      .send('getMenuInformation', { restaurantId })
+      .toPromise();
 
-  update(id: number, updateRestaurantDto: UpdateRestaurantDto) {
-    return `This action updates a #${id} restaurant`;
-  }
+    const { menu, menuGroups, message, status } = getMenuInformationResponse;
 
-  remove(id: number) {
-    return `This action removes a #${id} restaurant`;
+    if (status !== HttpStatus.OK) {
+      throw new HttpException(
+        {
+          message,
+        },
+        status,
+      );
+    }
+    return {
+      statusCode: 200,
+      message,
+      data: {
+        menu,
+        menuGroups,
+      },
+    };
   }
 }
