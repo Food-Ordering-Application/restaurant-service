@@ -30,7 +30,7 @@ export class PosController {
   })
   @ApiBody({ type: VerifyAppKeyDto })
   @HttpCode(200)
-  @Post('/verify-key')
+  @Post('/verify-app-key')
   async verifyPos(
     @Body() verifyAppKeyDto: VerifyAppKeyDto,
   ): Promise<VerifyAppKeyResponseDto> {
