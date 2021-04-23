@@ -45,7 +45,7 @@ import { Action } from 'src/shared/enum/actions.enum';
 import { Customer } from 'src/shared/classes';
 import { FindCustomerByIdUnauthorizedResponseDto } from './dto/fetch-customer/find-customer-by-id-unauthorized.dto';
 
-@ApiTags('users')
+@ApiTags('customer')
 @ApiInternalServerErrorResponse({ type: InternalServerErrorResponseDto })
 @Controller('user/customer')
 export class CustomerController {

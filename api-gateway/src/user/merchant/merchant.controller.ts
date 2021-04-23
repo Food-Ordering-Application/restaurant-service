@@ -22,7 +22,7 @@ import {
 } from '../merchant/dto/index';
 import { MerchantService } from './merchant.service';
 
-@ApiTags('users')
+@ApiTags('merchant')
 @ApiInternalServerErrorResponse({ type: InternalServerErrorResponseDto })
 @Controller('user/merchant')
 export class MerchantController {
