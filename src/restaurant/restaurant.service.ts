@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { InjectRepository } from '@nestjs/typeorm';
 import { RESTAURANT_EVENT } from 'src/constants';
@@ -28,7 +28,12 @@ export class RestaurantService {
     });
     const newRestaurant = await this.restaurantRepository.save(restaurant);
     this.restaurantEventClient.emit('restaurant_created', { merchantId, restaurantId: newRestaurant.id });
-    return newRestaurant;
+    return {
+      status: HttpStatus.CREATED,
+      message: 'Restaurant was created',
+      restaurant: newRestaurant
+    };
+
   }
 
   findAll() {
