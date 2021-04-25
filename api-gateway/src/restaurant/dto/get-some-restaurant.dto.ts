@@ -9,6 +9,10 @@ export class GetSomeRestaurantDto {
   @ApiProperty({ example: Area.TPHCM, enum: Area, required: true })
   @IsString()
   area: string;
+  @ApiProperty({ example: 'Ga', nullable: true })
+  @IsString()
+  @IsOptional()
+  search?: string;
   @ApiProperty({
     example: CategoryType.CAFEDESSERT,
     enum: CategoryType,

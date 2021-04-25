@@ -12,14 +12,17 @@ import {
   GetMenuInformationResponseDto,
   GetRestaurantInformationResponseDto,
   GetSomeRestaurantResponseDto,
+  GetMenuItemToppingInfoResponseDto,
+  GetMenuItemToppingDto,
+  GetSomeRestaurantDto,
 } from './dto/index';
 import {
+  ApiBody,
   ApiInternalServerErrorResponse,
   ApiOkResponse,
   ApiTags,
 } from '@nestjs/swagger';
 import { InternalServerErrorResponseDto } from 'src/shared/dto/internal-server-error.dto';
-import { GetSomeRestaurantDto } from './dto/get-some-restaurant.dto';
 
 @ApiTags('restaurants')
 @ApiInternalServerErrorResponse({ type: InternalServerErrorResponseDto })
@@ -57,5 +60,18 @@ export class RestaurantController {
   getMenuInformation(@Param() params): Promise<GetMenuInformationResponseDto> {
     const { restaurantId } = params;
     return this.restaurantService.getMenuInformation(restaurantId);
+  }
+
+  // Lấy thông tin về MenuItemTopping, ToppingGroup của 1 MenuItem
+  @ApiOkResponse({ type: GetMenuItemToppingInfoResponseDto })
+  @ApiBody({ type: GetMenuItemToppingDto })
+  @HttpCode(200)
+  @Post('/get-menu-item-topping-info')
+  getMenuItemToppingInfo(
+    @Body() getMenuItemToppingDto: GetMenuItemToppingDto,
+  ): Promise<GetMenuItemToppingInfoResponseDto> {
+    return this.restaurantService.getMenuItemToppingInfo(
+      getMenuItemToppingDto.menuItemId,
+    );
   }
 }
