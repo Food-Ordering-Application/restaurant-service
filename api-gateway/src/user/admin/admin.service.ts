@@ -3,7 +3,7 @@ import { HttpException, HttpStatus, Inject, Injectable } from "@nestjs/common";
 import { ClientProxy } from "@nestjs/microservices";
 import { USER_SERVICE } from "src/constants";
 import { VerifyRestaurantDto } from "./dto/verify-restaurant/verify-restaurant.dto";
-import { IAdmin, IUserServiceResponse } from './interfaces';
+import { IAdmin, IUserServiceFetchAdminResponse } from './interfaces';
 
 @Injectable()
 export class AdminService {
@@ -12,7 +12,7 @@ export class AdminService {
   ) { }
 
   async getAuthenticatedAdmin(username: string, password: string): Promise<IAdmin> {
-    const authenticatedAdminResponse: IUserServiceResponse = await this.userServiceClient
+    const authenticatedAdminResponse: IUserServiceFetchAdminResponse = await this.userServiceClient
       .send('getAuthenticatedAdmin', { username, password })
       .toPromise();
     const { message, user, status } = authenticatedAdminResponse;

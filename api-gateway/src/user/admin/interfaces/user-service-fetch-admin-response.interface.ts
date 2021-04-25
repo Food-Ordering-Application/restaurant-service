@@ -1,6 +1,6 @@
 import { IAdmin } from "./admin.interface";
 
-export interface IUserServiceResponse {
+export interface IUserServiceFetchAdminResponse {
   status: number;
   message: string;
   user: IAdmin | null;

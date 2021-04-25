@@ -1,6 +1,6 @@
 import { IMerchant } from './merchant.interface';
 
-export interface IUserServiceCreateResponse {
+export interface IUserServiceCreateMerchantResponse {
   status: number;
   message: string;
   user: IMerchant | null;
