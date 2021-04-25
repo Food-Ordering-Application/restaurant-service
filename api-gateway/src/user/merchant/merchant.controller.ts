@@ -18,9 +18,10 @@ import { AuthService } from 'src/auth/auth.service';
 import { InternalServerErrorResponseDto } from '../../shared/dto/internal-server-error.dto';
 import {
   CreateMerchantConflictResponseDto,
-  CreateMerchantDto, CreateMerchantResponseDto, FindMerchantByIdResponseDto, FindMerchantByIdUnauthorizedResponseDto, LoginMerchantDto, LoginMerchantResponseDto, LoginMerchantUnauthorizedResponseDto,
+  CreateMerchantDto, CreateMerchantResponseDto, CreateStaffConflictResponseDto, CreateStaffDto, CreateStaffResponseDto, FindMerchantByIdResponseDto, FindMerchantByIdUnauthorizedResponseDto, LoginMerchantDto, LoginMerchantResponseDto, LoginMerchantUnauthorizedResponseDto,
 } from '../merchant/dto/index';
 import { MerchantService } from './merchant.service';
+import { MerchantJwtRequest } from 'src/auth/strategies/jwt-strategies/merchant-jwt-request.interface';
 
 @ApiTags('merchant')
 @ApiInternalServerErrorResponse({ type: InternalServerErrorResponseDto })
@@ -79,5 +80,20 @@ export class MerchantController {
       };
     }
     return this.merchantService.findMerchantById(merchantId);
+  }
+
+  // Tao nhan vien
+  @ApiCreatedResponse({ type: CreateStaffResponseDto })
+  @ApiConflictResponse({ type: CreateStaffConflictResponseDto })
+  @ApiBody({ type: CreateStaffDto })
+  @UseGuards(MerchantJwtAuthGuard)
+  @Post()
+  async createStaff(
+    @Request() req: MerchantJwtRequest,
+    @Body() createStaffDto: CreateStaffDto,
+  ): Promise<CreateStaffResponseDto> {
+    const { user } = req;
+    const { merchantId } = user;
+    return this.merchantService.createStaff(merchantId, createStaffDto);
   }
 }

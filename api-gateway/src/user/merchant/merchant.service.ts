@@ -3,15 +3,16 @@ import { ClientProxy } from '@nestjs/microservices';
 import {
   CreateMerchantDto,
   CreateMerchantResponseDto,
+  CreateStaffDto,
+  CreateStaffResponseDto,
   FindMerchantByIdResponseDto,
 } from '../merchant/dto/index';
 import * as constants from '../../constants';
-import { IMerchant } from '../merchant/interfaces/index';
-import { IUserServiceResponse, ISimpleResponse } from '../merchant/interfaces/index';
+import { IMerchant, IUserServiceCreateMerchantResponse, IUserServiceCreateStaffResponse, IUserServiceFetchMerchantResponse } from '../merchant/interfaces/index';
+import { ISimpleResponse } from '../merchant/interfaces/index';
 
 @Injectable()
 export class MerchantService {
-
   constructor(
     @Inject(constants.USER_SERVICE) private userServiceClient: ClientProxy,
   ) { }
@@ -19,7 +20,7 @@ export class MerchantService {
   async createMerchant(
     createMerchantDto: CreateMerchantDto,
   ): Promise<CreateMerchantResponseDto> {
-    const createMerchantResponse: IUserServiceResponse = await this.userServiceClient
+    const createMerchantResponse: IUserServiceCreateMerchantResponse = await this.userServiceClient
       .send('createMerchant', createMerchantDto)
       .toPromise();
 
@@ -38,7 +39,7 @@ export class MerchantService {
   }
 
   async getAuthenticatedMerchant(username: string, password: string): Promise<IMerchant> {
-    const authenticatedMerchantResponse: IUserServiceResponse = await this.userServiceClient
+    const authenticatedMerchantResponse: IUserServiceFetchMerchantResponse = await this.userServiceClient
       .send('getAuthenticatedMerchant', { username, password })
       .toPromise();
     const { message, user, status } = authenticatedMerchantResponse;
@@ -54,7 +55,7 @@ export class MerchantService {
   }
 
   async findMerchantById(merchantId: string): Promise<FindMerchantByIdResponseDto> {
-    const findMerchantById: IUserServiceResponse = await this.userServiceClient
+    const findMerchantById: IUserServiceFetchMerchantResponse = await this.userServiceClient
       .send('findMerchantById', merchantId)
       .toPromise();
 
@@ -70,6 +71,25 @@ export class MerchantService {
       data: {
         user
       },
+    };
+  }
+
+  async createStaff(merchantId: string, createStaffDto: CreateStaffDto): Promise<CreateStaffResponseDto> {
+    const createStaffResponse: IUserServiceCreateStaffResponse = await this.userServiceClient
+      .send('createStaff', { merchantId, data: createStaffDto })
+      .toPromise();
+
+    const { status, message, data } = createStaffResponse;
+    if (status !== HttpStatus.CREATED) {
+      throw new HttpException({ message, }, status,);
+    }
+    const { staff } = data;
+    return {
+      statusCode: 201,
+      message,
+      data: {
+        staff
+      }
     };
   }
 }
