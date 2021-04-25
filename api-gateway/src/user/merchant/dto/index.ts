@@ -6,3 +6,6 @@ export { LoginMerchantDto } from './login-merchant/login-merchant.dto';
 export { LoginMerchantUnauthorizedResponseDto } from './login-merchant/login-merchant-unauthorized-response.dto';
 export { FindMerchantByIdUnauthorizedResponseDto } from './fetch-merchant/find-merchant-unauthorized-response.dto';
 export { FindMerchantByIdResponseDto } from './fetch-merchant/find-merchant-response.dto';
+export { CreateStaffConflictResponseDto } from './create-staff/create-staff-conflict-response.dto';
+export { CreateStaffResponseDto } from './create-staff/create-staff-response.dto';
+export { CreateStaffDto } from './create-staff/create-staff.dto';
