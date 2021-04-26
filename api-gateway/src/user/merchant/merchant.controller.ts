@@ -87,7 +87,7 @@ export class MerchantController {
   @ApiConflictResponse({ type: CreateStaffConflictResponseDto })
   @ApiBody({ type: CreateStaffDto })
   @UseGuards(MerchantJwtAuthGuard)
-  @Post()
+  @Post('/staff')
   async createStaff(
     @Request() req: MerchantJwtRequest,
     @Body() createStaffDto: CreateStaffDto,
