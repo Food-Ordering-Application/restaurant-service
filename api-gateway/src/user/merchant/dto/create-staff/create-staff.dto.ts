@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsDate, IsString } from 'class-validator';
+import { IsDate, IsDateString, IsString } from 'class-validator';
 
 export class CreateStaffDto {
   @ApiProperty({ example: 'staff123', uniqueItems: true, required: true })
@@ -26,8 +26,8 @@ export class CreateStaffDto {
   @IsString()
   IDNumber: string;
 
-  @ApiProperty({ example: 's', required: true })
-  @IsDate()
+  @ApiProperty({ example: '1999-01-01', required: true })
+  @IsDateString()
   dateOfBirth: Date;
 }
 
