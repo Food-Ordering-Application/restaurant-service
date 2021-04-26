@@ -1,4 +1,4 @@
-import { IStaff } from './Staff.interface';
+import { IStaff } from './staff.interface';
 
 export interface IUserServiceCreateStaffResponse {
   status: number;
