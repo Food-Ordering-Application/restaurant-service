@@ -1,0 +1,50 @@
+version: '3'
+services:
+  postgis:
+    container_name: postgis
+    restart: always
+    image: kartoza/postgis:11.0-2.5
+    volumes:
+      # - ./pg-init-scripts:/docker-entrypoint-initdb.d
+      - pg_data:/var/lib/postgresql
+    ports:
+      - '5432:5432'
+    restart: always
+    env_file: 
+      - ./env/docker.env
+
+  #PGAdmin
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    restart: always
+    ports:
+      - '7999:80'
+    # volumes:
+    #   - dataPgAdmin:/root/.pgadmin
+    env_file:
+      - ./env/docker.env
+
+  #RabbitMQ
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: 'rabbitmq'
+    tty: true
+    restart: always
+    env_file:
+      - ./env/docker.env
+    ports:
+      - 5672:5672
+      - 15672:15672
+    volumes:
+      - dataRabbitMQ:/var/lib/rabbitmq/
+      - logRabbitMQ:/var/log/rabbitmq
+volumes:
+  pg_data:
+  dataPostgres:
+  dataPgAdmin:
+  dataRabbitMQ:
+  logRabbitMQ:
+# networks:
+#   postgres:
+#     driver: bridge
