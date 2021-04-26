@@ -2,7 +2,7 @@ import { IMerchantData } from '../../interfaces/create-merchant-data.interface';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class FindMerchantByIdResponseDto {
-  @ApiProperty({ example: 201 })
+  @ApiProperty({ example: 200 })
   statusCode: number;
   @ApiProperty({ example: 'Fetch successfully', type: 'string' })
   message: string;

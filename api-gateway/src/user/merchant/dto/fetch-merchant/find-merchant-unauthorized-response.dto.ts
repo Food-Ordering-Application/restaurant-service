@@ -3,9 +3,9 @@ import { ApiProperty } from '@nestjs/swagger';
 ;
 
 export class FindMerchantByIdUnauthorizedResponseDto {
-  @ApiProperty({ example: 409 })
+  @ApiProperty({ example: 403 })
   statusCode: number;
-  @ApiProperty({ example: 'User already exists', type: 'string' })
+  @ApiProperty({ example: 'Unauthorized', type: 'string' })
   message: string;
   @ApiProperty({
     example: {

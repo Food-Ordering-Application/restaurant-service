@@ -3,13 +3,13 @@ import { IStaffData } from './../../interfaces/create-staff-data.interface';
 ;
 
 export class CreateStaffConflictResponseDto {
-  @ApiProperty({ example: 409 })
+  @ApiProperty({ example: 403 })
   statusCode: number;
-  @ApiProperty({ example: 'Username already exists', type: 'string' })
+  @ApiProperty({ example: 'Unauthorized', type: 'string' })
   message: string;
   @ApiProperty({
     example: {
-      user: null,
+      staff: null,
     },
     nullable: true,
   })

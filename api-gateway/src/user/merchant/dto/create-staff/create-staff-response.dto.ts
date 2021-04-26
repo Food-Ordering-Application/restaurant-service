@@ -8,7 +8,7 @@ export class CreateStaffResponseDto {
   message: string;
   @ApiProperty({
     example: {
-      user: {
+      staff: {
         id: "54a800a3-81a4-44d9-a79e-456660724000",
         username: "staff123",
         phone: "0949654744",
