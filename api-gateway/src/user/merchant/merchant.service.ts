@@ -5,14 +5,17 @@ import {
   CreateMerchantResponseDto,
   CreateStaffDto,
   CreateStaffResponseDto,
+  FetchStaffByMerchantDto,
+  FetchStaffByMerchantResponseDto,
   FindMerchantByIdResponseDto,
 } from '../merchant/dto/index';
 import * as constants from '../../constants';
-import { IMerchant, IUserServiceCreateMerchantResponse, IUserServiceCreateStaffResponse, IUserServiceFetchMerchantResponse } from '../merchant/interfaces/index';
+import { IMerchant, IUserServiceCreateMerchantResponse, IUserServiceCreateStaffResponse, IUserServiceFetchMerchantResponse, IUserServiceFetchStaffByMerchantResponse } from '../merchant/interfaces/index';
 import { ISimpleResponse } from '../merchant/interfaces/index';
 
 @Injectable()
 export class MerchantService {
+
   constructor(
     @Inject(constants.USER_SERVICE) private userServiceClient: ClientProxy,
   ) { }
@@ -89,6 +92,31 @@ export class MerchantService {
       message,
       data: {
         staff
+      }
+    };
+  }
+
+  async fetchStaff(merchantId: string, fetchStaffByMerchantDto: FetchStaffByMerchantDto): Promise<FetchStaffByMerchantResponseDto> {
+    const fetchStaffResponse: IUserServiceFetchStaffByMerchantResponse = await this.userServiceClient
+      .send('fetchStaff', {
+        merchantId,
+        page: parseInt(fetchStaffByMerchantDto.page) || 0,
+        size: parseInt(fetchStaffByMerchantDto.size) || 10
+      })
+      .toPromise();
+
+    const { status, message, data } = fetchStaffResponse;
+    if (status !== HttpStatus.OK) {
+      throw new HttpException({ message, }, status,);
+    }
+    const { results, size, total } = data;
+    return {
+      statusCode: 200,
+      message,
+      data: {
+        results,
+        size,
+        total
       }
     };
   }

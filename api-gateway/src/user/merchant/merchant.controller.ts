@@ -1,7 +1,7 @@
 import { MerchantJwtAuthGuard } from './../../auth/guards/jwts/merchant-jwt-auth.guard';
 import { MerchantLocalAuthGuard } from './../../auth/guards/locals/merchant-local-auth.guard';
 import {
-  Body, Controller, Get, HttpCode, Logger, Param, Post, Request, UseGuards
+  Body, Controller, Get, HttpCode, Logger, Param, Post, Query, Request, UseGuards
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -11,6 +11,7 @@ import {
   ApiInternalServerErrorResponse,
   ApiOkResponse,
   ApiParam,
+  ApiQuery,
   ApiTags,
   ApiUnauthorizedResponse
 } from '@nestjs/swagger';
@@ -18,7 +19,7 @@ import { AuthService } from 'src/auth/auth.service';
 import { InternalServerErrorResponseDto } from '../../shared/dto/internal-server-error.dto';
 import {
   CreateMerchantConflictResponseDto,
-  CreateMerchantDto, CreateMerchantResponseDto, CreateStaffConflictResponseDto, CreateStaffDto, CreateStaffResponseDto, FindMerchantByIdResponseDto, FindMerchantByIdUnauthorizedResponseDto, LoginMerchantDto, LoginMerchantResponseDto, LoginMerchantUnauthorizedResponseDto,
+  CreateMerchantDto, CreateMerchantResponseDto, CreateStaffConflictResponseDto, CreateStaffDto, CreateStaffResponseDto, FetchStaffByMerchantDto, FetchStaffByMerchantResponseDto, FetchStaffByMerchantUnauthorizedResponseDto, FindMerchantByIdResponseDto, FindMerchantByIdUnauthorizedResponseDto, LoginMerchantDto, LoginMerchantResponseDto, LoginMerchantUnauthorizedResponseDto,
 } from '../merchant/dto/index';
 import { MerchantService } from './merchant.service';
 import { MerchantJwtRequest } from 'src/auth/strategies/jwt-strategies/merchant-jwt-request.interface';
@@ -42,7 +43,7 @@ export class MerchantController {
   async registerMerchant(
     @Body() createMerchantDto: CreateMerchantDto,
   ): Promise<CreateMerchantResponseDto> {
-    return this.merchantService.createMerchant(createMerchantDto);
+    return await this.merchantService.createMerchant(createMerchantDto);
   }
 
   // Đăng nhập Merchant
@@ -53,7 +54,22 @@ export class MerchantController {
   @HttpCode(200)
   @Post('/login')
   async loginMerchant(@Request() req): Promise<LoginMerchantResponseDto> {
-    return this.authService.merchantLogin(req.user);
+    return await this.authService.merchantLogin(req.user);
+  }
+
+  @ApiOkResponse({ type: FetchStaffByMerchantResponseDto })
+  @ApiUnauthorizedResponse({ type: FetchStaffByMerchantUnauthorizedResponseDto })
+  @ApiQuery({ type: FetchStaffByMerchantDto, required: false })
+  @UseGuards(MerchantJwtAuthGuard)
+  // TO DO
+  @Get('/staff')
+  async fetchStaff(
+    @Request() req: MerchantJwtRequest,
+    @Query() fetchStaffByMerchantDto: FetchStaffByMerchantDto,
+  ): Promise<FetchStaffByMerchantResponseDto> {
+    const { user } = req;
+    const { merchantId } = user;
+    return await this.merchantService.fetchStaff(merchantId, fetchStaffByMerchantDto);
   }
 
   // Fetch merchant data
@@ -79,7 +95,7 @@ export class MerchantController {
         data: null,
       };
     }
-    return this.merchantService.findMerchantById(merchantId);
+    return await this.merchantService.findMerchantById(merchantId);
   }
 
   // Tao nhan vien
@@ -94,6 +110,8 @@ export class MerchantController {
   ): Promise<CreateStaffResponseDto> {
     const { user } = req;
     const { merchantId } = user;
-    return this.merchantService.createStaff(merchantId, createStaffDto);
+    return await this.merchantService.createStaff(merchantId, createStaffDto);
   }
+
+
 }
