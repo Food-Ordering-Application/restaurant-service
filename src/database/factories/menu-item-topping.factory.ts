@@ -9,12 +9,17 @@ import {
 interface Context {
   menuItem: MenuItem;
   toppingItem: ToppingItem;
+  menuItemToppingId?: string;
 }
 
 define(MenuItemTopping, (faker: typeof Faker, context: Context) => {
-  const { menuItem, toppingItem } = context;
+  const { menuItem, toppingItem, menuItemToppingId } = context;
   const menuItemTopping = new MenuItemTopping();
-  menuItemTopping.id = faker.random.uuid();
+  if (!menuItemToppingId) {
+    menuItemTopping.id = faker.random.uuid();
+  } else {
+    menuItemTopping.id = menuItemToppingId;
+  }
   menuItemTopping.menuItem = menuItem;
   menuItemTopping.toppingItem = toppingItem;
   menuItemTopping.customPrice = faker.random.number({ min: 5000, max: 20000 });

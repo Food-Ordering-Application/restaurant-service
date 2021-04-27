@@ -5,12 +5,17 @@ import { Menu, MenuGroup, MenuItem } from '../../menu/entities/index';
 interface Context {
   menu: Menu;
   menuGroup: MenuGroup;
+  menuId?: string;
 }
 
 define(MenuItem, (faker: typeof Faker, context: Context) => {
-  const { menu, menuGroup } = context;
+  const { menu, menuGroup, menuId } = context;
   const menuItem = new MenuItem();
-  menuItem.id = faker.random.uuid();
+  if (menuId) {
+    menuItem.id = menuId;
+  } else {
+    menuItem.id = faker.random.uuid();
+  }
   menuItem.menu = menu;
   menuItem.menuGroup = menuGroup;
   menuItem.name = faker.name.findName();
