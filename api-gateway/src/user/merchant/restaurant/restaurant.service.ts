@@ -1,3 +1,4 @@
+import { ISimpleResponse } from './../../../shared/interfaces/simple-response.interface';
 import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import * as constants from '../../../constants';
@@ -5,7 +6,9 @@ import {
   CreateStaffDto,
   CreateStaffResponseDto,
   FetchStaffByMerchantDto,
-  FetchStaffByMerchantResponseDto
+  FetchStaffByMerchantResponseDto,
+  UpdateStaffDto,
+  UpdateStaffResponseDto
 } from './dto';
 import { IUserServiceCreateStaffResponse, IUserServiceFetchStaffByMerchantResponse } from './interfaces';
 import { CreateRestaurantDto } from './dto/create-restaurant/create-restaurant.dto';
@@ -13,7 +16,6 @@ import { UpdateRestaurantDto } from './dto/update-restaurant/update-restaurant.d
 
 @Injectable()
 export class RestaurantService {
-
   constructor(
     @Inject(constants.USER_SERVICE) private userServiceClient: ClientProxy,
     @Inject(constants.RESTAURANT_SERVICE) private restaurantServiceClient: ClientProxy,
@@ -35,6 +37,23 @@ export class RestaurantService {
       data: {
         staff
       }
+    };
+  }
+
+  async updateStaff(staffId: string, merchantId: string, restaurantId: string, updateStaffDto: UpdateStaffDto): Promise<UpdateStaffResponseDto> {
+    console.log({ updateStaffDto });
+    const updateStaffResponse: ISimpleResponse = await this.userServiceClient
+      .send('updateStaff', { staffId, merchantId, restaurantId, data: updateStaffDto })
+      .toPromise();
+
+    const { status, message } = updateStaffResponse;
+    if (status !== HttpStatus.OK) {
+      throw new HttpException({ message, }, status,);
+    }
+
+    return {
+      statusCode: HttpStatus.OK,
+      message,
     };
   }
 
@@ -83,19 +102,4 @@ export class RestaurantService {
     };
   }
 
-  findAll() {
-    return `This action returns all restaurant`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} restaurant`;
-  }
-
-  update(id: number, updateRestaurantDto: UpdateRestaurantDto) {
-    return `This action updates a #${id} restaurant`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} restaurant`;
-  }
 }

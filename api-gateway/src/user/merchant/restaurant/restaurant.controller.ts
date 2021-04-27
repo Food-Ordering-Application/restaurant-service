@@ -1,5 +1,5 @@
 import {
-  Body, Controller, Get, Logger, Param, Post, Query, Req, Request, UseGuards
+  Body, Controller, Get, Logger, Param, Patch, Post, Query, Req, Request, UseGuards
 } from '@nestjs/common';
 import { Payload } from '@nestjs/microservices';
 import {
@@ -8,6 +8,7 @@ import {
   ApiConflictResponse,
   ApiCreatedResponse,
   ApiInternalServerErrorResponse,
+  ApiNotFoundResponse,
   ApiOkResponse,
   ApiQuery,
   ApiTags,
@@ -15,10 +16,12 @@ import {
 } from '@nestjs/swagger';
 import { MerchantJwtRequest } from 'src/auth/strategies/jwt-strategies/merchant-jwt-request.interface';
 import { InternalServerErrorResponseDto } from '../../../shared/dto/internal-server-error.dto';
-import { CreateStaffConflictResponseDto, CreateStaffDto, CreateStaffResponseDto, FetchStaffByMerchantDto, FetchStaffByMerchantResponseDto, FetchStaffByMerchantUnauthorizedResponseDto } from '../../merchant/dto/';
 import { MerchantJwtAuthGuard } from './../../../auth/guards/jwts/merchant-jwt-auth.guard';
 import { MerchantJwtPayload } from './../../../auth/strategies/jwt-strategies/merchant-jwt-payload.interface';
+import { UpdateStaffDto, UpdateStaffResponseDto } from './dto';
+import { CreateStaffConflictResponseDto, CreateStaffDto, CreateStaffResponseDto, FetchStaffByMerchantDto, FetchStaffByMerchantResponseDto, FetchStaffByMerchantUnauthorizedResponseDto } from './dto/';
 import { CreateRestaurantDto } from './dto/create-restaurant/create-restaurant.dto';
+import { UpdateStaffNotFoundResponseDto } from './dto/update-staff/update-staff-not-found-response.dto';
 import { RestaurantService } from './restaurant.service';
 
 @ApiTags('merchant/restaurant')
@@ -53,6 +56,30 @@ export class RestaurantController {
       };
     }
     return await this.restaurantService.createStaff(merchantId, restaurant, createStaffDto);
+  }
+
+  // Update nhan vien
+  @ApiOkResponse({ type: UpdateStaffResponseDto })
+  @ApiNotFoundResponse({ type: UpdateStaffNotFoundResponseDto })
+  @ApiBody({ type: UpdateStaffDto })
+  @UseGuards(MerchantJwtAuthGuard)
+  @Patch(':restaurantId/staff/:staffId')
+  async updateStaff(
+    @Request() req: MerchantJwtRequest,
+    @Param('merchantId') merchant,
+    @Param('restaurantId') restaurant,
+    @Param('staffId') staff,
+    @Body() updateStaffDto: UpdateStaffDto,
+  ): Promise<UpdateStaffResponseDto> {
+    const { user } = req;
+    const { merchantId } = user;
+    if (merchantId !== merchant) {
+      return {
+        statusCode: 403,
+        message: 'Unauthorized',
+      };
+    }
+    return await this.restaurantService.updateStaff(staff, merchantId, restaurant, updateStaffDto);
   }
 
   @ApiOkResponse({ type: FetchStaffByMerchantResponseDto })
