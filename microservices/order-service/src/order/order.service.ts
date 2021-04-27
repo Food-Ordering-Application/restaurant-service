@@ -1,6 +1,7 @@
 import { HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { GetOrderAssociatedWithCusAndResDto } from './dto';
 import { CreateOrderDto } from './dto/create-order.dto';
 import {
   Order,
@@ -10,7 +11,7 @@ import {
   PaymentType,
 } from './entities';
 import { PType, State, Status } from './enums';
-import { ICreateOrderResponse } from './interfacets';
+import { ICreateOrderResponse } from './interfaces';
 
 @Injectable()
 export class OrderService {
@@ -53,24 +54,24 @@ export class OrderService {
       // Tạo và lưu orderItemTopping
       if (orderItemToppings) {
         const addOrderItemToppings: OrderItemTopping[] = [];
-        orderItemToppings.forEach((orderItemTopping) => {
+        for (let i = 0; i < orderItemToppings.length; i++) {
           const addOrderItemTopping = new OrderItemTopping();
           addOrderItemTopping.menuItemToppingId =
-            orderItemTopping.menuItemToppingId;
-          addOrderItemTopping.price = orderItemTopping.price;
-          addOrderItemTopping.quantity = orderItemTopping.quantity;
+            orderItemToppings[i].menuItemToppingId;
+          addOrderItemTopping.price = orderItemToppings[i].price;
+          addOrderItemTopping.quantity = orderItemToppings[i].quantity;
           addOrderItemTopping.state = State.IN_STOCK;
-          this.orderItemToppingRepository.save(addOrderItemTopping);
+          await this.orderItemToppingRepository.save(addOrderItemTopping);
           addOrderItemToppings.push(addOrderItemTopping);
           totalPriceToppings +=
-            orderItemTopping.price * orderItemTopping.quantity;
-        });
+            orderItemToppings[i].price * orderItemToppings[i].quantity;
+        }
+        console.log('bababa', addOrderItemToppings);
         addOrderItem.orderItemToppings = addOrderItemToppings;
       }
-
-      this.orderItemRepository.save(addOrderItem);
       const addOrderItems: OrderItem[] = [];
       addOrderItems.push(addOrderItem);
+      await this.orderItemRepository.save(addOrderItem);
 
       // Tạo và lưu order
       const order = new Order();
@@ -92,10 +93,42 @@ export class OrderService {
       order.shippingFee = 15000;
       order.subTotal = orderItemPrice * orderItemQuantity + totalPriceToppings;
       order.grandTotal = order.serviceFee + order.shippingFee + order.subTotal;
-      await this.orderRepository.save(order);
+      const a = await this.orderRepository.save(order);
       return {
         status: HttpStatus.CREATED,
         message: 'Order created successfully',
+        order,
+      };
+    } catch (error) {
+      this.logger.error(error);
+      return {
+        status: HttpStatus.INTERNAL_SERVER_ERROR,
+        message: error.message,
+        order: null,
+      };
+    }
+  }
+
+  async getOrderAssociatedWithCusAndRes(
+    getOrderAssociatedWithCusAndResDto: GetOrderAssociatedWithCusAndResDto,
+  ): Promise<ICreateOrderResponse> {
+    try {
+      const { customerId, restaurantId } = getOrderAssociatedWithCusAndResDto;
+      const order = await this.orderRepository
+        .createQueryBuilder('order')
+        .leftJoinAndSelect('order.orderItems', 'ordItems')
+        .leftJoinAndSelect('ordItems.orderItemToppings', 'ordItemToppings')
+        .where(
+          'order.restaurantId = :restaurantId AND order.customerId = :customerId',
+          {
+            restaurantId: restaurantId,
+            customerId: customerId,
+          },
+        )
+        .getOne();
+      return {
+        status: HttpStatus.OK,
+        message: 'Draft order fetched successfully',
         order,
       };
     } catch (error) {
