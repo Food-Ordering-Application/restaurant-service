@@ -1,7 +1,5 @@
-import { MerchantJwtAuthGuard } from './../../auth/guards/jwts/merchant-jwt-auth.guard';
-import { MerchantLocalAuthGuard } from './../../auth/guards/locals/merchant-local-auth.guard';
 import {
-  Body, Controller, Get, HttpCode, Logger, Param, Post, Query, Request, UseGuards
+  Body, Controller, Get, HttpCode, Logger, Param, Post, Request, UseGuards
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -11,18 +9,19 @@ import {
   ApiInternalServerErrorResponse,
   ApiOkResponse,
   ApiParam,
-  ApiQuery,
   ApiTags,
   ApiUnauthorizedResponse
 } from '@nestjs/swagger';
 import { AuthService } from 'src/auth/auth.service';
+import { MerchantJwtRequest } from 'src/auth/strategies/jwt-strategies/merchant-jwt-request.interface';
 import { InternalServerErrorResponseDto } from '../../shared/dto/internal-server-error.dto';
 import {
   CreateMerchantConflictResponseDto,
-  CreateMerchantDto, CreateMerchantResponseDto, CreateStaffConflictResponseDto, CreateStaffDto, CreateStaffResponseDto, FetchStaffByMerchantDto, FetchStaffByMerchantResponseDto, FetchStaffByMerchantUnauthorizedResponseDto, FindMerchantByIdResponseDto, FindMerchantByIdUnauthorizedResponseDto, LoginMerchantDto, LoginMerchantResponseDto, LoginMerchantUnauthorizedResponseDto,
+  CreateMerchantDto, CreateMerchantResponseDto, FindMerchantByIdResponseDto, FindMerchantByIdUnauthorizedResponseDto, LoginMerchantDto, LoginMerchantResponseDto, LoginMerchantUnauthorizedResponseDto
 } from '../merchant/dto/index';
+import { MerchantJwtAuthGuard } from './../../auth/guards/jwts/merchant-jwt-auth.guard';
+import { MerchantLocalAuthGuard } from './../../auth/guards/locals/merchant-local-auth.guard';
 import { MerchantService } from './merchant.service';
-import { MerchantJwtRequest } from 'src/auth/strategies/jwt-strategies/merchant-jwt-request.interface';
 
 @ApiTags('merchant')
 @ApiInternalServerErrorResponse({ type: InternalServerErrorResponseDto })
@@ -82,52 +81,4 @@ export class MerchantController {
     }
     return await this.merchantService.findMerchantById(merchantId);
   }
-
-  // Tao nhan vien
-  @ApiCreatedResponse({ type: CreateStaffResponseDto })
-  @ApiConflictResponse({ type: CreateStaffConflictResponseDto })
-  @ApiBody({ type: CreateStaffDto })
-  @UseGuards(MerchantJwtAuthGuard)
-  @Post('/:merchantId/restaurant/:restaurantId/staff')
-  async createStaff(
-    @Request() req: MerchantJwtRequest,
-    @Param('merchantId') merchant,
-    @Param('restaurantId') restaurant,
-    @Body() createStaffDto: CreateStaffDto,
-  ): Promise<CreateStaffResponseDto> {
-    const { user } = req;
-    const { merchantId } = user;
-    if (merchantId !== merchant) {
-      return {
-        statusCode: 403,
-        message: 'Unauthorized',
-        data: null,
-      };
-    }
-    return await this.merchantService.createStaff(merchantId, restaurant, createStaffDto);
-  }
-
-  @ApiOkResponse({ type: FetchStaffByMerchantResponseDto })
-  @ApiUnauthorizedResponse({ type: FetchStaffByMerchantUnauthorizedResponseDto })
-  @ApiQuery({ type: FetchStaffByMerchantDto, required: false })
-  @UseGuards(MerchantJwtAuthGuard)
-  @Get('/:merchantId/restaurant/:restaurantId/staff')
-  async fetchStaff(
-    @Request() req: MerchantJwtRequest,
-    @Param('merchantId') merchant,
-    @Param('restaurantId') restaurant,
-    @Query() fetchStaffByMerchantDto: FetchStaffByMerchantDto,
-  ): Promise<FetchStaffByMerchantResponseDto> {
-    const { user } = req;
-    const { merchantId } = user;
-    if (merchantId !== merchant) {
-      return {
-        statusCode: 403,
-        message: 'Unauthorized',
-        data: null,
-      };
-    }
-    return await this.merchantService.fetchStaff(merchantId, restaurant, fetchStaffByMerchantDto);
-  }
-
 }

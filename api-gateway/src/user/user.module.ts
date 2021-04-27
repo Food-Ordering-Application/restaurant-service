@@ -1,3 +1,4 @@
+import { RestaurantController } from './merchant/restaurant/restaurant.controller';
 import { PosController } from './pos/pos.controller';
 import { forwardRef, Module } from '@nestjs/common';
 import { CustomerService } from './customer/customer.service';
@@ -12,6 +13,7 @@ import { MerchantService } from './merchant/merchant.service';
 import { AdminController } from './admin/admin.controller';
 import { AdminService } from './admin/admin.service';
 import { PosService } from './pos/pos.service';
+import { RestaurantService } from './merchant/restaurant/restaurant.service';
 
 @Module({
   imports: [
@@ -35,8 +37,8 @@ import { PosService } from './pos/pos.service';
     forwardRef(() => AuthModule),
     CaslModule,
   ],
-  controllers: [CustomerController, MerchantController, AdminController, PosController],
-  providers: [CustomerService, MerchantService, AdminService, PosService],
-  exports: [CustomerService, MerchantService, AdminService, PosService],
+  controllers: [CustomerController, MerchantController, AdminController, PosController, RestaurantController],
+  providers: [CustomerService, MerchantService, AdminService, PosService, RestaurantService],
+  exports: [CustomerService, MerchantService, AdminService, PosService, RestaurantService],
 })
 export class UserModule { }
