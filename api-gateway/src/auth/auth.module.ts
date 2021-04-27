@@ -1,3 +1,4 @@
+import { PosLocalStrategy } from './strategies/local-strategies/pos-local.strategy';
 import { AdminLocalStrategy } from './strategies/local-strategies/admin-local.strategy';
 import { MerchantJwtStrategy } from './strategies/jwt-strategies/merchant-jwt.strategy';
 import { MerchantLocalStrategy } from './strategies/local-strategies/merchant-local.strategy';
@@ -26,7 +27,11 @@ import { AdminJwtStrategy } from './strategies/jwt-strategies/admin-jwt.strategy
       }),
     }),
   ],
-  providers: [AuthService, CustomerLocalStrategy, CustomerJwtStrategy, MerchantLocalStrategy, MerchantJwtStrategy, AdminLocalStrategy, AdminJwtStrategy],
+  providers: [AuthService,
+    CustomerLocalStrategy, CustomerJwtStrategy,
+    MerchantLocalStrategy, MerchantJwtStrategy,
+    AdminLocalStrategy, AdminJwtStrategy,
+    PosLocalStrategy],
   exports: [AuthService],
 })
 export class AuthModule { }

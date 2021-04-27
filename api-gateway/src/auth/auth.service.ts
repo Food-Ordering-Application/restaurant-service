@@ -1,3 +1,6 @@
+import { IStaffLogin } from '../user/pos/interfaces/index';
+import { LoginPosResponseDto } from './../user/pos/dto/login-pos/login-pos-response.dto';
+import { PosService } from './../user/pos/pos.service';
 import { IMerchant } from './../user/merchant/interfaces/merchant.interface';
 import { MerchantService } from '../user/merchant/merchant.service';
 import { Injectable, Logger } from '@nestjs/common';
@@ -10,6 +13,7 @@ import { LoginMerchantResponseDto } from 'src/user/merchant/dto';
 import { AdminService } from 'src/user/admin/admin.service';
 import { IAdmin } from 'src/user/admin/interfaces';
 import { AdminJwtPayload } from './strategies/jwt-strategies/admin-jwt-payload.interface';
+import { PosJwtPayload } from './strategies/jwt-strategies/pos-jwt-payload.interface';
 
 @Injectable()
 export class AuthService {
@@ -19,6 +23,7 @@ export class AuthService {
     private customerService: CustomerService,
     private merchantService: MerchantService,
     private adminService: AdminService,
+    private posService: PosService,
     private jwtService: JwtService,
   ) { }
 
@@ -99,6 +104,37 @@ export class AuthService {
         user: {
           id,
           username,
+        },
+        access_token: this.jwtService.sign(payload),
+      },
+    };
+  }
+
+  async validatePos(username: string, password: string, restaurantId: string): Promise<IStaffLogin> {
+    const user = await this.posService.getAuthenticatedStaff(username, password, restaurantId);
+
+    return user;
+  }
+
+  async posLogin(user: IStaffLogin): Promise<LoginPosResponseDto> {
+    const { id, username, firstName, fullName, lastName, restaurantId } = user;
+    const payload: PosJwtPayload = {
+      staffId: id,
+      staffUsername: username,
+      restaurantId: restaurantId
+    };
+
+    return {
+      statusCode: 200,
+      message: 'Pos login successfully',
+      data: {
+        user: {
+          id,
+          username,
+          firstName,
+          fullName,
+          lastName,
+          restaurantId
         },
         access_token: this.jwtService.sign(payload),
       },
