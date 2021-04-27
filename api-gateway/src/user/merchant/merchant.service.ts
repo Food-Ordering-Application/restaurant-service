@@ -96,10 +96,11 @@ export class MerchantService {
     };
   }
 
-  async fetchStaff(merchantId: string, fetchStaffByMerchantDto: FetchStaffByMerchantDto): Promise<FetchStaffByMerchantResponseDto> {
+  async fetchStaff(merchantId: string, restaurantId: string, fetchStaffByMerchantDto: FetchStaffByMerchantDto): Promise<FetchStaffByMerchantResponseDto> {
     const fetchStaffResponse: IUserServiceFetchStaffByMerchantResponse = await this.userServiceClient
       .send('fetchStaff', {
         merchantId,
+        restaurantId,
         page: parseInt(fetchStaffByMerchantDto.page) || 0,
         size: parseInt(fetchStaffByMerchantDto.size) || 10
       })

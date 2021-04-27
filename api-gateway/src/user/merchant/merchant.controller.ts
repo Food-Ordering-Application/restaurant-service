@@ -110,22 +110,23 @@ export class MerchantController {
   @ApiUnauthorizedResponse({ type: FetchStaffByMerchantUnauthorizedResponseDto })
   @ApiQuery({ type: FetchStaffByMerchantDto, required: false })
   @UseGuards(MerchantJwtAuthGuard)
-  @Get('/:merchantId/staff')
+  @Get('/:merchantId/restaurant/:restaurantId/staff')
   async fetchStaff(
     @Request() req: MerchantJwtRequest,
-    @Param('merchantId') id,
+    @Param('merchantId') merchant,
+    @Param('restaurantId') restaurant,
     @Query() fetchStaffByMerchantDto: FetchStaffByMerchantDto,
   ): Promise<FetchStaffByMerchantResponseDto> {
     const { user } = req;
     const { merchantId } = user;
-    if (merchantId !== id) {
+    if (merchantId !== merchant) {
       return {
         statusCode: 403,
         message: 'Unauthorized',
         data: null,
       };
     }
-    return await this.merchantService.fetchStaff(merchantId, fetchStaffByMerchantDto);
+    return await this.merchantService.fetchStaff(merchantId, restaurant, fetchStaffByMerchantDto);
   }
 
 }
