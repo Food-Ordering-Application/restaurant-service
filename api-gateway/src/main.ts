@@ -27,7 +27,9 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, document);
 
   // Add global validation pipe
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(new ValidationPipe({
+    whitelist: true,
+  }));
 
   // Add global exception filter
   app.useGlobalFilters(new HttpExceptionFilter());
