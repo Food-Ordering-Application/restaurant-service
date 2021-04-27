@@ -77,9 +77,9 @@ export class MerchantService {
     };
   }
 
-  async createStaff(merchantId: string, createStaffDto: CreateStaffDto): Promise<CreateStaffResponseDto> {
+  async createStaff(merchantId: string, restaurantId: string, createStaffDto: CreateStaffDto): Promise<CreateStaffResponseDto> {
     const createStaffResponse: IUserServiceCreateStaffResponse = await this.userServiceClient
-      .send('createStaff', { merchantId, data: createStaffDto })
+      .send('createStaff', { merchantId, restaurantId, data: createStaffDto })
       .toPromise();
 
     const { status, message, data } = createStaffResponse;

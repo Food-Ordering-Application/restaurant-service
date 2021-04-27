@@ -88,22 +88,23 @@ export class MerchantController {
   @ApiConflictResponse({ type: CreateStaffConflictResponseDto })
   @ApiBody({ type: CreateStaffDto })
   @UseGuards(MerchantJwtAuthGuard)
-  @Post('/:merchantId/staff')
+  @Post('/:merchantId/restaurant/:restaurantId/staff')
   async createStaff(
     @Request() req: MerchantJwtRequest,
-    @Param('merchantId') id,
+    @Param('merchantId') merchant,
+    @Param('restaurantId') restaurant,
     @Body() createStaffDto: CreateStaffDto,
   ): Promise<CreateStaffResponseDto> {
     const { user } = req;
     const { merchantId } = user;
-    if (merchantId !== id) {
+    if (merchantId !== merchant) {
       return {
         statusCode: 403,
         message: 'Unauthorized',
         data: null,
       };
     }
-    return await this.merchantService.createStaff(merchantId, createStaffDto);
+    return await this.merchantService.createStaff(merchantId, restaurant, createStaffDto);
   }
 
   @ApiOkResponse({ type: FetchStaffByMerchantResponseDto })
