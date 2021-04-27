@@ -18,7 +18,7 @@ import { InternalServerErrorResponseDto } from '../../../shared/dto/internal-ser
 import { CreateStaffConflictResponseDto, CreateStaffDto, CreateStaffResponseDto, FetchStaffByMerchantDto, FetchStaffByMerchantResponseDto, FetchStaffByMerchantUnauthorizedResponseDto } from '../../merchant/dto/';
 import { MerchantJwtAuthGuard } from './../../../auth/guards/jwts/merchant-jwt-auth.guard';
 import { MerchantJwtPayload } from './../../../auth/strategies/jwt-strategies/merchant-jwt-payload.interface';
-import { CreateRestaurantDto } from './dto/create-restaurant.dto';
+import { CreateRestaurantDto } from './dto/create-restaurant/create-restaurant.dto';
 import { RestaurantService } from './restaurant.service';
 
 @ApiTags('merchant/restaurant')

@@ -1,4 +1,3 @@
-import { IMerchantData } from '../../interfaces/create-merchant-data.interface';
 import { ApiProperty } from '@nestjs/swagger';
 import { IFetchStaffData } from '../../interfaces';
 

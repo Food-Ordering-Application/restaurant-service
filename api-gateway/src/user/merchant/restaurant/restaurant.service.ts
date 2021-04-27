@@ -6,10 +6,10 @@ import {
   CreateStaffResponseDto,
   FetchStaffByMerchantDto,
   FetchStaffByMerchantResponseDto
-} from '../../merchant/dto/index';
-import { IUserServiceCreateStaffResponse, IUserServiceFetchStaffByMerchantResponse } from '../../merchant/interfaces/index';
-import { CreateRestaurantDto } from './dto/create-restaurant.dto';
-import { UpdateRestaurantDto } from './dto/update-restaurant.dto';
+} from './dto';
+import { IUserServiceCreateStaffResponse, IUserServiceFetchStaffByMerchantResponse } from './interfaces';
+import { CreateRestaurantDto } from './dto/create-restaurant/create-restaurant.dto';
+import { UpdateRestaurantDto } from './dto/update-restaurant/update-restaurant.dto';
 
 @Injectable()
 export class RestaurantService {
