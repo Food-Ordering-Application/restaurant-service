@@ -1,3 +1,4 @@
+import { IAdmin } from './../../../user/admin/interfaces/admin.interface';
 import { Strategy } from 'passport-local';
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
@@ -12,7 +13,7 @@ export class AdminLocalStrategy extends PassportStrategy(
     super({ usernameField: 'username' });
   }
 
-  async validate(username: string, password: string): Promise<any> {
+  async validate(username: string, password: string): Promise<IAdmin> {
     const user = await this.authService.validateAdmin(username, password);
     if (!user) {
       throw new UnauthorizedException();

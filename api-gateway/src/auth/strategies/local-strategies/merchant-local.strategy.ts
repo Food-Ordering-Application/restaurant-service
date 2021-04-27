@@ -1,3 +1,4 @@
+import { IMerchant } from './../../../user/merchant/interfaces/merchant.interface';
 import { Strategy } from 'passport-local';
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
@@ -12,7 +13,7 @@ export class MerchantLocalStrategy extends PassportStrategy(
     super({ usernameField: 'username' });
   }
 
-  async validate(username: string, password: string): Promise<any> {
+  async validate(username: string, password: string): Promise<IMerchant> {
     const user = await this.authService.validateMerchant(username, password);
     if (!user) {
       throw new UnauthorizedException();
