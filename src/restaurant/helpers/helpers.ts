@@ -18,6 +18,7 @@ export const createGetSomeRestaurantQuery = async (
         'res.address',
         'res.coverImageUrl',
         'res.id',
+        'res.rating',
       ])
       .leftJoinAndSelect('res.categories', 'categories')
       .where('res.area = :area', {
@@ -35,6 +36,7 @@ export const createGetSomeRestaurantQuery = async (
         'res.address',
         'res.coverImageUrl',
         'res.id',
+        'res.rating',
       ])
       .leftJoinAndSelect('res.categories', 'categories')
       .where('res.area = :area AND categories.type = :categoryType', {
@@ -53,6 +55,7 @@ export const createGetSomeRestaurantQuery = async (
         'res.address',
         'res.coverImageUrl',
         'res.id',
+        'res.rating',
       ])
       .leftJoinAndSelect('res.categories', 'categories')
       .where('res.area = :area AND res.name ILIKE :restaurantName', {
