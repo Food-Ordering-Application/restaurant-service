@@ -33,6 +33,21 @@ import { RestaurantService } from './merchant/restaurant/restaurant.service';
           },
         }),
       },
+      {
+        name: constants.RESTAURANT_SERVICE,
+        imports: [ConfigModule],
+        inject: [ConfigService],
+        useFactory: (configService: ConfigService) => ({
+          transport: Transport.RMQ,
+          options: {
+            urls: [configService.get('AMQP_URL') as string],
+            queue: configService.get('RESTAURANT_AMQP_QUEUE'),
+            queueOptions: {
+              durable: false,
+            },
+          },
+        }),
+      },
     ]),
     forwardRef(() => AuthModule),
     CaslModule,
