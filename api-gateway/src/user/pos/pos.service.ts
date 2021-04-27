@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { USER_SERVICE } from 'src/constants';
 import { VerifyAppKeyDto, VerifyAppKeyResponseDto } from './dto';
-import { IUserServiceVerifyAppKeyResponse } from './interfaces';
+import { IStaffLogin, IUserServiceLoginPosResponse, IUserServiceVerifyAppKeyResponse } from './interfaces';
 
 @Injectable()
 export class PosService {
@@ -27,5 +27,21 @@ export class PosService {
       message,
       data
     };
+  }
+
+  async getAuthenticatedStaff(username: string, password: string, restaurantId: string): Promise<IStaffLogin> {
+    const authenticatedStaffResponse: IUserServiceLoginPosResponse = await this.userServiceClient
+      .send('getAuthenticatedStaff', { username, password, restaurantId })
+      .toPromise();
+    const { message, user, status } = authenticatedStaffResponse;
+    if (status !== HttpStatus.OK) {
+      throw new HttpException(
+        {
+          message
+        },
+        status,
+      );
+    }
+    return user;
   }
 }

@@ -1,8 +1,10 @@
-import { PosService } from './pos.service';
-import { Body, Controller, HttpCode, Post, UseGuards } from '@nestjs/common';
-import { ApiBearerAuth, ApiBody, ApiInternalServerErrorResponse, ApiOkResponse, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
+import { AuthService } from './../../auth/auth.service';
+import { Body, Controller, HttpCode, Post, Request, UseGuards } from '@nestjs/common';
+import { ApiBody, ApiInternalServerErrorResponse, ApiOkResponse, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
 import { InternalServerErrorResponseDto } from 'src/shared/dto/internal-server-error.dto';
-import { VerifyAppKeyDto, VerifyAppKeyResponseDto, VerifyAppKeyUnauthorizedResponseDto } from './dto';
+import { PosLocalAuthGuard } from './../../auth/guards/locals/pos-local-auth.guard';
+import { LoginPosDto, LoginPosResponseDto, LoginPosUnauthorizedResponseDto, VerifyAppKeyDto, VerifyAppKeyResponseDto, VerifyAppKeyUnauthorizedResponseDto } from './dto';
+import { PosService } from './pos.service';
 
 @ApiTags('pos')
 @ApiInternalServerErrorResponse({ type: InternalServerErrorResponseDto })
@@ -10,19 +12,20 @@ import { VerifyAppKeyDto, VerifyAppKeyResponseDto, VerifyAppKeyUnauthorizedRespo
 export class PosController {
 
   constructor(
-    private posService: PosService
+    private posService: PosService,
+    private authService: AuthService
   ) { }
 
-  // // Đăng nhập Pos
-  // @ApiOkResponse({ type: LoginPosResponseDto })
-  // @ApiUnauthorizedResponse({ type: LoginPosUnauthorizedResponseDto })
-  // @ApiBody({ type: LoginPosDto })
-  // @UseGuards(PosLocalAuthGuard)
-  // @HttpCode(200)
-  // @Post('/login')
-  // async loginPos(@Request() req, @Body() LoginPosDto: LoginPosDto): Promise<LoginPosResponseDto> {
-  //   return this.authService.posLogin(req.user);
-  // }
+  // Đăng nhập Pos
+  @ApiOkResponse({ type: LoginPosResponseDto })
+  @ApiUnauthorizedResponse({ type: LoginPosUnauthorizedResponseDto })
+  @ApiBody({ type: LoginPosDto })
+  @UseGuards(PosLocalAuthGuard)
+  @HttpCode(200)
+  @Post('/login')
+  async loginPos(@Request() req, @Body() LoginPosDto: LoginPosDto): Promise<LoginPosResponseDto> {
+    return this.authService.posLogin(req.user);
+  }
 
   @ApiOkResponse({ type: VerifyAppKeyResponseDto })
   @ApiUnauthorizedResponse({
