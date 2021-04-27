@@ -6,6 +6,7 @@ import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { CaslModule } from './casl/casl.module';
 import { RestaurantModule } from './restaurant/restaurant.module';
+import { OrderModule } from './order/order.module';
 import * as Joi from 'joi';
 
 @Module({
@@ -16,10 +17,11 @@ import * as Joi from 'joi';
       validationSchema: Joi.object({
         JWT_SECRET: Joi.string().required(),
       }),
-      envFilePath: 'src/.env',
+      envFilePath: '../.env',
     }),
     CaslModule,
     RestaurantModule,
+    OrderModule,
   ],
   controllers: [AppController],
   providers: [AppService],

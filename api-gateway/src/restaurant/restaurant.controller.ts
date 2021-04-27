@@ -28,7 +28,7 @@ import { InternalServerErrorResponseDto } from 'src/shared/dto/internal-server-e
 @ApiInternalServerErrorResponse({ type: InternalServerErrorResponseDto })
 @Controller('restaurant')
 export class RestaurantController {
-  private logger = new Logger('CustomerController');
+  private logger = new Logger('RestaurantController');
 
   constructor(private readonly restaurantService: RestaurantService) {}
 
