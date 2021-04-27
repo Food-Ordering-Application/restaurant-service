@@ -43,27 +43,31 @@ export class OrderService {
       customerId,
     } = createOrderDto;
     try {
-      // Tạo và lưu orderItemTopping
-      const addOrderItemToppings: OrderItemTopping[] = [];
-      let totalPriceToppings = 0;
-      orderItemToppings.forEach((orderItemTopping) => {
-        const addOrderItemTopping = new OrderItemTopping();
-        addOrderItemTopping.menuItemToppingId =
-          orderItemTopping.menuItemToppingId;
-        addOrderItemTopping.price = orderItemTopping.price;
-        addOrderItemTopping.quantity = orderItemTopping.quantity;
-        addOrderItemTopping.state = State.IN_STOCK;
-        this.orderItemToppingRepository.save(addOrderItemTopping);
-        addOrderItemToppings.push(addOrderItemTopping);
-        totalPriceToppings += orderItemTopping.price;
-      });
-
       // Tạo và lưu orderItem
       const addOrderItem = new OrderItem();
       addOrderItem.menuItemId = menuItemId;
       addOrderItem.price = orderItemPrice;
       addOrderItem.quantity = orderItemQuantity;
-      addOrderItem.orderItemToppings = addOrderItemToppings;
+
+      let totalPriceToppings = 0;
+      // Tạo và lưu orderItemTopping
+      if (orderItemToppings) {
+        const addOrderItemToppings: OrderItemTopping[] = [];
+        orderItemToppings.forEach((orderItemTopping) => {
+          const addOrderItemTopping = new OrderItemTopping();
+          addOrderItemTopping.menuItemToppingId =
+            orderItemTopping.menuItemToppingId;
+          addOrderItemTopping.price = orderItemTopping.price;
+          addOrderItemTopping.quantity = orderItemTopping.quantity;
+          addOrderItemTopping.state = State.IN_STOCK;
+          this.orderItemToppingRepository.save(addOrderItemTopping);
+          addOrderItemToppings.push(addOrderItemTopping);
+          totalPriceToppings +=
+            orderItemTopping.price * orderItemTopping.quantity;
+        });
+        addOrderItem.orderItemToppings = addOrderItemToppings;
+      }
+
       this.orderItemRepository.save(addOrderItem);
       const addOrderItems: OrderItem[] = [];
       addOrderItems.push(addOrderItem);
@@ -86,7 +90,7 @@ export class OrderService {
       order.orderItems = addOrderItems;
       order.serviceFee = 2000;
       order.shippingFee = 15000;
-      order.subTotal = orderItemPrice + totalPriceToppings;
+      order.subTotal = orderItemPrice * orderItemQuantity + totalPriceToppings;
       order.grandTotal = order.serviceFee + order.shippingFee + order.subTotal;
       await this.orderRepository.save(order);
       return {
