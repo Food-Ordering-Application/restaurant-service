@@ -57,21 +57,6 @@ export class MerchantController {
     return await this.authService.merchantLogin(req.user);
   }
 
-  @ApiOkResponse({ type: FetchStaffByMerchantResponseDto })
-  @ApiUnauthorizedResponse({ type: FetchStaffByMerchantUnauthorizedResponseDto })
-  @ApiQuery({ type: FetchStaffByMerchantDto, required: false })
-  @UseGuards(MerchantJwtAuthGuard)
-  // TO DO
-  @Get('/staff')
-  async fetchStaff(
-    @Request() req: MerchantJwtRequest,
-    @Query() fetchStaffByMerchantDto: FetchStaffByMerchantDto,
-  ): Promise<FetchStaffByMerchantResponseDto> {
-    const { user } = req;
-    const { merchantId } = user;
-    return await this.merchantService.fetchStaff(merchantId, fetchStaffByMerchantDto);
-  }
-
   // Fetch merchant data
   @ApiOkResponse({ type: FindMerchantByIdResponseDto })
   @ApiUnauthorizedResponse({ type: FindMerchantByIdUnauthorizedResponseDto })
@@ -84,7 +69,7 @@ export class MerchantController {
   @UseGuards(MerchantJwtAuthGuard)
   @Get('/:merchantId')
   async findMerchantById(
-    @Request() req,
+    @Request() req: MerchantJwtRequest,
     @Param('merchantId') merchantId,
   ): Promise<FindMerchantByIdResponseDto> {
     // Nếu không phải chính user đó
@@ -103,15 +88,44 @@ export class MerchantController {
   @ApiConflictResponse({ type: CreateStaffConflictResponseDto })
   @ApiBody({ type: CreateStaffDto })
   @UseGuards(MerchantJwtAuthGuard)
-  @Post('/staff')
+  @Post('/:merchantId/staff')
   async createStaff(
     @Request() req: MerchantJwtRequest,
+    @Param('merchantId') id,
     @Body() createStaffDto: CreateStaffDto,
   ): Promise<CreateStaffResponseDto> {
     const { user } = req;
     const { merchantId } = user;
+    if (merchantId !== id) {
+      return {
+        statusCode: 403,
+        message: 'Unauthorized',
+        data: null,
+      };
+    }
     return await this.merchantService.createStaff(merchantId, createStaffDto);
   }
 
+  @ApiOkResponse({ type: FetchStaffByMerchantResponseDto })
+  @ApiUnauthorizedResponse({ type: FetchStaffByMerchantUnauthorizedResponseDto })
+  @ApiQuery({ type: FetchStaffByMerchantDto, required: false })
+  @UseGuards(MerchantJwtAuthGuard)
+  @Get('/:merchantId/staff')
+  async fetchStaff(
+    @Request() req: MerchantJwtRequest,
+    @Param('merchantId') id,
+    @Query() fetchStaffByMerchantDto: FetchStaffByMerchantDto,
+  ): Promise<FetchStaffByMerchantResponseDto> {
+    const { user } = req;
+    const { merchantId } = user;
+    if (merchantId !== id) {
+      return {
+        statusCode: 403,
+        message: 'Unauthorized',
+        data: null,
+      };
+    }
+    return await this.merchantService.fetchStaff(merchantId, fetchStaffByMerchantDto);
+  }
 
 }
