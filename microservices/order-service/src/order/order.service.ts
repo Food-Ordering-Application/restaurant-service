@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import {
   AddNewItemToOrderDto,
   GetOrderAssociatedWithCusAndResDto,
+  ReduceOrderItemQuantityDto,
 } from './dto';
 import { CreateOrderDto } from './dto/create-order.dto';
 import {
@@ -108,9 +109,6 @@ export class OrderService {
             customerId: customerId,
           },
         )
-        .andWhere('order.id=:orderId', {
-          orderId: '8fd0c9a2-7d85-44c2-a983-34a357435be8',
-        })
         .getOne();
       return {
         status: HttpStatus.OK,
@@ -149,7 +147,6 @@ export class OrderService {
       );
       // Nếu item gửi lên orderItem đã có sẵn và  giống y chang topping trong order thì tăng số lượng orderItem đã có sẵn
       if (foundOrderItem) {
-        console.log('FOUND');
         foundOrderItem.quantity += sendItem.quantity;
         await this.orderItemRepository.save(foundOrderItem);
         order.orderItems[foundOrderItemIndex] = foundOrderItem;
@@ -157,7 +154,6 @@ export class OrderService {
         order.subTotal = calculateSubTotal(order.orderItems);
         order.grandTotal = calculateGrandTotal(order);
       } else if (!foundOrderItem) {
-        console.log('NOTFOUND');
         // Nếu item gửi lên giống với orderItem đã có sẵn nhưng khác topping hoặc gửi lên không giống
         // thì tạo orderItem mới
         // Tạo và lưu orderItem với orderItemTopping tương ứng
@@ -183,6 +179,88 @@ export class OrderService {
       return {
         status: HttpStatus.OK,
         message: 'New orderItem added successfully',
+        order,
+      };
+    } catch (error) {
+      this.logger.error(error);
+      return {
+        status: HttpStatus.INTERNAL_SERVER_ERROR,
+        message: error.message,
+        order: null,
+      };
+    }
+  }
+
+  async reduceOrderItemQuantity(
+    reduceOrderItemQuantityDto: ReduceOrderItemQuantityDto,
+  ): Promise<ICreateOrderResponse> {
+    try {
+      let flag = 0;
+      const { orderId, orderItemId } = reduceOrderItemQuantityDto;
+      const order = await this.orderRepository
+        .createQueryBuilder('order')
+        .leftJoinAndSelect('order.orderItems', 'ordItems')
+        .leftJoinAndSelect('ordItems.orderItemToppings', 'ordItemToppings')
+        .where('order.id = :orderId', {
+          orderId: orderId,
+        })
+        .getOne();
+      // Tìm ra orderitem đó và sửa lại quantity
+      const orderItem = order.orderItems.find(
+        (item) => item.id === orderItemId,
+      );
+
+      orderItem.quantity -= 1;
+
+      // Nếu quantity là 0 thì xóa orderItem khỏi order
+      if (orderItem.quantity < 1) {
+        const newOrderItems = order.orderItems.filter(
+          (ordItem) => ordItem.id !== orderItem.id,
+        );
+        order.orderItems = newOrderItems;
+        // Remove hết tất cả orderItemTopping của orderItem đó
+        await this.orderItemToppingRepository.remove(
+          orderItem.orderItemToppings,
+        );
+        console.log(newOrderItems);
+        if (newOrderItems.length === 0) {
+          flag = 1;
+          console.log('REMOVE ORDERITEM');
+          console.log('REMOVE ORDER');
+          await this.orderItemRepository.remove(orderItem);
+          await this.orderRepository.remove(order);
+        } else {
+          order.subTotal = calculateSubTotal(order.orderItems);
+          order.grandTotal = calculateGrandTotal(order);
+          console.log('REMOVE ORDERITEM');
+          await Promise.all([
+            this.orderRepository.save(order),
+            this.orderItemRepository.remove(orderItem),
+          ]);
+        }
+      } else {
+        const orderItemIndex = order.orderItems.findIndex(
+          (item) => item.id === orderItemId,
+        );
+        order.orderItems[orderItemIndex] = orderItem;
+        order.subTotal = calculateSubTotal(order.orderItems);
+        order.grandTotal = calculateGrandTotal(order);
+
+        await Promise.all([
+          this.orderItemRepository.save(orderItem),
+          this.orderRepository.save(order),
+        ]);
+      }
+      if (flag === 1) {
+        return {
+          status: HttpStatus.OK,
+          message: 'Reduce orderItem quantity successfully',
+          order: null,
+        };
+      }
+      return {
+        status: HttpStatus.OK,
+        message: 'Reduce orderItem quantity successfully',
         order,
       };
     } catch (error) {

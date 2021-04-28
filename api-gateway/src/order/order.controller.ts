@@ -26,6 +26,8 @@ import {
   GetOrderAssociatedWithCusAndResDto,
   AddNewItemToOrderDto,
   AddNewItemToOrderResponseDto,
+  ReduceOrderItemQuantityResponseDto,
+  ReduceOrderItemQuantityDto,
 } from './dto';
 
 @ApiTags('orders')
@@ -70,7 +72,7 @@ export class OrderController {
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @HttpCode(200)
-  @Post('/:orderId/update-orderItem')
+  @Post('/:orderId/add-new-item')
   async addNewItemToOrder(
     @Body()
     addNewItemToOrderDto: AddNewItemToOrderDto,
@@ -81,21 +83,21 @@ export class OrderController {
   }
 
   // Giảm số lượng quantity của 1 orderItem trong order
-  // @ApiOkResponse({ type: AddNewOrderItemToOrderResponseDto })
-  // @ApiBody({ type: AddNewOrderItemToOrderDto })
-  // @ApiBearerAuth()
-  // @UseGuards(JwtAuthGuard)
-  // @HttpCode(200)
-  // @Post('/:orderId/update-orderItem')
-  // async addNewOrderItemToOrder(
-  //   @Body()
-  //   addNewOrderItemToOrderDto: AddNewOrderItemToOrderDto,
-  //   @Param() params,
-  // ): Promise<AddNewOrderItemToOrderResponseDto> {
-  //   const { orderId } = params;
-  //   return this.orderService.addNewOrderItemToOrder(
-  //     addNewOrderItemToOrderDto,
-  //     orderId,
-  //   );
-  // }
+  @ApiOkResponse({ type: ReduceOrderItemQuantityResponseDto })
+  @ApiBody({ type: ReduceOrderItemQuantityDto })
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @HttpCode(200)
+  @Post('/:orderId/reduce-orditem-quantity')
+  async reduceOrderItemQuantity(
+    @Body()
+    reduceQuantityOrderItemResponseDto: ReduceOrderItemQuantityDto,
+    @Param() params,
+  ): Promise<ReduceOrderItemQuantityResponseDto> {
+    const { orderId } = params;
+    return this.orderService.reduceOrderItemQuantity(
+      reduceQuantityOrderItemResponseDto,
+      orderId,
+    );
+  }
 }

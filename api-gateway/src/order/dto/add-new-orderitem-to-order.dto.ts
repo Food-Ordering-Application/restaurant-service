@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, ValidateNested } from 'class-validator';
+import { ValidateNested } from 'class-validator';
 import { OrderItem } from './order-item.dto';
 
 export class AddNewItemToOrderDto {
