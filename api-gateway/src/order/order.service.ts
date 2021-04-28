@@ -6,6 +6,8 @@ import {
   CreateOrderDto,
   GetOrderAssociatedWithCusAndResResponseDto,
   GetOrderAssociatedWithCusAndResDto,
+  AddNewItemToOrderDto,
+  AddNewItemToOrderResponseDto,
 } from './dto';
 import { ICreateOrderResponse } from './interfaces';
 
@@ -53,6 +55,33 @@ export class OrderService {
       .toPromise();
 
     const { message, order, status } = getOrderAssociatedWithCusAndResResponse;
+
+    if (status !== HttpStatus.OK) {
+      throw new HttpException(
+        {
+          message,
+        },
+        status,
+      );
+    }
+    return {
+      statusCode: status,
+      message,
+      data: {
+        order,
+      },
+    };
+  }
+
+  async addNewItemToOrder(
+    addNewItemToOrderDto: AddNewItemToOrderDto,
+    orderId: string,
+  ): Promise<AddNewItemToOrderResponseDto> {
+    const addNewOrderItemToOrderDtoResponse: ICreateOrderResponse = await this.orderServiceClient
+      .send('addNewItemToOrder', { ...addNewItemToOrderDto, orderId })
+      .toPromise();
+
+    const { message, order, status } = addNewOrderItemToOrderDtoResponse;
 
     if (status !== HttpStatus.OK) {
       throw new HttpException(

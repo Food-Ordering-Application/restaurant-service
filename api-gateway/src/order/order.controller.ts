@@ -1,4 +1,13 @@
-import { Controller, Post, Body, Logger, UseGuards, Get } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Logger,
+  UseGuards,
+  Get,
+  HttpCode,
+  Param,
+} from '@nestjs/common';
 import { OrderService } from './order.service';
 import {
   ApiBearerAuth,
@@ -15,6 +24,8 @@ import {
   CreateOrderDto,
   GetOrderAssociatedWithCusAndResResponseDto,
   GetOrderAssociatedWithCusAndResDto,
+  AddNewItemToOrderDto,
+  AddNewItemToOrderResponseDto,
 } from './dto';
 
 @ApiTags('orders')
@@ -42,6 +53,7 @@ export class OrderController {
   @ApiBody({ type: GetOrderAssociatedWithCusAndResDto })
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
+  @HttpCode(200)
   @Post('/get-order-associated')
   async getOrderAssociatedWithCusAndRes(
     @Body()
@@ -51,4 +63,39 @@ export class OrderController {
       getOrderAssociatedWithCusAndResDto,
     );
   }
+
+  // Thêm item vào trong order
+  @ApiOkResponse({ type: AddNewItemToOrderResponseDto })
+  @ApiBody({ type: AddNewItemToOrderDto })
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @HttpCode(200)
+  @Post('/:orderId/update-orderItem')
+  async addNewItemToOrder(
+    @Body()
+    addNewItemToOrderDto: AddNewItemToOrderDto,
+    @Param() params,
+  ): Promise<AddNewItemToOrderResponseDto> {
+    const { orderId } = params;
+    return this.orderService.addNewItemToOrder(addNewItemToOrderDto, orderId);
+  }
+
+  // Giảm số lượng quantity của 1 orderItem trong order
+  // @ApiOkResponse({ type: AddNewOrderItemToOrderResponseDto })
+  // @ApiBody({ type: AddNewOrderItemToOrderDto })
+  // @ApiBearerAuth()
+  // @UseGuards(JwtAuthGuard)
+  // @HttpCode(200)
+  // @Post('/:orderId/update-orderItem')
+  // async addNewOrderItemToOrder(
+  //   @Body()
+  //   addNewOrderItemToOrderDto: AddNewOrderItemToOrderDto,
+  //   @Param() params,
+  // ): Promise<AddNewOrderItemToOrderResponseDto> {
+  //   const { orderId } = params;
+  //   return this.orderService.addNewOrderItemToOrder(
+  //     addNewOrderItemToOrderDto,
+  //     orderId,
+  //   );
+  // }
 }
