@@ -4,7 +4,6 @@ import {
   Body,
   Logger,
   UseGuards,
-  Get,
   HttpCode,
   Param,
 } from '@nestjs/common';
@@ -28,6 +27,8 @@ import {
   AddNewItemToOrderResponseDto,
   ReduceOrderItemQuantityResponseDto,
   ReduceOrderItemQuantityDto,
+  IncreaseOrderItemQuantityResponseDto,
+  IncreaseOrderItemQuantityDto,
 } from './dto';
 
 @ApiTags('orders')
@@ -97,6 +98,25 @@ export class OrderController {
     const { orderId } = params;
     return this.orderService.reduceOrderItemQuantity(
       reduceQuantityOrderItemResponseDto,
+      orderId,
+    );
+  }
+
+  // Tăng số lượng quantity của 1 orderItem trong order
+  @ApiOkResponse({ type: IncreaseOrderItemQuantityResponseDto })
+  @ApiBody({ type: IncreaseOrderItemQuantityDto })
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @HttpCode(200)
+  @Post('/:orderId/increase-orditem-quantity')
+  async increaseOrderItemQuantity(
+    @Body()
+    increaseOrderItemQuantityDto: IncreaseOrderItemQuantityDto,
+    @Param() params,
+  ): Promise<IncreaseOrderItemQuantityResponseDto> {
+    const { orderId } = params;
+    return this.orderService.increaseOrderItemQuantity(
+      increaseOrderItemQuantityDto,
       orderId,
     );
   }

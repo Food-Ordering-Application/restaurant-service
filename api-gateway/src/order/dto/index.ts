@@ -6,3 +6,5 @@ export { AddNewItemToOrderDto } from './add-new-orderitem-to-order.dto';
 export { CreateOrderDto } from './create-order.dto';
 export { ReduceOrderItemQuantityResponseDto } from './reduce-orderitem-quantity-response.dto';
 export { ReduceOrderItemQuantityDto } from './reduce-orderitem-quantity.dto';
+export { IncreaseOrderItemQuantityResponseDto } from './increase-orderitem-quantity-response.dto';
+export { IncreaseOrderItemQuantityDto } from './increase-orderitem-quantity.dto';

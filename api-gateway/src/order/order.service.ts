@@ -10,6 +10,8 @@ import {
   AddNewItemToOrderResponseDto,
   ReduceOrderItemQuantityDto,
   ReduceOrderItemQuantityResponseDto,
+  IncreaseOrderItemQuantityDto,
+  IncreaseOrderItemQuantityResponseDto,
 } from './dto';
 import { ICreateOrderResponse } from './interfaces';
 
@@ -112,9 +114,35 @@ export class OrderService {
         orderId,
       })
       .toPromise();
-
     const { message, order, status } = reduceQuantityOrderItemResponse;
+    if (status !== HttpStatus.OK) {
+      throw new HttpException(
+        {
+          message,
+        },
+        status,
+      );
+    }
+    return {
+      statusCode: status,
+      message,
+      data: {
+        order,
+      },
+    };
+  }
 
+  async increaseOrderItemQuantity(
+    increaseOrderItemQuantityDto: IncreaseOrderItemQuantityDto,
+    orderId: string,
+  ): Promise<IncreaseOrderItemQuantityResponseDto> {
+    const increaseOrderItemQuantityResponse: ICreateOrderResponse = await this.orderServiceClient
+      .send('increaseOrderItemQuantity', {
+        ...increaseOrderItemQuantityDto,
+        orderId,
+      })
+      .toPromise();
+    const { message, order, status } = increaseOrderItemQuantityResponse;
     if (status !== HttpStatus.OK) {
       throw new HttpException(
         {

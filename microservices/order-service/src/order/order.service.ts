@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import {
   AddNewItemToOrderDto,
   GetOrderAssociatedWithCusAndResDto,
+  IncreaseOrderItemQuantityDto,
   ReduceOrderItemQuantityDto,
 } from './dto';
 import { CreateOrderDto } from './dto/create-order.dto';
@@ -16,7 +17,7 @@ import {
 } from './entities';
 import { PType, Status } from './enums';
 import { ICreateOrderResponse } from './interfaces';
-import { createAndStoreOrderItem, checkEqualTopping } from './helpers';
+import { createAndStoreOrderItem } from './helpers';
 import {
   calculateGrandTotal,
   calculateSubTotal,
@@ -261,6 +262,49 @@ export class OrderService {
       return {
         status: HttpStatus.OK,
         message: 'Reduce orderItem quantity successfully',
+        order,
+      };
+    } catch (error) {
+      this.logger.error(error);
+      return {
+        status: HttpStatus.INTERNAL_SERVER_ERROR,
+        message: error.message,
+        order: null,
+      };
+    }
+  }
+
+  async increaseOrderItemQuantity(
+    increaseOrderItemQuantityDto: IncreaseOrderItemQuantityDto,
+  ): Promise<ICreateOrderResponse> {
+    try {
+      const { orderId, orderItemId } = increaseOrderItemQuantityDto;
+      const order = await this.orderRepository
+        .createQueryBuilder('order')
+        .leftJoinAndSelect('order.orderItems', 'ordItems')
+        .leftJoinAndSelect('ordItems.orderItemToppings', 'ordItemToppings')
+        .where('order.id = :orderId', {
+          orderId: orderId,
+        })
+        .getOne();
+      // Tìm ra orderitem đó và sửa lại quantity
+      const orderItem = order.orderItems.find(
+        (item) => item.id === orderItemId,
+      );
+      orderItem.quantity += 1;
+      const orderItemIndex = order.orderItems.findIndex(
+        (item) => item.id === orderItemId,
+      );
+      order.orderItems[orderItemIndex] = orderItem;
+      order.subTotal = calculateSubTotal(order.orderItems);
+      order.grandTotal = calculateGrandTotal(order);
+      await Promise.all([
+        this.orderItemRepository.save(orderItem),
+        this.orderRepository.save(order),
+      ]);
+      return {
+        status: HttpStatus.OK,
+        message: 'Increase orderItem quantity successfully',
         order,
       };
     } catch (error) {
