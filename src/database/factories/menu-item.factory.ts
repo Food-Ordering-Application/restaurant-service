@@ -3,19 +3,19 @@ import Faker from 'faker';
 import { Menu, MenuGroup, MenuItem } from '../../menu/entities/index';
 
 interface Context {
-  menuId: string;
-  menuGroupId: string;
+  menu: Menu;
+  menuGroup: MenuGroup;
+  menuId?: string;
 }
 
 define(MenuItem, (faker: typeof Faker, context: Context) => {
-  faker.locale = 'vi';
-  const { menuId, menuGroupId } = context;
-  const menu = new Menu();
-  menu.id = menuId;
-  const menuGroup = new MenuGroup();
-  menuGroup.id = menuGroupId;
+  const { menu, menuGroup, menuId } = context;
   const menuItem = new MenuItem();
-  menuItem.id = faker.random.uuid();
+  if (menuId) {
+    menuItem.id = menuId;
+  } else {
+    menuItem.id = faker.random.uuid();
+  }
   menuItem.menu = menu;
   menuItem.menuGroup = menuGroup;
   menuItem.name = faker.name.findName();

@@ -1,14 +1,18 @@
-import { HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { HttpStatus, Inject, Injectable, Logger } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { InjectRepository } from '@nestjs/typeorm';
 import { RESTAURANT_EVENT } from 'src/constants';
 import { Repository } from 'typeorm';
+import { GetRestaurantInformationDto, GetSomeRestaurantDto } from './dto';
 import { CreateRestaurantDto } from './dto/create-restaurant.dto';
-import { UpdateRestaurantDto } from './dto/update-restaurant.dto';
 import { Restaurant } from './entities';
+import * as helpers from './helpers/helpers';
+import { IRestaurantResponse, IRestaurantsResponse } from './interfaces';
+
 
 @Injectable()
 export class RestaurantService {
+  private readonly logger = new Logger('RestaurantService');
   constructor(
     @Inject(RESTAURANT_EVENT) private restaurantEventClient: ClientProxy,
     @InjectRepository(Restaurant) private restaurantRepository: Repository<Restaurant>,
@@ -36,19 +40,53 @@ export class RestaurantService {
 
   }
 
-  findAll() {
-    return `This action returns all restaurant`;
+  async getSomeRestaurant(
+    getSomeRestaurantDto: GetSomeRestaurantDto,
+  ): Promise<IRestaurantsResponse> {
+    const { area, pageNumber, category, search } = getSomeRestaurantDto;
+    try {
+      const restaurants = await helpers.createGetSomeRestaurantQuery(
+        search,
+        area,
+        category,
+        pageNumber,
+        this.restaurantRepository,
+      );
+      return {
+        status: HttpStatus.OK,
+        message: 'Restaurant fetched successfully',
+        restaurants: restaurants,
+      };
+    } catch (error) {
+      this.logger.error(error);
+      return {
+        status: HttpStatus.INTERNAL_SERVER_ERROR,
+        message: error.message,
+        restaurants: null,
+      };
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} restaurant`;
-  }
-
-  update(id: number, updateRestaurantDto: UpdateRestaurantDto) {
-    return `This action updates a #${id} restaurant`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} restaurant`;
+  async getRestaurantInformation(
+    getRestaurantInformationDto: GetRestaurantInformationDto,
+  ): Promise<IRestaurantResponse> {
+    try {
+      const restaurant = await this.restaurantRepository.findOne({
+        id: getRestaurantInformationDto.restaurantId,
+      });
+      this.logger.log(restaurant);
+      return {
+        status: HttpStatus.OK,
+        message: 'Restaurant fetched successfully',
+        restaurant: restaurant,
+      };
+    } catch (error) {
+      this.logger.error(error);
+      return {
+        status: HttpStatus.INTERNAL_SERVER_ERROR,
+        message: error.message,
+        restaurant: null,
+      };
+    }
   }
 }
