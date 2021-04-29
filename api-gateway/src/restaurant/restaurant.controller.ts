@@ -30,7 +30,7 @@ import { InternalServerErrorResponseDto } from 'src/shared/dto/internal-server-e
 export class RestaurantController {
   private logger = new Logger('RestaurantController');
 
-  constructor(private readonly restaurantService: RestaurantService) {}
+  constructor(private readonly restaurantService: RestaurantService) { }
 
   // Danh sách 25 nhà hàng
   // Có thể lọc theo loại StreetFood,CafeDessert,Restaurant,Veterian

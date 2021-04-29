@@ -19,16 +19,17 @@ async function bootstrap() {
   // Setup swagger
   const options = new DocumentBuilder()
     .setTitle('API docs')
-    .addTag('customers')
     .setVersion('1.0')
     .setDescription('The API Descriptions')
-    .addBearerAuth({ type: 'http', scheme: 'bearer' }, 'access-token')
+    .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('api', app, document);
 
   // Add global validation pipe
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(new ValidationPipe({
+    whitelist: true,
+  }));
 
   // Add global exception filter
   app.useGlobalFilters(new HttpExceptionFilter());

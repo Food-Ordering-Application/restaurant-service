@@ -20,7 +20,7 @@ export class RestaurantService {
   constructor(
     @Inject(constants.RESTAURANT_SERVICE)
     private restaurantServiceClient: ClientProxy,
-  ) {}
+  ) { }
 
   async getSomeRestaurant(
     getSomeRestaurantDto: GetSomeRestaurantDto,

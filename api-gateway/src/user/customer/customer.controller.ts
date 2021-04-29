@@ -32,7 +32,7 @@ import {
   VerifyCustomerPhoneNumberUnauthorizedResponseDto,
   VerifyCustomerPhoneNumberResponseDto,
   FindCustomerByIdResponseDto,
-} from '../dto/index';
+} from './dto/index';
 import { CustomerService } from './customer.service';
 import { LocalAuthGuard } from 'src/auth/guards/locals/local-auth.guard';
 import { AuthService } from 'src/auth/auth.service';
@@ -43,9 +43,9 @@ import { CheckPolicies } from 'src/casl/decorators/check-policy.decorator';
 import { AppAbility } from 'src/casl/casl-ability.factory';
 import { Action } from 'src/shared/enum/actions.enum';
 import { Customer } from 'src/shared/classes';
-import { FindCustomerByIdUnauthorizedResponseDto } from '../dto/fetch-customer/find-customer-by-id-unauthorized.dto';
+import { FindCustomerByIdUnauthorizedResponseDto } from './dto/fetch-customer/find-customer-by-id-unauthorized.dto';
 
-@ApiTags('users')
+@ApiTags('customer')
 @ApiInternalServerErrorResponse({ type: InternalServerErrorResponseDto })
 @Controller('user/customer')
 export class CustomerController {
@@ -54,7 +54,7 @@ export class CustomerController {
   constructor(
     private customerService: CustomerService,
     private authService: AuthService,
-  ) {}
+  ) { }
 
   // Đăng ký Customer
   @ApiCreatedResponse({ type: CreateCustomerResponseDto })
