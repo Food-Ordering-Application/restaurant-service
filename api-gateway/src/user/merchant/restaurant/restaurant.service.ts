@@ -5,6 +5,7 @@ import * as constants from '../../../constants';
 import {
   CreateStaffDto,
   CreateStaffResponseDto,
+  DeleteStaffResponseDto,
   FetchStaffByMerchantDto,
   FetchStaffByMerchantResponseDto,
   UpdateStaffDto,
@@ -41,12 +42,27 @@ export class RestaurantService {
   }
 
   async updateStaff(staffId: string, merchantId: string, restaurantId: string, updateStaffDto: UpdateStaffDto): Promise<UpdateStaffResponseDto> {
-    console.log({ updateStaffDto });
     const updateStaffResponse: ISimpleResponse = await this.userServiceClient
       .send('updateStaff', { staffId, merchantId, restaurantId, data: updateStaffDto })
       .toPromise();
 
     const { status, message } = updateStaffResponse;
+    if (status !== HttpStatus.OK) {
+      throw new HttpException({ message, }, status,);
+    }
+
+    return {
+      statusCode: HttpStatus.OK,
+      message,
+    };
+  }
+
+  async deleteStaff(staffId: string, merchantId: string, restaurantId: string): Promise<DeleteStaffResponseDto> {
+    const deleteStaffResponse: ISimpleResponse = await this.userServiceClient
+      .send('deleteStaff', { staffId, merchantId, restaurantId })
+      .toPromise();
+
+    const { status, message } = deleteStaffResponse;
     if (status !== HttpStatus.OK) {
       throw new HttpException({ message, }, status,);
     }

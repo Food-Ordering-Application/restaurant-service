@@ -1,5 +1,5 @@
 import {
-  Body, Controller, Get, Logger, Param, Patch, Post, Query, Req, Request, UseGuards
+  Body, Controller, Delete, Get, Logger, Param, Patch, Post, Query, Req, Request, UseGuards
 } from '@nestjs/common';
 import { Payload } from '@nestjs/microservices';
 import {
@@ -18,7 +18,7 @@ import { MerchantJwtRequest } from 'src/auth/strategies/jwt-strategies/merchant-
 import { InternalServerErrorResponseDto } from '../../../shared/dto/internal-server-error.dto';
 import { MerchantJwtAuthGuard } from './../../../auth/guards/jwts/merchant-jwt-auth.guard';
 import { MerchantJwtPayload } from './../../../auth/strategies/jwt-strategies/merchant-jwt-payload.interface';
-import { UpdateStaffDto, UpdateStaffResponseDto } from './dto';
+import { DeleteStaffNotFoundResponseDto, DeleteStaffResponseDto, UpdateStaffDto, UpdateStaffResponseDto } from './dto';
 import { CreateStaffConflictResponseDto, CreateStaffDto, CreateStaffResponseDto, FetchStaffByMerchantDto, FetchStaffByMerchantResponseDto, FetchStaffByMerchantUnauthorizedResponseDto } from './dto/';
 import { CreateRestaurantDto } from './dto/create-restaurant/create-restaurant.dto';
 import { UpdateStaffNotFoundResponseDto } from './dto/update-staff/update-staff-not-found-response.dto';
@@ -80,6 +80,28 @@ export class RestaurantController {
       };
     }
     return await this.restaurantService.updateStaff(staff, merchantId, restaurant, updateStaffDto);
+  }
+
+  // Delete nhan vien
+  @ApiOkResponse({ type: DeleteStaffResponseDto })
+  @ApiNotFoundResponse({ type: DeleteStaffNotFoundResponseDto })
+  @UseGuards(MerchantJwtAuthGuard)
+  @Delete(':restaurantId/staff/:staffId')
+  async deleteStaff(
+    @Request() req: MerchantJwtRequest,
+    @Param('merchantId') merchant,
+    @Param('restaurantId') restaurant,
+    @Param('staffId') staff,
+  ): Promise<DeleteStaffResponseDto> {
+    const { user } = req;
+    const { merchantId } = user;
+    if (merchantId !== merchant) {
+      return {
+        statusCode: 403,
+        message: 'Unauthorized',
+      };
+    }
+    return await this.restaurantService.deleteStaff(staff, merchantId, restaurant);
   }
 
   @ApiOkResponse({ type: FetchStaffByMerchantResponseDto })
