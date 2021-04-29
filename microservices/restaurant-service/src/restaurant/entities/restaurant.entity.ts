@@ -56,8 +56,11 @@ export class Restaurant {
   @Column({ default: true })
   isActive: boolean;
 
-  @Column({ default: true })
+  @Column({ default: false })
   isVerified: boolean;
+
+  @Column({ default: false })
+  isBanned: boolean;
 
   @OneToMany(() => OpenHour, (openHours) => openHours.restaurant)
   openhours: OpenHour[];
