@@ -1,19 +1,47 @@
-import { HttpStatus, Injectable, Logger } from '@nestjs/common';
+import { HttpStatus, Inject, Injectable, Logger } from '@nestjs/common';
+import { ClientProxy } from '@nestjs/microservices';
 import { InjectRepository } from '@nestjs/typeorm';
+import { RESTAURANT_EVENT } from 'src/constants';
 import { Repository } from 'typeorm';
 import { GetRestaurantInformationDto, GetSomeRestaurantDto } from './dto';
+import { CreateRestaurantDto } from './dto/create-restaurant.dto';
 import { Restaurant } from './entities';
-import { IRestaurantResponse, IRestaurantsResponse } from './interfaces';
 import * as helpers from './helpers/helpers';
+import { IRestaurantResponse, IRestaurantsResponse } from './interfaces';
+import { ICreateRestaurantResponse } from './interfaces/create-restaurant-response.interface';
+
 
 @Injectable()
 export class RestaurantService {
   private readonly logger = new Logger('RestaurantService');
-
   constructor(
-    @InjectRepository(Restaurant)
-    private restaurantRepository: Repository<Restaurant>,
-  ) {}
+    @Inject(RESTAURANT_EVENT) private restaurantEventClient: ClientProxy,
+    @InjectRepository(Restaurant) private restaurantRepository: Repository<Restaurant>,
+  ) { }
+
+  async create(dto: CreateRestaurantDto): Promise<ICreateRestaurantResponse> {
+    const { merchantId, createRestaurantDto } = dto;
+    // TODO
+    const restaurant = this.restaurantRepository.create({
+      owner: merchantId,
+      name: 'Test',
+      phone: '091239021',
+      geom: {
+        type: 'Point',
+        coordinates: [5.5, -5.5],
+      }
+    });
+    const newRestaurant = await this.restaurantRepository.save(restaurant);
+    this.restaurantEventClient.emit('restaurant_created', { merchantId, restaurantId: newRestaurant.id });
+    return {
+      status: HttpStatus.CREATED,
+      message: 'Restaurant was created',
+      data: {
+        restaurant: newRestaurant
+      }
+    };
+
+  }
 
   async getSomeRestaurant(
     getSomeRestaurantDto: GetSomeRestaurantDto,
