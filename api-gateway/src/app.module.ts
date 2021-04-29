@@ -17,7 +17,7 @@ import * as Joi from 'joi';
       validationSchema: Joi.object({
         JWT_SECRET: Joi.string().required(),
       }),
-      envFilePath: '../.env',
+      // envFilePath: '../.env',
     }),
     CaslModule,
     RestaurantModule,
