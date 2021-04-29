@@ -17,7 +17,7 @@ import {
 
 export default class CreateFakeData implements Seeder {
   public async run(factory: Factory, connection: Connection): Promise<any> {
-    const restaurants = await factory(Restaurant)({}).createMany(299);
+    const restaurants = await factory(Restaurant)({}).createMany(100);
     // const res = await factory(Restaurant)({
     //   restaurantId: '007a5fc3-37ca-435b-bbdd-930ced6e4321',
     // }).create();
@@ -320,21 +320,19 @@ export default class CreateFakeData implements Seeder {
       ]);
     }
     // Tạo 4 restaurant-category và mỗi category gán 5 nhà hàng
-    await factory(Category)({ restaurants: restaurants.slice(0, 50) }).create({
+    await factory(Category)({ restaurants: restaurants.slice(0, 49) }).create({
       type: CategoryType.CAFEDESSERT,
     });
-    await factory(Category)({ restaurants: restaurants.slice(50, 100) }).create(
-      {
-        type: CategoryType.RESTAURANT,
-      },
-    );
+    await factory(Category)({ restaurants: restaurants.slice(50, 99) }).create({
+      type: CategoryType.RESTAURANT,
+    });
     await factory(Category)({
-      restaurants: restaurants.slice(100, 150),
+      restaurants: restaurants.slice(0, 50),
     }).create({
       type: CategoryType.STREETFOOD,
     });
     await factory(Category)({
-      restaurants: restaurants.slice(150, 200),
+      restaurants: restaurants.slice(50, 99),
     }).create({
       type: CategoryType.VETERIAN,
     });
