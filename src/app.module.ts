@@ -16,6 +16,7 @@ import { MenuModule } from './menu/menu.module';
         POSTGRES_USER: Joi.string().required(),
         POSTGRES_PASSWORD: Joi.string().required(),
         POSTGRES_DB: Joi.string().required(),
+        PORT: Joi.number(),
       }),
     }),
     DatabaseModule,
