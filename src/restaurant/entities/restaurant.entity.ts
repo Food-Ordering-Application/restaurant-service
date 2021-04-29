@@ -17,13 +17,13 @@ export class Restaurant {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
+  @Column({ nullable: false })
   owner: string;
 
-  @Column()
+  @Column({ nullable: false })
   name: string;
 
-  @Column()
+  @Column({ nullable: false })
   phone: string;
 
   @Column({ nullable: true })
@@ -41,16 +41,16 @@ export class Restaurant {
   @Column({ default: 0 })
   rating: number;
 
-  @Column({ nullable: true })
+  @Column({ nullable: false })
   address: string;
 
-  @Column({ default: 'TPHCM' })
+  @Column({ nullable: false, default: 'TPHCM' })
   city: string;
 
-  @Column({ default: 'TPHCM' })
+  @Column({ nullable: false, default: 'TPHCM' })
   area: string;
 
-  @Column({ type: 'geometry', spatialFeatureType: 'Point', srid: 4326 })
+  @Column({ nullable: false, type: 'geometry', spatialFeatureType: 'Point', srid: 4326 })
   geom: { type: string; coordinates: number[] };
 
   @Column({ default: true })
