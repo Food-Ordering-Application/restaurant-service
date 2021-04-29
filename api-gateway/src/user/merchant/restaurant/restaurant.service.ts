@@ -104,7 +104,7 @@ export class RestaurantService {
       .send('createRestaurant', { merchantId, createRestaurantDto })
       .toPromise();
 
-    const { status, message, restaurant } = createRestaurantResponse;
+    const { status, message, data } = createRestaurantResponse;
     // if (status !== HttpStatus.CREATED) {
     //   throw new HttpException({ message, }, status,);
     // }
@@ -112,9 +112,7 @@ export class RestaurantService {
     return {
       statusCode: 201,
       message,
-      data: {
-        restaurant
-      },
+      data
     };
   }
 

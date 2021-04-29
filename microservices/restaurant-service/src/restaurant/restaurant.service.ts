@@ -8,6 +8,7 @@ import { CreateRestaurantDto } from './dto/create-restaurant.dto';
 import { Restaurant } from './entities';
 import * as helpers from './helpers/helpers';
 import { IRestaurantResponse, IRestaurantsResponse } from './interfaces';
+import { ICreateRestaurantResponse } from './interfaces/create-restaurant-response.interface';
 
 
 @Injectable()
@@ -18,7 +19,7 @@ export class RestaurantService {
     @InjectRepository(Restaurant) private restaurantRepository: Repository<Restaurant>,
   ) { }
 
-  async create(dto: CreateRestaurantDto) {
+  async create(dto: CreateRestaurantDto): Promise<ICreateRestaurantResponse> {
     const { merchantId, createRestaurantDto } = dto;
     // TODO
     const restaurant = this.restaurantRepository.create({
@@ -35,7 +36,9 @@ export class RestaurantService {
     return {
       status: HttpStatus.CREATED,
       message: 'Restaurant was created',
-      restaurant: newRestaurant
+      data: {
+        restaurant: newRestaurant
+      }
     };
 
   }
