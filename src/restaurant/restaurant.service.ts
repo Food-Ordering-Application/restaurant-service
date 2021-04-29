@@ -8,7 +8,7 @@ import * as helpers from './helpers/helpers';
 
 @Injectable()
 export class RestaurantService {
-  private readonly logger = new Logger('CustomerService');
+  private readonly logger = new Logger('RestaurantService');
 
   constructor(
     @InjectRepository(Restaurant)

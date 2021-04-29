@@ -4,8 +4,18 @@ import { Restaurant } from '../../restaurant/entities/index';
 import { Area } from '../../restaurant/enums/index';
 import * as _ from 'lodash';
 
-define(Restaurant, (faker: typeof Faker) => {
-  const id = faker.random.uuid();
+interface Context {
+  restaurantId?: string;
+}
+
+define(Restaurant, (faker: typeof Faker, context: Context) => {
+  const { restaurantId } = context;
+  let id;
+  if (!restaurantId) {
+    id = faker.random.uuid();
+  } else {
+    id = restaurantId;
+  }
   const owner = faker.random.uuid();
   const name = faker.name.findName();
   const phoneNumber = faker.phone.phoneNumber('0#########');
