@@ -6,6 +6,7 @@ import { Repository } from 'typeorm';
 import { GetRestaurantInformationDto, GetSomeRestaurantDto } from './dto';
 import { CreateRestaurantDto } from './dto/create-restaurant.dto';
 import { Restaurant } from './entities';
+import { RestaurantCreatedEventPayload } from './events/restaurant-created.event';
 import * as helpers from './helpers/helpers';
 import { IRestaurantResponse, IRestaurantsResponse } from './interfaces';
 import { ICreateRestaurantResponse } from './interfaces/create-restaurant-response.interface';
@@ -32,7 +33,16 @@ export class RestaurantService {
       }
     });
     const newRestaurant = await this.restaurantRepository.save(restaurant);
-    this.restaurantEventClient.emit('restaurant_created', { merchantId, restaurantId: newRestaurant.id });
+    const { id, name, phone, area, address, isActive, isBanned, isVerified } = newRestaurant;
+    const restaurantCreatedEventPayload: RestaurantCreatedEventPayload = {
+      merchantId,
+      restaurantId: id,
+      data: {
+        name, phone, area, address, isActive, isBanned, isVerified
+      }
+    }
+
+    this.restaurantEventClient.emit('restaurant_created', restaurantCreatedEventPayload);
     return {
       status: HttpStatus.CREATED,
       message: 'Restaurant was created',
