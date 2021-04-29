@@ -12,6 +12,7 @@ export class RestaurantController {
   getSomeRestaurant(
     @Payload() getSomeRestaurantDto: GetSomeRestaurantDto,
   ): Promise<IRestaurantsResponse> {
+    console.log(15, 'getSomeRestaurant')
     return this.restaurantService.getSomeRestaurant(getSomeRestaurantDto);
   }
 
