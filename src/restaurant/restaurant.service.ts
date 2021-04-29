@@ -27,18 +27,21 @@ export class RestaurantService {
       owner: merchantId,
       name: 'Test',
       phone: '091239021',
+      address: '653 Hirthe Isle',
+      city: 'TPHCM',
+      area: 'TPHCM',
       geom: {
         type: 'Point',
         coordinates: [5.5, -5.5],
       }
     });
     const newRestaurant = await this.restaurantRepository.save(restaurant);
-    const { id, name, phone, area, address, isActive, isBanned, isVerified } = newRestaurant;
+    const { id, name, phone, area, city, address, isActive, isBanned, isVerified } = newRestaurant;
     const restaurantCreatedEventPayload: RestaurantCreatedEventPayload = {
       merchantId,
       restaurantId: id,
       data: {
-        name, phone, area, address, isActive, isBanned, isVerified
+        name, phone, area, address, isActive, isBanned, isVerified, city
       }
     }
 
