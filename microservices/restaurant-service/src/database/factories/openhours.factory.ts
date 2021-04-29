@@ -9,7 +9,6 @@ interface Context {
 }
 
 define(OpenHour, (faker: typeof Faker, context: Context) => {
-  faker.locale = 'vi';
   const { restaurantId } = context;
   const id = faker.random.uuid();
   const day = _.sample(Object.values(DaysOfWeek)) as DaysOfWeek;

@@ -1,8 +1,7 @@
 - Tạo file docker.env giống cấu trúc như docker.example.env trong thư mục env
-- Tạo các file .env giống như .env.example trong các thư mục api-gateway, microservices/*-service
+- Tạo các file .env giống như .env.example trong các thư mục api-gateway, microservices/*-service (user,restaurant,order service)
 - Chạy docker-compose up --build -d
 # Hướng dẫn truy cập database
-
 - Dùng lệnh "docker inspect postgis" tìm ra địa chỉ IP của postgis
 
 - Truy cập vào pgAdmin ở đường dẫn localhost:7999/ 
@@ -16,3 +15,15 @@
 - pgAdmin: localhost:7999/
 - RabbitMQ: localhost:15672/ (username password tương ứng RABBITMQ_DEFAULT_USER RABBITMQ_DEFAULT_PASS trong docker.env)
 
+
+## Spec
+# Chỉ chạy các service rabbitmq, postgis, pdAdmin
+```
+docker compose -f docker-compose-spec.yml up --build -d
+```
+# Các service còn lại 
+Ex: API-gateway
+```
+cd api-gateway
+npm run start:dev
+```

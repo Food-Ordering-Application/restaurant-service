@@ -1,6 +1,6 @@
 export enum CategoryType {
-  StreetFood = 'StreetFood',
-  CafeDessert = 'CafeDessert',
-  Restaurant = 'Restaurant',
-  Veterian = 'Veterian',
+  STREETFOOD = 'STREETFOOD',
+  CAFEDESSERT = 'CAFEDESSERT',
+  RESTAURANT = 'RESTAURANT',
+  VETERIAN = 'Veterian',
 }
