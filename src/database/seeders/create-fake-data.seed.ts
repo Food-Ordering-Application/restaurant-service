@@ -17,7 +17,7 @@ import {
 
 export default class CreateFakeData implements Seeder {
   public async run(factory: Factory, connection: Connection): Promise<any> {
-    const restaurants = await factory(Restaurant)({}).createMany(100);
+    const restaurants = await factory(Restaurant)({}).createMany(50);
     // const res = await factory(Restaurant)({
     //   restaurantId: '007a5fc3-37ca-435b-bbdd-930ced6e4321',
     // }).create();
@@ -327,12 +327,12 @@ export default class CreateFakeData implements Seeder {
       type: CategoryType.RESTAURANT,
     });
     await factory(Category)({
-      restaurants: restaurants.slice(0, 50),
+      restaurants: restaurants.slice(0, 25),
     }).create({
       type: CategoryType.STREETFOOD,
     });
     await factory(Category)({
-      restaurants: restaurants.slice(50, 99),
+      restaurants: restaurants.slice(25, 49),
     }).create({
       type: CategoryType.VETERIAN,
     });
