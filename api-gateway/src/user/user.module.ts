@@ -52,8 +52,26 @@ import { RestaurantService } from './merchant/restaurant/restaurant.service';
     forwardRef(() => AuthModule),
     CaslModule,
   ],
-  controllers: [CustomerController, MerchantController, AdminController, PosController, RestaurantController],
-  providers: [CustomerService, MerchantService, AdminService, PosService, RestaurantService],
-  exports: [CustomerService, MerchantService, AdminService, PosService, RestaurantService],
+  controllers: [
+    CustomerController,
+    MerchantController,
+    AdminController,
+    PosController,
+    RestaurantController,
+  ],
+  providers: [
+    CustomerService,
+    MerchantService,
+    AdminService,
+    PosService,
+    RestaurantService,
+  ],
+  exports: [
+    CustomerService,
+    MerchantService,
+    AdminService,
+    PosService,
+    RestaurantService,
+  ],
 })
-export class UserModule { }
+export class UserModule {}

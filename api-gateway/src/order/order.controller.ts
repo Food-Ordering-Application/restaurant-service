@@ -6,6 +6,7 @@ import {
   UseGuards,
   HttpCode,
   Param,
+  ValidationPipe,
 } from '@nestjs/common';
 import { OrderService } from './order.service';
 import {
@@ -46,8 +47,10 @@ export class OrderController {
   @UseGuards(JwtAuthGuard)
   @Post()
   async createOrderAndFirstOrderItem(
-    @Body() createOrderDto: CreateOrderDto,
+    @Body()
+    createOrderDto: CreateOrderDto,
   ): Promise<CreateOrderResponseDto> {
+    console.log(createOrderDto);
     return this.orderService.createOrderAndFirstOrderItem(createOrderDto);
   }
 

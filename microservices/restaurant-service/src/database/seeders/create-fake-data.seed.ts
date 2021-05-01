@@ -18,9 +18,6 @@ import {
 export default class CreateFakeData implements Seeder {
   public async run(factory: Factory, connection: Connection): Promise<any> {
     const restaurants = await factory(Restaurant)({}).createMany(299);
-    // const res = await factory(Restaurant)({
-    //   restaurantId: '007a5fc3-37ca-435b-bbdd-930ced6e4321',
-    // }).create();
     for (const restaurant of restaurants) {
       // Với mỗi nhà hàng tạo 7 openHour
       await factory(OpenHour)({ restaurantId: restaurant.id }).createMany(7);
@@ -71,47 +68,38 @@ export default class CreateFakeData implements Seeder {
         factory(MenuItemTopping)({
           menuItem: menuItems[0][0],
           toppingItem: toppingItems[0][0],
-          // menuItemToppingId: '007a5fc3-37ca-435b-bbdd-930ced6e3333',
         }).create(),
         factory(MenuItemTopping)({
           menuItem: menuItems[0][0],
           toppingItem: toppingItems[0][1],
-          // menuItemToppingId: '007a5fc3-37ca-435b-bbdd-930ced6e2315',
         }).create(),
         factory(MenuItemTopping)({
           menuItem: menuItems[0][0],
           toppingItem: toppingItems[0][2],
-          // menuItemToppingId: '007a5fc3-37ca-435b-bbdd-930ced6e6234',
         }).create(),
         factory(MenuItemTopping)({
           menuItem: menuItems[0][0],
           toppingItem: toppingItems[1][0],
-          // menuItemToppingId: '0090ee51-c1c3-4ddd-99c8-4e649ace1458',
         }).create(),
         factory(MenuItemTopping)({
           menuItem: menuItems[0][0],
           toppingItem: toppingItems[1][1],
-          // menuItemToppingId: '00c59b7f-99f5-4aa2-90ee-e350a5a0cd7f',
         }).create(),
         factory(MenuItemTopping)({
           menuItem: menuItems[0][0],
           toppingItem: toppingItems[1][2],
-          // menuItemToppingId: '00cac4af-3857-4559-b08c-cb2b2d4cfb99',
         }).create(),
         factory(MenuItemTopping)({
           menuItem: menuItems[0][0],
           toppingItem: toppingItems[2][0],
-          // menuItemToppingId: '00d85272-1a87-4abd-8c66-d87bd70eb032',
         }).create(),
         factory(MenuItemTopping)({
           menuItem: menuItems[0][0],
           toppingItem: toppingItems[2][1],
-          // menuItemToppingId: '00e83d12-f6f0-4c4f-8129-5ceb7ea182ba',
         }).create(),
         factory(MenuItemTopping)({
           menuItem: menuItems[0][0],
           toppingItem: toppingItems[2][2],
-          // menuItemToppingId: '0120660b-a224-4d6b-a9bd-f2d23b2805b1',
         }).create(),
         factory(MenuItemTopping)({
           menuItem: menuItems[0][1],
@@ -152,32 +140,26 @@ export default class CreateFakeData implements Seeder {
         factory(MenuItemTopping)({
           menuItem: menuItems[1][0],
           toppingItem: toppingItems[0][0],
-          // menuItemToppingId: '0120660b-a224-4d6b-a9bd-ffd23b2804b1',
         }).create(),
         factory(MenuItemTopping)({
           menuItem: menuItems[1][0],
           toppingItem: toppingItems[0][1],
-          // menuItemToppingId: '0120660b-a224-4d6b-a9bd-ffd23b2805b2',
         }).create(),
         factory(MenuItemTopping)({
           menuItem: menuItems[1][0],
           toppingItem: toppingItems[0][2],
-          // menuItemToppingId: '0120660b-a224-4d6b-a9bd-ffd23b2805b3',
         }).create(),
         factory(MenuItemTopping)({
           menuItem: menuItems[1][0],
           toppingItem: toppingItems[1][0],
-          // menuItemToppingId: '0120660b-a224-4d6b-a9bd-ffd23b2805b4',
         }).create(),
         factory(MenuItemTopping)({
           menuItem: menuItems[1][0],
           toppingItem: toppingItems[1][1],
-          // menuItemToppingId: '0120660b-a224-4d6b-a9bd-ffd23b2805b5',
         }).create(),
         factory(MenuItemTopping)({
           menuItem: menuItems[1][0],
           toppingItem: toppingItems[1][2],
-          // menuItemToppingId: '0120660b-a224-4d6b-a9bd-ffd23b2805b6',
         }).create(),
         factory(MenuItemTopping)({
           menuItem: menuItems[1][0],
@@ -194,32 +176,26 @@ export default class CreateFakeData implements Seeder {
         factory(MenuItemTopping)({
           menuItem: menuItems[1][1],
           toppingItem: toppingItems[0][0],
-          // menuItemToppingId: '0120660b-a224-4d6b-a9bd-ffd23b2804b1',
         }).create(),
         factory(MenuItemTopping)({
           menuItem: menuItems[1][1],
           toppingItem: toppingItems[0][1],
-          // menuItemToppingId: '0120660b-a224-4d6b-a9bd-ffd23b2805b2',
         }).create(),
         factory(MenuItemTopping)({
           menuItem: menuItems[1][1],
           toppingItem: toppingItems[0][2],
-          // menuItemToppingId: '0120660b-a224-4d6b-a9bd-ffd23b2805b3',
         }).create(),
         factory(MenuItemTopping)({
           menuItem: menuItems[1][1],
           toppingItem: toppingItems[1][0],
-          // menuItemToppingId: '0120660b-a224-4d6b-a9bd-ffd23b2805b4',
         }).create(),
         factory(MenuItemTopping)({
           menuItem: menuItems[1][1],
           toppingItem: toppingItems[1][1],
-          // menuItemToppingId: '0120660b-a224-4d6b-a9bd-ffd23b2805b5',
         }).create(),
         factory(MenuItemTopping)({
           menuItem: menuItems[1][1],
           toppingItem: toppingItems[1][2],
-          // menuItemToppingId: '0120660b-a224-4d6b-a9bd-ffd23b2805b6',
         }).create(),
         factory(MenuItemTopping)({
           menuItem: menuItems[1][1],
@@ -236,32 +212,26 @@ export default class CreateFakeData implements Seeder {
         factory(MenuItemTopping)({
           menuItem: menuItems[2][0],
           toppingItem: toppingItems[0][0],
-          // menuItemToppingId: '0120660b-a224-4d6b-a9bd-ffd23b2804b1',
         }).create(),
         factory(MenuItemTopping)({
           menuItem: menuItems[2][0],
           toppingItem: toppingItems[0][1],
-          // menuItemToppingId: '0120660b-a224-4d6b-a9bd-ffd23b2805b2',
         }).create(),
         factory(MenuItemTopping)({
           menuItem: menuItems[2][0],
           toppingItem: toppingItems[0][2],
-          // menuItemToppingId: '0120660b-a224-4d6b-a9bd-ffd23b2805b3',
         }).create(),
         factory(MenuItemTopping)({
           menuItem: menuItems[2][0],
           toppingItem: toppingItems[1][0],
-          // menuItemToppingId: '0120660b-a224-4d6b-a9bd-ffd23b2805b4',
         }).create(),
         factory(MenuItemTopping)({
           menuItem: menuItems[2][0],
           toppingItem: toppingItems[1][1],
-          // menuItemToppingId: '0120660b-a224-4d6b-a9bd-ffd23b2805b5',
         }).create(),
         factory(MenuItemTopping)({
           menuItem: menuItems[2][0],
           toppingItem: toppingItems[1][2],
-          // menuItemToppingId: '0120660b-a224-4d6b-a9bd-ffd23b2805b6',
         }).create(),
         factory(MenuItemTopping)({
           menuItem: menuItems[2][0],
@@ -278,32 +248,26 @@ export default class CreateFakeData implements Seeder {
         factory(MenuItemTopping)({
           menuItem: menuItems[2][1],
           toppingItem: toppingItems[0][0],
-          // menuItemToppingId: '0120660b-a224-4d6b-a9bd-ffd23b2804b1',
         }).create(),
         factory(MenuItemTopping)({
           menuItem: menuItems[2][1],
           toppingItem: toppingItems[0][1],
-          // menuItemToppingId: '0120660b-a224-4d6b-a9bd-ffd23b2805b2',
         }).create(),
         factory(MenuItemTopping)({
           menuItem: menuItems[2][1],
           toppingItem: toppingItems[0][2],
-          // menuItemToppingId: '0120660b-a224-4d6b-a9bd-ffd23b2805b3',
         }).create(),
         factory(MenuItemTopping)({
           menuItem: menuItems[2][1],
           toppingItem: toppingItems[1][0],
-          // menuItemToppingId: '0120660b-a224-4d6b-a9bd-ffd23b2805b4',
         }).create(),
         factory(MenuItemTopping)({
           menuItem: menuItems[2][1],
           toppingItem: toppingItems[1][1],
-          // menuItemToppingId: '0120660b-a224-4d6b-a9bd-ffd23b2805b5',
         }).create(),
         factory(MenuItemTopping)({
           menuItem: menuItems[2][1],
           toppingItem: toppingItems[1][2],
-          // menuItemToppingId: '0120660b-a224-4d6b-a9bd-ffd23b2805b6',
         }).create(),
         factory(MenuItemTopping)({
           menuItem: menuItems[2][1],

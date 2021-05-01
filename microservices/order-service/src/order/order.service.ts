@@ -48,6 +48,7 @@ export class OrderService {
     const { orderItem, restaurantId, customerId } = createOrderDto;
     try {
       // Tạo và lưu orderItem
+      console.log(orderItem);
       const {
         addOrderItems,
         totalPriceToppings,
@@ -56,7 +57,7 @@ export class OrderService {
         this.orderItemToppingRepository,
         this.orderItemRepository,
       );
-
+      console.log('HERE');
       // Tạo và lưu order
       const order = new Order();
       order.customerId = customerId;
