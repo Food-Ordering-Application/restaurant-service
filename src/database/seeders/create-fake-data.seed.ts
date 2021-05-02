@@ -42,12 +42,10 @@ export default class CreateFakeData implements Seeder {
         factory(MenuItem)({
           menu: menu,
           menuGroup: menuGroups[1],
-          // menuItemId: '007a5fc3-37ca-435b-bbdd-930ced6e2314',
         }).createMany(2),
         factory(MenuItem)({
           menu: menu,
           menuGroup: menuGroups[2],
-          // menuItemId: '007a5fc3-37ca-435b-bbdd-930ced6e5142',
         }).createMany(2),
       ]);
       // Mỗi toppingGroup tạo nhiều toppingItem
