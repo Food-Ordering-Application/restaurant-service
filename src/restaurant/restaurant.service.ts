@@ -1,12 +1,13 @@
 import { HttpStatus, Inject, Injectable, Logger } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { InjectRepository } from '@nestjs/typeorm';
-import { RESTAURANT_EVENT } from 'src/constants';
+import { USER_SERVICE } from 'src/constants';
 import { Repository } from 'typeorm';
 import { GetRestaurantInformationDto, GetSomeRestaurantDto } from './dto';
 import { CreateRestaurantDto } from './dto/create-restaurant.dto';
 import { Restaurant } from './entities';
 import { RestaurantCreatedEventPayload } from './events/restaurant-created.event';
+import { RestaurantProfileUpdatedEventPayload } from './events/restaurant-profile-updated.event';
 import * as helpers from './helpers/helpers';
 import { IRestaurantResponse, IRestaurantsResponse } from './interfaces';
 import { ICreateRestaurantResponse } from './interfaces/create-restaurant-response.interface';
@@ -16,9 +17,24 @@ import { ICreateRestaurantResponse } from './interfaces/create-restaurant-respon
 export class RestaurantService {
   private readonly logger = new Logger('RestaurantService');
   constructor(
-    @Inject(RESTAURANT_EVENT) private restaurantEventClient: ClientProxy,
+    @Inject(USER_SERVICE) private userServiceClient: ClientProxy,
     @InjectRepository(Restaurant) private restaurantRepository: Repository<Restaurant>,
   ) { }
+
+  async handleRestaurantProfileUpdated(payload: RestaurantProfileUpdatedEventPayload) {
+    const { restaurantId, data } = payload;
+    const templateObject: {
+      isVerified?: boolean,
+      isActive?: boolean,
+      isBanned?: boolean
+    } = {
+      isVerified: null,
+      isActive: null,
+      isBanned: null
+    }
+    Object.keys(data).forEach(key => typeof templateObject[key] == 'undefined' ? delete data[key] : {});
+    await this.restaurantRepository.update(restaurantId, data);
+  }
 
   async create(dto: CreateRestaurantDto): Promise<ICreateRestaurantResponse> {
     const { merchantId, createRestaurantDto } = dto;
@@ -45,7 +61,7 @@ export class RestaurantService {
       }
     }
 
-    this.restaurantEventClient.emit('restaurant_created', restaurantCreatedEventPayload);
+    this.userServiceClient.emit({ event: 'restaurant_created' }, restaurantCreatedEventPayload);
     return {
       status: HttpStatus.CREATED,
       message: 'Restaurant was created',
