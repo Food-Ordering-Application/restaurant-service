@@ -6,7 +6,6 @@ import {
   UseGuards,
   HttpCode,
   Param,
-  ValidationPipe,
 } from '@nestjs/common';
 import { OrderService } from './order.service';
 import {
@@ -30,6 +29,8 @@ import {
   ReduceOrderItemQuantityDto,
   IncreaseOrderItemQuantityResponseDto,
   IncreaseOrderItemQuantityDto,
+  RemoveOrderItemResponseDto,
+  RemoveOrderItemDto,
 } from './dto';
 
 @ApiTags('orders')
@@ -122,5 +123,21 @@ export class OrderController {
       increaseOrderItemQuantityDto,
       orderId,
     );
+  }
+
+  // Thêm item vào trong order
+  @ApiOkResponse({ type: RemoveOrderItemResponseDto })
+  @ApiBody({ type: RemoveOrderItemDto })
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @HttpCode(200)
+  @Post('/:orderId/remove-orditem')
+  async removeOrderItem(
+    @Body()
+    removeOrderItemDto: RemoveOrderItemDto,
+    @Param() params,
+  ): Promise<RemoveOrderItemResponseDto> {
+    const { orderId } = params;
+    return this.orderService.removeOrderItem(removeOrderItemDto, orderId);
   }
 }

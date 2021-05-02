@@ -6,6 +6,7 @@ import {
   GetOrderAssociatedWithCusAndResDto,
   IncreaseOrderItemQuantityDto,
   ReduceOrderItemQuantityDto,
+  RemoveOrderItemDto,
 } from './dto';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { Order, OrderItem, OrderItemTopping } from './entities';
@@ -59,7 +60,7 @@ export class OrderService {
       order.serviceFee = 2000;
       order.shippingFee = 15000;
       order.subTotal =
-        orderItem.price * orderItem.quantity + totalPriceToppings;
+        (orderItem.price + totalPriceToppings) * orderItem.quantity;
       order.grandTotal = order.serviceFee + order.shippingFee + order.subTotal;
       await this.orderRepository.save(order);
       return {
@@ -288,6 +289,68 @@ export class OrderService {
       return {
         status: HttpStatus.OK,
         message: 'Increase orderItem quantity successfully',
+        order,
+      };
+    } catch (error) {
+      this.logger.error(error);
+      return {
+        status: HttpStatus.INTERNAL_SERVER_ERROR,
+        message: error.message,
+        order: null,
+      };
+    }
+  }
+
+  async removeOrderItem(
+    removeOrderItemDto: RemoveOrderItemDto,
+  ): Promise<ICreateOrderResponse> {
+    try {
+      const { orderItemId, orderId } = removeOrderItemDto;
+      // Tìm lại order với orderId
+      const order = await this.orderRepository
+        .createQueryBuilder('order')
+        .leftJoinAndSelect('order.orderItems', 'ordItems')
+        .leftJoinAndSelect('ordItems.orderItemToppings', 'ordItemToppings')
+        .where('order.id = :orderId', {
+          orderId: orderId,
+        })
+        .getOne();
+      const orderItemToDelete = order.orderItems.find(
+        (ordItem) => ordItem.id === orderItemId,
+      );
+      // Xóa các orderItemTopping của orderItem đó nếu có
+      await this.orderItemToppingRepository.remove(
+        orderItemToDelete.orderItemToppings,
+      );
+      // Xóa orderItem đó trong order.orderItems trả về người dùng
+      order.orderItems = order.orderItems.filter(
+        (ordItem) => ordItem.id !== orderItemId,
+      );
+      // Xóa orderItem đó
+      await this.orderItemRepository.remove(orderItemToDelete);
+
+      let flag = 0;
+
+      // Nếu như order không còn orderItem nào thì xóa order
+      if (order.orderItems.length === 0) {
+        flag = 1;
+        await this.orderRepository.remove(order);
+      } else {
+        // Tính toán lại giá
+        order.subTotal = calculateSubTotal(order.orderItems);
+        order.grandTotal = calculateGrandTotal(order);
+        await this.orderRepository.save(order);
+      }
+      if (flag) {
+        return {
+          status: HttpStatus.OK,
+          message: 'OrderItem removed successfully',
+          order: null,
+        };
+      }
+      return {
+        status: HttpStatus.OK,
+        message: 'OrderItem removed successfully',
         order,
       };
     } catch (error) {

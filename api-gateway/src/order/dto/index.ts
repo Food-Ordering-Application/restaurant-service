@@ -8,3 +8,5 @@ export { ReduceOrderItemQuantityResponseDto } from './reduce-orderitem-quantity-
 export { ReduceOrderItemQuantityDto } from './reduce-orderitem-quantity.dto';
 export { IncreaseOrderItemQuantityResponseDto } from './increase-orderitem-quantity-response.dto';
 export { IncreaseOrderItemQuantityDto } from './increase-orderitem-quantity.dto';
+export { RemoveOrderItemResponseDto } from './remove-order-item-response.dto';
+export { RemoveOrderItemDto } from './remove-order-item.dto';

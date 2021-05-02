@@ -12,6 +12,8 @@ import {
   ReduceOrderItemQuantityResponseDto,
   IncreaseOrderItemQuantityDto,
   IncreaseOrderItemQuantityResponseDto,
+  RemoveOrderItemDto,
+  RemoveOrderItemResponseDto,
 } from './dto';
 import { ICreateOrderResponse } from './interfaces';
 
@@ -143,6 +145,33 @@ export class OrderService {
       })
       .toPromise();
     const { message, order, status } = increaseOrderItemQuantityResponse;
+    if (status !== HttpStatus.OK) {
+      throw new HttpException(
+        {
+          message,
+        },
+        status,
+      );
+    }
+    return {
+      statusCode: status,
+      message,
+      data: {
+        order,
+      },
+    };
+  }
+
+  async removeOrderItem(
+    removeOrderItemDto: RemoveOrderItemDto,
+    orderId: string,
+  ): Promise<RemoveOrderItemResponseDto> {
+    const removeOrderItemResponse: ICreateOrderResponse = await this.orderServiceClient
+      .send('removeOrderItem', { ...removeOrderItemDto, orderId })
+      .toPromise();
+
+    const { message, order, status } = removeOrderItemResponse;
+
     if (status !== HttpStatus.OK) {
       throw new HttpException(
         {
