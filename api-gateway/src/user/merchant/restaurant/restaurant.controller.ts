@@ -19,8 +19,10 @@ import { InternalServerErrorResponseDto } from '../../../shared/dto/internal-ser
 import { MerchantJwtAuthGuard } from './../../../auth/guards/jwts/merchant-jwt-auth.guard';
 import { MerchantJwtPayload } from './../../../auth/strategies/jwt-strategies/merchant-jwt-payload.interface';
 import { DeleteStaffNotFoundResponseDto, DeleteStaffResponseDto, UpdateStaffDto, UpdateStaffResponseDto } from './dto';
-import { CreateStaffConflictResponseDto, CreateStaffDto, CreateStaffResponseDto, FetchStaffByMerchantDto, FetchStaffByMerchantResponseDto, FetchStaffByMerchantUnauthorizedResponseDto } from './dto/';
+import { CreateStaffConflictResponseDto, CreateStaffDto, CreateStaffResponseDto, PaginationDto, FetchStaffByMerchantResponseDto, FetchStaffByMerchantUnauthorizedResponseDto } from './dto/';
 import { CreateRestaurantDto } from './dto/create-restaurant/create-restaurant.dto';
+import { FetchRestaurantsOfMerchantResponseDto } from './dto/fetch-restaurant/fetch-restaurant-response.dto';
+import { FetchRestaurantsOfMerchantUnauthorizedResponseDto } from './dto/fetch-restaurant/fetch-restaurant-unauthorized-response.dto';
 import { UpdateStaffNotFoundResponseDto } from './dto/update-staff/update-staff-not-found-response.dto';
 import { RestaurantService } from './restaurant.service';
 
@@ -106,14 +108,14 @@ export class RestaurantController {
 
   @ApiOkResponse({ type: FetchStaffByMerchantResponseDto })
   @ApiUnauthorizedResponse({ type: FetchStaffByMerchantUnauthorizedResponseDto })
-  @ApiQuery({ type: FetchStaffByMerchantDto, required: false })
+  @ApiQuery({ type: PaginationDto, required: false })
   @UseGuards(MerchantJwtAuthGuard)
   @Get(':restaurantId/staff')
   async fetchStaff(
     @Request() req: MerchantJwtRequest,
     @Param('merchantId') merchant,
     @Param('restaurantId') restaurant,
-    @Query() fetchStaffByMerchantDto: FetchStaffByMerchantDto,
+    @Query() fetchStaffByMerchantDto: PaginationDto,
   ): Promise<FetchStaffByMerchantResponseDto> {
     const { user } = req;
     const { merchantId } = user;
@@ -127,13 +129,35 @@ export class RestaurantController {
     return await this.restaurantService.fetchStaff(merchantId, restaurant, fetchStaffByMerchantDto);
   }
 
+  @ApiOkResponse({ type: FetchRestaurantsOfMerchantResponseDto })
+  @ApiUnauthorizedResponse({ type: FetchRestaurantsOfMerchantUnauthorizedResponseDto })
+  @ApiQuery({ type: PaginationDto, required: false })
+  @UseGuards(MerchantJwtAuthGuard)
+  @Get()
+  async fetchRestaurantsOfMerchant(
+    @Request() req: MerchantJwtRequest,
+    @Param('merchantId') merchant,
+    @Query() fetchStaffByMerchantDto: PaginationDto,
+  ): Promise<FetchRestaurantsOfMerchantResponseDto> {
+    const { user } = req;
+    const { merchantId } = user;
+    if (merchantId !== merchant) {
+      return {
+        statusCode: 403,
+        message: 'Unauthorized',
+        data: null,
+      };
+    }
+    return await this.restaurantService.fetchRestaurantsOfMerchant(merchantId, fetchStaffByMerchantDto);
+  }
+
   @ApiBody({ type: CreateRestaurantDto })
   @ApiBearerAuth()
   @UseGuards(MerchantJwtAuthGuard)
   @Post()
-  createRestaurant(@Req() req, @Payload() createRestaurantDto: CreateRestaurantDto) {
+  async createRestaurant(@Req() req, @Payload() createRestaurantDto: CreateRestaurantDto) {
     const merchantPayload: MerchantJwtPayload = req.user;
     const { merchantId } = merchantPayload;
-    return this.restaurantService.createRestaurant(merchantId, createRestaurantDto);
+    return await this.restaurantService.createRestaurant(merchantId, createRestaurantDto);
   }
 }

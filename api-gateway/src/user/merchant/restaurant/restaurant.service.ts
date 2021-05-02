@@ -6,14 +6,16 @@ import {
   CreateStaffDto,
   CreateStaffResponseDto,
   DeleteStaffResponseDto,
-  FetchStaffByMerchantDto,
   FetchStaffByMerchantResponseDto,
+  PaginationDto,
   UpdateStaffDto,
   UpdateStaffResponseDto
 } from './dto';
 import { IUserServiceCreateStaffResponse, IUserServiceFetchStaffByMerchantResponse } from './interfaces';
 import { CreateRestaurantDto } from './dto/create-restaurant/create-restaurant.dto';
 import { UpdateRestaurantDto } from './dto/update-restaurant/update-restaurant.dto';
+import { FetchRestaurantsOfMerchantResponseDto } from './dto/fetch-restaurant/fetch-restaurant-response.dto';
+import { IUserServiceFetchRestaurantsOfMerchantResponse } from './interfaces/user-service-fetch-restaurants-of-merchant-response.interface';
 
 @Injectable()
 export class RestaurantService {
@@ -73,7 +75,7 @@ export class RestaurantService {
     };
   }
 
-  async fetchStaff(merchantId: string, restaurantId: string, fetchStaffByMerchantDto: FetchStaffByMerchantDto): Promise<FetchStaffByMerchantResponseDto> {
+  async fetchStaff(merchantId: string, restaurantId: string, fetchStaffByMerchantDto: PaginationDto): Promise<FetchStaffByMerchantResponseDto> {
     const fetchStaffResponse: IUserServiceFetchStaffByMerchantResponse = await this.userServiceClient
       .send('fetchStaff', {
         merchantId,
@@ -103,7 +105,6 @@ export class RestaurantService {
     const createRestaurantResponse = await this.restaurantServiceClient
       .send('createRestaurant', { merchantId, createRestaurantDto })
       .toPromise();
-
     const { status, message, data } = createRestaurantResponse;
     // if (status !== HttpStatus.CREATED) {
     //   throw new HttpException({ message, }, status,);
@@ -116,4 +117,29 @@ export class RestaurantService {
     };
   }
 
+  async fetchRestaurantsOfMerchant(merchantId: string, fetchRestaurantsOfMerchantDto: PaginationDto): Promise<FetchRestaurantsOfMerchantResponseDto> {
+    const fetchRestaurantsOfMerchantResponse: IUserServiceFetchRestaurantsOfMerchantResponse
+      = await this.userServiceClient
+        .send('fetchRestaurantsOfMerchant', {
+          merchantId,
+          page: parseInt(fetchRestaurantsOfMerchantDto.page) || 0,
+          size: parseInt(fetchRestaurantsOfMerchantDto.size) || 10
+        })
+        .toPromise();
+
+    const { status, message, data } = fetchRestaurantsOfMerchantResponse;
+    if (status !== HttpStatus.OK) {
+      throw new HttpException({ message, }, status,);
+    }
+    const { results, size, total } = data;
+    return {
+      statusCode: 200,
+      message,
+      data: {
+        results,
+        size,
+        total
+      }
+    };
+  }
 }
