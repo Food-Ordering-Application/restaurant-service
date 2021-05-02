@@ -1,7 +1,7 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsNumber, IsNumberString, IsString } from 'class-validator';
 
-export class FetchStaffByMerchantDto {
+export class PaginationDto {
   @ApiPropertyOptional({ example: '0', required: false, default: '0' })
   page?: string;
 
