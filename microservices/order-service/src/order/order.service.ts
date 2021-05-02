@@ -8,13 +8,7 @@ import {
   ReduceOrderItemQuantityDto,
 } from './dto';
 import { CreateOrderDto } from './dto/create-order.dto';
-import {
-  Order,
-  OrderItem,
-  OrderItemTopping,
-  OrderStatus,
-  PaymentType,
-} from './entities';
+import { Order, OrderItem, OrderItemTopping } from './entities';
 import { PType, Status } from './enums';
 import { ICreateOrderResponse } from './interfaces';
 import { createAndStoreOrderItem } from './helpers';
@@ -36,10 +30,6 @@ export class OrderService {
     private orderItemRepository: Repository<OrderItem>,
     @InjectRepository(OrderItemTopping)
     private orderItemToppingRepository: Repository<OrderItemTopping>,
-    @InjectRepository(PaymentType)
-    private paymentTypeRepository: Repository<PaymentType>,
-    @InjectRepository(OrderStatus)
-    private orderStatusRepository: Repository<OrderStatus>,
   ) {}
 
   async createOrderAndFirstOrderItem(
@@ -63,16 +53,8 @@ export class OrderService {
       order.customerId = customerId;
       order.restaurantId = restaurantId;
       // paymentType mặc định là COD, status là DRAFT
-      const values = await Promise.all([
-        this.paymentTypeRepository.findOne({
-          name: PType.COD,
-        }),
-        this.orderStatusRepository.findOne({
-          name: Status.DRAFT,
-        }),
-      ]);
-      order.paymentType = values[0];
-      order.status = values[1];
+      order.paymentType = PType.COD;
+      order.status = Status.DRAFT;
       order.orderItems = addOrderItems;
       order.serviceFee = 2000;
       order.shippingFee = 15000;
