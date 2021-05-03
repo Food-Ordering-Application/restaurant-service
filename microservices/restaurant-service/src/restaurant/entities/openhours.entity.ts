@@ -13,7 +13,7 @@ export class OpenHour {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(() => Restaurant, (restaurant) => restaurant.openhours)
+  @ManyToOne(() => Restaurant, (restaurant) => restaurant.openHours)
   @JoinColumn()
   restaurant: Restaurant;
 
