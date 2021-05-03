@@ -2,6 +2,7 @@ import { Menu } from '../../menu/entities/menu.entity';
 import { ToppingGroup } from '../../menu/entities/topping-group.entity';
 import {
   Column,
+  CreateDateColumn,
   Entity,
   JoinTable,
   ManyToMany,
@@ -79,4 +80,10 @@ export class Restaurant {
 
   @OneToMany(() => ToppingGroup, (toppingGroup) => toppingGroup.restaurant)
   toppingGroups: ToppingGroup[];
+
+  @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
+  created_at: Date;
+
+  @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
+  updated_at: Date;
 }
