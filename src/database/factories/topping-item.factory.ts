@@ -10,6 +10,7 @@ define(ToppingItem, (faker: typeof Faker, context: Context) => {
   const { toppingGroup } = context;
   const toppingItem = new ToppingItem();
   toppingItem.id = faker.random.uuid();
+  toppingItem.name = faker.name.findName();
   toppingItem.group = toppingGroup;
   toppingItem.description = faker.lorem.sentence();
   toppingItem.maxQuantity = 3;
