@@ -2,14 +2,11 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  JoinColumn,
-  ManyToOne,
   OneToMany,
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { PType } from '../enums';
-import { OrderStatus, PaymentType } from './index';
+import { PType, Status } from '../enums';
 import { OrderItem } from './order-item.entity';
 
 @Entity()
@@ -53,11 +50,11 @@ export class Order {
   @Column({ nullable: true })
   deliveredAt: Date;
 
-  @ManyToOne(() => PaymentType, (paymentType) => paymentType.orders)
-  paymentType: PaymentType;
+  @Column({ enum: PType })
+  paymentType: string;
 
-  @ManyToOne(() => OrderStatus, (orderStatus) => orderStatus.orders)
-  status: OrderStatus;
+  @Column({ enum: Status })
+  status: string;
 
   @OneToMany(() => OrderItem, (orderItem) => orderItem.order)
   orderItems: OrderItem[];

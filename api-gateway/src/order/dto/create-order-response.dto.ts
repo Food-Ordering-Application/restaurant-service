@@ -11,14 +11,8 @@ export class CreateOrderResponseDto {
       order: {
         customerId: '6c94e9b7-aa4f-44c8-bf21-91dd1da2dc2d',
         restaurantId: '50e26c95-383b-4cb2-a97c-1547433c6d3a',
-        paymentType: {
-          id: 'b2fe299c-2070-4403-a5a6-f9b1b5c10414',
-          name: 'COD',
-        },
-        status: {
-          id: '2e527c01-6e76-46c0-9782-d7d92119a854',
-          name: 'DRAFT',
-        },
+        paymentType: 'COD',
+        status: 'DRAFT',
         orderItems: [
           {
             menuItemId: '9c7b4cd5-7dc7-48c7-8cc9-661b2e026cda',

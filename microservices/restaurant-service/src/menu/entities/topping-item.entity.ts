@@ -25,6 +25,9 @@ export class ToppingItem {
   menuItemToppings: MenuItemTopping[];
 
   @Column()
+  name: string;
+
+  @Column()
   description: string;
 
   @Column()

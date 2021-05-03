@@ -28,4 +28,4 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
   controllers: [RestaurantController],
   providers: [RestaurantService],
 })
-export class RestaurantModule { }
+export class RestaurantModule {}

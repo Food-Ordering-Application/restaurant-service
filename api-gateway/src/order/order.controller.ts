@@ -29,6 +29,8 @@ import {
   ReduceOrderItemQuantityDto,
   IncreaseOrderItemQuantityResponseDto,
   IncreaseOrderItemQuantityDto,
+  RemoveOrderItemResponseDto,
+  RemoveOrderItemDto,
 } from './dto';
 
 @ApiTags('orders')
@@ -46,8 +48,10 @@ export class OrderController {
   @UseGuards(JwtAuthGuard)
   @Post()
   async createOrderAndFirstOrderItem(
-    @Body() createOrderDto: CreateOrderDto,
+    @Body()
+    createOrderDto: CreateOrderDto,
   ): Promise<CreateOrderResponseDto> {
+    console.log(createOrderDto);
     return this.orderService.createOrderAndFirstOrderItem(createOrderDto);
   }
 
@@ -119,5 +123,21 @@ export class OrderController {
       increaseOrderItemQuantityDto,
       orderId,
     );
+  }
+
+  // Thêm item vào trong order
+  @ApiOkResponse({ type: RemoveOrderItemResponseDto })
+  @ApiBody({ type: RemoveOrderItemDto })
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @HttpCode(200)
+  @Post('/:orderId/remove-orditem')
+  async removeOrderItem(
+    @Body()
+    removeOrderItemDto: RemoveOrderItemDto,
+    @Param() params,
+  ): Promise<RemoveOrderItemResponseDto> {
+    const { orderId } = params;
+    return this.orderService.removeOrderItem(removeOrderItemDto, orderId);
   }
 }
