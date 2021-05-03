@@ -1,3 +1,5 @@
+import { Category } from './entities/category.entity';
+import { OpenHour } from './entities/openhours.entity';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ClientsModule, Transport } from '@nestjs/microservices';
@@ -9,7 +11,7 @@ import { RestaurantService } from './restaurant.service';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Restaurant]),
+    TypeOrmModule.forFeature([Restaurant, OpenHour, Category]),
     ClientsModule.registerAsync([
       {
         name: USER_SERVICE,
