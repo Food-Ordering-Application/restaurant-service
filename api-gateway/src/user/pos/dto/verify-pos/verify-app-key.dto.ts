@@ -2,7 +2,11 @@ import { ApiProperty } from "@nestjs/swagger";
 import { IsString } from "class-validator";
 
 export class VerifyAppKeyDto {
-  @ApiProperty({ example: '8AAC72387AEDF73E71FFCA20F20E23C9C2F02B26', required: true })
+  @ApiProperty({ example: '1234-1234-1234', required: true })
   @IsString()
   posAppKey: string;
+
+  @ApiProperty({ example: '308068d8-50eb-42e8-9a1f-10ec02c95718', required: true })
+  @IsString()
+  deviceId: string;
 }

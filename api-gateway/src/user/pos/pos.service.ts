@@ -12,9 +12,9 @@ export class PosService {
 
 
   async verifyAppKey(verifyAppKeyDto: VerifyAppKeyDto): Promise<VerifyAppKeyResponseDto> {
-    const { posAppKey } = verifyAppKeyDto;
+    const { posAppKey, deviceId } = verifyAppKeyDto;
     const verifyRestaurant: IUserServiceVerifyAppKeyResponse = await this.userServiceClient
-      .send('verifyPosAppKey', { posAppKey })
+      .send('verifyPosAppKey', { posAppKey, deviceId })
       .toPromise();
     const { status, message, data } = verifyRestaurant;
 

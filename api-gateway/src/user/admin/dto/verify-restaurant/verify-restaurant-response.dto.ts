@@ -12,7 +12,7 @@ export class VerifyRestaurantResponseDto {
 
   @ApiProperty({
     example: {
-      posAppKey: "AA67FE0722E2DF4B04B56399FA7CA96662E66DD3"
+      posAppKey: "1234-1234-1234"
     }
   })
   data: IVerifyRestaurantResponseData;
