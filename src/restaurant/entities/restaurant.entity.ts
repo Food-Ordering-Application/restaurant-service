@@ -62,10 +62,13 @@ export class Restaurant {
   @Column({ default: false })
   isBanned: boolean;
 
-  @OneToMany(() => OpenHour, (openHours) => openHours.restaurant)
-  openhours: OpenHour[];
+  @OneToMany(() => OpenHour, (openHours) => openHours.restaurant, {
+    cascade: ['update', 'insert']
+  })
+  openHours: OpenHour[];
 
   @ManyToMany(() => Category, (category) => category.restaurants, {
+    cascade: ['update', 'insert'],
     eager: true,
   })
   @JoinTable()
