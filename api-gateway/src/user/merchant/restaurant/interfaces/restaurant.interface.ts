@@ -1,13 +1,11 @@
-export interface IRestaurantProfile {
-  restaurantId: string;
-  posAppKey: string;
+export interface IRestaurant {
+  id: string;
   name: string;
   phone: string;
-  area: string;
-  city: string;
+  owner: string;
+  coverImageUrl: string;
+  videoUrl?: string;
   address: string;
-  contractId: number;
-  isActive: boolean;
-  isVerified: boolean;
+  city: string;
+  area: string;
 }
-

@@ -3,10 +3,8 @@ import { Payload } from '@nestjs/microservices';
 import {
   ApiBearerAuth,
   ApiBody,
-
-
+  ApiCreatedResponse,
   ApiInternalServerErrorResponse,
-
   ApiOkResponse,
   ApiQuery,
   ApiTags,
@@ -16,7 +14,7 @@ import { MerchantJwtRequest } from 'src/auth/strategies/jwt-strategies/merchant-
 import { InternalServerErrorResponseDto } from '../../../shared/dto/internal-server-error.dto';
 import { MerchantJwtAuthGuard } from './../../../auth/guards/jwts/merchant-jwt-auth.guard';
 import { MerchantJwtPayload } from './../../../auth/strategies/jwt-strategies/merchant-jwt-payload.interface';
-import { FetchRestaurantDto } from './dto';
+import { CreateRestaurantResponseDto, FetchRestaurantDto } from './dto';
 import { CreateRestaurantDto } from './dto/create-restaurant/create-restaurant.dto';
 import { FetchRestaurantsOfMerchantResponseDto } from './dto/fetch-restaurant/fetch-restaurant-response.dto';
 import { FetchRestaurantsOfMerchantUnauthorizedResponseDto } from './dto/fetch-restaurant/fetch-restaurant-unauthorized-response.dto';
@@ -54,6 +52,7 @@ export class RestaurantController {
     return await this.restaurantService.fetchRestaurantsOfMerchant(merchantId, fetchRestaurantByMerchantDto);
   }
 
+  @ApiCreatedResponse({ type: CreateRestaurantResponseDto })
   @ApiBody({ type: CreateRestaurantDto })
   @ApiBearerAuth()
   @UseGuards(MerchantJwtAuthGuard)
