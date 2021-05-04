@@ -1,13 +1,7 @@
 import { HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import {
-  Menu,
-  MenuGroup,
-  MenuItem,
-  MenuItemTopping,
-  ToppingGroup,
-} from './entities';
+import { Menu, MenuGroup, MenuItem, ToppingGroup } from './entities';
 import {
   IMenuInformationResponse,
   IMenuItemToppingResponse,
