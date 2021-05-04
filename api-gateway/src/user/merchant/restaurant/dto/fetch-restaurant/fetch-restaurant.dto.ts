@@ -1,11 +1,5 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsNumber, IsNumberString, IsString } from 'class-validator';
+import { PaginationDto } from './../../../../../shared/dto/pagination.dto';
 
-export class PaginationDto {
-  @ApiPropertyOptional({ example: '0', required: false, default: '0' })
-  page?: string;
-
-  @ApiPropertyOptional({ example: '10', required: false, default: '10' })
-  size?: string;
+export class FetchRestaurantDto extends PaginationDto {
 }
 

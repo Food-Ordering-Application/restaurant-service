@@ -1,5 +1,4 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IFetchStaffData } from '../../interfaces';
 import { IFetchRestaurantData } from '../../interfaces/fetch-restaurant-data.interface';
 
 export class FetchRestaurantsOfMerchantResponseDto {
