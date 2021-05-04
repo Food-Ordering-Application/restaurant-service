@@ -17,10 +17,10 @@ import {
 
 export default class CreateFakeData implements Seeder {
   public async run(factory: Factory, connection: Connection): Promise<any> {
-    const restaurants = await factory(Restaurant)({}).createMany(50);
+    const restaurants = await factory(Restaurant)({}).createMany(20);
     for (const restaurant of restaurants) {
-      // Với mỗi nhà hàng tạo 7 openHour
-      await factory(OpenHour)({ restaurantId: restaurant.id }).createMany(7);
+      // Với mỗi nhà hàng tạo 2 openHour
+      await factory(OpenHour)({ restaurantId: restaurant.id }).createMany(2);
       // Với mỗi nhà hàng tạo 1 menu
       const menu = await factory(Menu)({
         restaurantId: restaurant.id,
@@ -28,11 +28,11 @@ export default class CreateFakeData implements Seeder {
       // Với mỗi menu tạo 3 menuGroup
       const menuGroups = await factory(MenuGroup)({
         menuId: menu.id,
-      }).createMany(3);
+      }).createMany(2);
       // Với mỗi nhà hàng tạo 3 toppingGroup
       const toppingGroups = await factory(ToppingGroup)({
         restaurantId: restaurant.id,
-      }).createMany(3);
+      }).createMany(2);
       // Tạo MenuItem
       const menuItems = await Promise.all([
         factory(MenuItem)({
@@ -43,22 +43,15 @@ export default class CreateFakeData implements Seeder {
           menu: menu,
           menuGroup: menuGroups[1],
         }).createMany(2),
-        factory(MenuItem)({
-          menu: menu,
-          menuGroup: menuGroups[2],
-        }).createMany(2),
       ]);
       // Mỗi toppingGroup tạo nhiều toppingItem
       const toppingItems = await Promise.all([
         factory(ToppingItem)({
           toppingGroup: toppingGroups[0],
-        }).createMany(3),
+        }).createMany(2),
         factory(ToppingItem)({
           toppingGroup: toppingGroups[1],
-        }).createMany(3),
-        factory(ToppingItem)({
-          toppingGroup: toppingGroups[2],
-        }).createMany(3),
+        }).createMany(2),
       ]);
 
       // Tạo MenuItemTopping
@@ -73,31 +66,11 @@ export default class CreateFakeData implements Seeder {
         }).create(),
         factory(MenuItemTopping)({
           menuItem: menuItems[0][0],
-          toppingItem: toppingItems[0][2],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[0][0],
           toppingItem: toppingItems[1][0],
         }).create(),
         factory(MenuItemTopping)({
           menuItem: menuItems[0][0],
           toppingItem: toppingItems[1][1],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[0][0],
-          toppingItem: toppingItems[1][2],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[0][0],
-          toppingItem: toppingItems[2][0],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[0][0],
-          toppingItem: toppingItems[2][1],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[0][0],
-          toppingItem: toppingItems[2][2],
         }).create(),
         factory(MenuItemTopping)({
           menuItem: menuItems[0][1],
@@ -109,31 +82,11 @@ export default class CreateFakeData implements Seeder {
         }).create(),
         factory(MenuItemTopping)({
           menuItem: menuItems[0][1],
-          toppingItem: toppingItems[0][2],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[0][1],
           toppingItem: toppingItems[1][0],
         }).create(),
         factory(MenuItemTopping)({
           menuItem: menuItems[0][1],
           toppingItem: toppingItems[1][1],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[0][1],
-          toppingItem: toppingItems[1][2],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[0][1],
-          toppingItem: toppingItems[2][0],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[0][1],
-          toppingItem: toppingItems[2][1],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[0][1],
-          toppingItem: toppingItems[2][2],
         }).create(),
         factory(MenuItemTopping)({
           menuItem: menuItems[1][0],
@@ -145,31 +98,11 @@ export default class CreateFakeData implements Seeder {
         }).create(),
         factory(MenuItemTopping)({
           menuItem: menuItems[1][0],
-          toppingItem: toppingItems[0][2],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[1][0],
           toppingItem: toppingItems[1][0],
         }).create(),
         factory(MenuItemTopping)({
           menuItem: menuItems[1][0],
           toppingItem: toppingItems[1][1],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[1][0],
-          toppingItem: toppingItems[1][2],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[1][0],
-          toppingItem: toppingItems[2][0],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[1][0],
-          toppingItem: toppingItems[2][1],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[1][0],
-          toppingItem: toppingItems[2][2],
         }).create(),
         factory(MenuItemTopping)({
           menuItem: menuItems[1][1],
@@ -181,120 +114,28 @@ export default class CreateFakeData implements Seeder {
         }).create(),
         factory(MenuItemTopping)({
           menuItem: menuItems[1][1],
-          toppingItem: toppingItems[0][2],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[1][1],
           toppingItem: toppingItems[1][0],
         }).create(),
         factory(MenuItemTopping)({
           menuItem: menuItems[1][1],
           toppingItem: toppingItems[1][1],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[1][1],
-          toppingItem: toppingItems[1][2],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[1][1],
-          toppingItem: toppingItems[2][0],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[1][1],
-          toppingItem: toppingItems[2][1],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[1][1],
-          toppingItem: toppingItems[2][2],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[2][0],
-          toppingItem: toppingItems[0][0],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[2][0],
-          toppingItem: toppingItems[0][1],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[2][0],
-          toppingItem: toppingItems[0][2],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[2][0],
-          toppingItem: toppingItems[1][0],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[2][0],
-          toppingItem: toppingItems[1][1],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[2][0],
-          toppingItem: toppingItems[1][2],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[2][0],
-          toppingItem: toppingItems[2][0],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[2][0],
-          toppingItem: toppingItems[2][1],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[2][0],
-          toppingItem: toppingItems[2][2],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[2][1],
-          toppingItem: toppingItems[0][0],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[2][1],
-          toppingItem: toppingItems[0][1],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[2][1],
-          toppingItem: toppingItems[0][2],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[2][1],
-          toppingItem: toppingItems[1][0],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[2][1],
-          toppingItem: toppingItems[1][1],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[2][1],
-          toppingItem: toppingItems[1][2],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[2][1],
-          toppingItem: toppingItems[2][0],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[2][1],
-          toppingItem: toppingItems[2][1],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[2][1],
-          toppingItem: toppingItems[2][2],
         }).create(),
       ]);
     }
     // Tạo 4 restaurant-category và mỗi category gán 5 nhà hàng
-    await factory(Category)({ restaurants: restaurants.slice(0, 12) }).create({
+    await factory(Category)({ restaurants: restaurants.slice(0, 5) }).create({
       type: CategoryType.CAFEDESSERT,
     });
-    await factory(Category)({ restaurants: restaurants.slice(12, 25) }).create({
+    await factory(Category)({ restaurants: restaurants.slice(5, 10) }).create({
       type: CategoryType.RESTAURANT,
     });
     await factory(Category)({
-      restaurants: restaurants.slice(25, 37),
+      restaurants: restaurants.slice(10, 15),
     }).create({
       type: CategoryType.STREETFOOD,
     });
     await factory(Category)({
-      restaurants: restaurants.slice(37, 50),
+      restaurants: restaurants.slice(15, 20),
     }).create({
       type: CategoryType.VETERIAN,
     });
