@@ -9,24 +9,14 @@ interface Context {
 }
 
 define(OpenHour, (faker: typeof Faker, context: Context) => {
-  const { restaurantId } = context;
-  const id = faker.random.uuid();
-  const day = _.sample(Object.values(DaysOfWeek)) as DaysOfWeek;
-  const fromHour = 8;
-  const toHour = 19;
-  const fromMinute = 30;
-  const toMinute = 45;
-  const restaurant = new Restaurant();
-  restaurant.id = restaurantId.toString();
-
   const openHour = new OpenHour();
-  openHour.id = id;
-  openHour.day = day;
-  openHour.fromHour = fromHour;
-  openHour.toHour = toHour;
-  openHour.fromMinute = fromMinute;
-  openHour.toMinute = toMinute;
-  openHour.restaurant = restaurant;
+  openHour.id = faker.random.uuid();
+  openHour.day = _.sample(Object.values(DaysOfWeek)) as DaysOfWeek;
+  openHour.fromHour = 8;
+  openHour.toHour = 19;
+  openHour.fromMinute = 30;
+  openHour.toMinute = 45;
+  // openHour.restaurant = restaurant;
 
   return openHour;
 });
