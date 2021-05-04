@@ -155,9 +155,20 @@ export class RestaurantController {
   @ApiBearerAuth()
   @UseGuards(MerchantJwtAuthGuard)
   @Post()
-  async createRestaurant(@Req() req, @Payload() createRestaurantDto: CreateRestaurantDto) {
+  async createRestaurant(
+    @Req() req,
+    @Payload() createRestaurantDto: CreateRestaurantDto,
+    @Param('merchantId') merchant,
+  ) {
     const merchantPayload: MerchantJwtPayload = req.user;
     const { merchantId } = merchantPayload;
+    if (merchantId !== merchant) {
+      return {
+        statusCode: 403,
+        message: 'Unauthorized',
+        data: null,
+      };
+    }
     return await this.restaurantService.createRestaurant(merchantId, createRestaurantDto);
   }
 }

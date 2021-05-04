@@ -102,14 +102,22 @@ export class RestaurantService {
   }
 
   async createRestaurant(merchantId: string, createRestaurantDto: CreateRestaurantDto) {
+    const isMerchantIdValid: boolean = await this.userServiceClient
+      .send('validateMerchantId', merchantId)
+      .toPromise();
+    if (!isMerchantIdValid) {
+      return {
+        statusCode: HttpStatus.BAD_REQUEST,
+        message: 'MerchantId is not valid'
+      };
+    }
     const createRestaurantResponse = await this.restaurantServiceClient
       .send('createRestaurant', { merchantId, createRestaurantDto })
       .toPromise();
     const { status, message, data } = createRestaurantResponse;
-    // if (status !== HttpStatus.CREATED) {
-    //   throw new HttpException({ message, }, status,);
-    // }
-    // TODO
+    if (status !== HttpStatus.CREATED) {
+      throw new HttpException({ message, }, status,);
+    }
     return {
       statusCode: 201,
       message,
