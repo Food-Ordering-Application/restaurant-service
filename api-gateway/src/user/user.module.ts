@@ -1,19 +1,21 @@
-import { RestaurantController } from './merchant/restaurant/restaurant.controller';
-import { PosController } from './pos/pos.controller';
 import { forwardRef, Module } from '@nestjs/common';
-import { CustomerService } from './customer/customer.service';
-import { CustomerController } from './customer/customer.controller';
-import { ClientsModule, Transport } from '@nestjs/microservices';
-import * as constants from '../constants';
-import { AuthModule } from 'src/auth/auth.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ClientsModule, Transport } from '@nestjs/microservices';
+import { AuthModule } from 'src/auth/auth.module';
 import { CaslModule } from 'src/casl/casl.module';
-import { MerchantController } from './merchant/merchant.controller';
-import { MerchantService } from './merchant/merchant.service';
+import * as constants from '../constants';
 import { AdminController } from './admin/admin.controller';
 import { AdminService } from './admin/admin.service';
-import { PosService } from './pos/pos.service';
+import { CustomerController } from './customer/customer.controller';
+import { CustomerService } from './customer/customer.service';
+import { MerchantController } from './merchant/merchant.controller';
+import { MerchantService } from './merchant/merchant.service';
+import { RestaurantController } from './merchant/restaurant/restaurant.controller';
 import { RestaurantService } from './merchant/restaurant/restaurant.service';
+import { StaffController } from './merchant/restaurant/staff/staff.controller';
+import { StaffService } from './merchant/restaurant/staff/staff.service';
+import { PosController } from './pos/pos.controller';
+import { PosService } from './pos/pos.service';
 
 @Module({
   imports: [
@@ -58,6 +60,7 @@ import { RestaurantService } from './merchant/restaurant/restaurant.service';
     AdminController,
     PosController,
     RestaurantController,
+    StaffController
   ],
   providers: [
     CustomerService,
@@ -65,6 +68,7 @@ import { RestaurantService } from './merchant/restaurant/restaurant.service';
     AdminService,
     PosService,
     RestaurantService,
+    StaffService
   ],
   exports: [
     CustomerService,
@@ -72,6 +76,7 @@ import { RestaurantService } from './merchant/restaurant/restaurant.service';
     AdminService,
     PosService,
     RestaurantService,
+    StaffService
   ],
 })
-export class UserModule {}
+export class UserModule { }
