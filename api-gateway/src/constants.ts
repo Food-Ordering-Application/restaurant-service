@@ -2,3 +2,4 @@ export const USER_SERVICE = 'USER_SERVICE';
 export const RESTAURANT_SERVICE = 'RESTAURANT_SERVICE';
 export const ORDER_SERVICE = 'ORDER_SERVICE';
 export const JWT_SECRET = 'JWT_SECRET';
+export const POSITION_GAP = 65536;
