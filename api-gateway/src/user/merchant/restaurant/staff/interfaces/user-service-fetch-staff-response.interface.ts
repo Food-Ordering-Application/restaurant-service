@@ -1,4 +1,4 @@
-import { IFetchStaffData } from '.';
+import { IFetchStaffData } from '../interfaces';
 
 export interface IUserServiceFetchStaffByMerchantResponse {
   status: number;
