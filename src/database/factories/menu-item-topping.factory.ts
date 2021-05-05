@@ -7,16 +7,21 @@ import {
 } from '../../menu/entities/index';
 
 interface Context {
-  // menuItem: MenuItem;
+  menuItem: MenuItem;
   toppingItem: ToppingItem;
+  menuItemToppingId?: string;
 }
 
 define(MenuItemTopping, (faker: typeof Faker, context: Context) => {
-  // const { toppingItem } = context;
+  const { menuItem, toppingItem, menuItemToppingId } = context;
   const menuItemTopping = new MenuItemTopping();
-  menuItemTopping.id = faker.random.uuid();
-  // menuItemTopping.menuItem = menuItem;
-  // menuItemTopping.toppingItem = toppingItem;
+  if (!menuItemToppingId) {
+    menuItemTopping.id = faker.random.uuid();
+  } else {
+    menuItemTopping.id = menuItemToppingId;
+  }
+  menuItemTopping.menuItem = menuItem;
+  menuItemTopping.toppingItem = toppingItem;
   menuItemTopping.customPrice = faker.random.number({ min: 5000, max: 20000 });
   return menuItemTopping;
 });

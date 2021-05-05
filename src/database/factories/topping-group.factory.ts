@@ -1,19 +1,21 @@
 import { define } from 'typeorm-seeding';
 import Faker from 'faker';
-import { ToppingGroup, ToppingItem } from '../../menu/entities/index';
+import { ToppingGroup } from '../../menu/entities/index';
+import { Restaurant } from '../../restaurant/entities/index';
 
 interface Context {
-  toppingItems: ToppingItem[];
+  restaurantId: string;
 }
 
 define(ToppingGroup, (faker: typeof Faker, context: Context) => {
-  const { toppingItems } = context;
+  const { restaurantId } = context;
+  const restaurant = new Restaurant();
+  restaurant.id = restaurantId;
   const id = faker.random.uuid();
   const name = faker.name.findName();
   const toppingGroup = new ToppingGroup();
   toppingGroup.id = id;
-  // toppingGroup.restaurant = restaurant;
-  toppingGroup.toppingItems = toppingItems;
+  toppingGroup.restaurant = restaurant;
   toppingGroup.name = name;
   toppingGroup.index = 1;
   toppingGroup.isActive = true;
