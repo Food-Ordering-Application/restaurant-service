@@ -11,7 +11,7 @@ import {
   UpdateMenuGroupDto,
   UpdateMenuGroupResponseDto
 } from './dto';
-import { IUserServiceCreateMenuGroupResponse, IUserServiceFetchMenuGroupByMenuResponse } from './interfaces';
+import { IRestaurantServiceCreateMenuGroupResponse, IRestaurantServiceFetchMenuGroupByMenuResponse } from './interfaces';
 
 @Injectable()
 export class MenuGroupService {
@@ -20,7 +20,7 @@ export class MenuGroupService {
   ) { }
 
   async createMenuGroup(merchantId: string, restaurantId: string, menuId: string, createMenuGroupDto: CreateMenuGroupDto): Promise<CreateMenuGroupResponseDto> {
-    const createMenuGroupResponse: IUserServiceCreateMenuGroupResponse = await this.menuGroupServiceClient
+    const createMenuGroupResponse: IRestaurantServiceCreateMenuGroupResponse = await this.menuGroupServiceClient
       .send('createMenuGroup', { merchantId, restaurantId, menuId, data: createMenuGroupDto })
       .toPromise();
 
@@ -71,7 +71,7 @@ export class MenuGroupService {
   }
 
   async fetchMenuGroup(merchantId: string, restaurantId: string, menuId: string, fetchMenuGroupByMenuQuery: FetchMenuGroupQuery): Promise<FetchMenuGroupByMenuResponseDto> {
-    const fetchMenuGroupResponse: IUserServiceFetchMenuGroupByMenuResponse = await this.menuGroupServiceClient
+    const fetchMenuGroupResponse: IRestaurantServiceFetchMenuGroupByMenuResponse = await this.menuGroupServiceClient
       .send('fetchMenuGroupOfMenu', {
         merchantId,
         restaurantId,

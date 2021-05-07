@@ -1,6 +1,6 @@
 import { IMenuGroup } from './menu-group.interface';
 
-export interface IUserServiceCreateMenuGroupResponse {
+export interface IRestaurantServiceCreateMenuGroupResponse {
   status: number;
   message: string;
   data: {

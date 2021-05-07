@@ -1,6 +1,6 @@
 import { IFetchMenuGroupData } from '.';
 
-export interface IUserServiceFetchMenuGroupByMenuResponse {
+export interface IRestaurantServiceFetchMenuGroupByMenuResponse {
   status: number;
   message: string;
   data: IFetchMenuGroupData;
