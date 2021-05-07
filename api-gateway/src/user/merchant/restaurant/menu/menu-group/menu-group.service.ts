@@ -40,7 +40,7 @@ export class MenuGroupService {
 
   async updateMenuGroup(menuGroupId: string, merchantId: string, restaurantId: string, menuId: string, updateMenuGroupDto: UpdateMenuGroupDto): Promise<UpdateMenuGroupResponseDto> {
     const updateMenuGroupResponse: ISimpleResponse = await this.menuGroupServiceClient
-      .send('updateMenuGroupOfMenu', { menuGroupId, merchantId, restaurantId, menuId, data: updateMenuGroupDto })
+      .send('updateMenuGroup', { menuGroupId, merchantId, restaurantId, menuId, data: updateMenuGroupDto })
       .toPromise();
 
     const { status, message } = updateMenuGroupResponse;
