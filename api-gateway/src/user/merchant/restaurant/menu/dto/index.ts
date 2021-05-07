@@ -3,3 +3,4 @@ export { FetchMenuOfRestaurantUnauthorizedResponseDto } from './fetch-menu/fetch
 export { FetchMenuDto } from './fetch-menu/fetch-menu.dto';
 export { CreateMenuResponseDto } from './create-menu/create-menu-response.dto';
 export { CreateMenuDto } from './create-menu/create-menu.dto';
+export { CreateMenuConflictResponseDto } from './create-menu/create-menu-conflict-response.dto';

@@ -1,8 +1,10 @@
+import { PaginationDto } from './../../../../shared/dto/pagination.dto';
 import { Controller, Get, Logger, Param, Post, Query, Req, Request, UseGuards } from '@nestjs/common';
 import { Payload } from '@nestjs/microservices';
 import {
   ApiBearerAuth,
   ApiBody,
+  ApiConflictResponse,
   ApiCreatedResponse,
   ApiInternalServerErrorResponse,
   ApiOkResponse,
@@ -14,10 +16,7 @@ import { MerchantJwtRequest } from 'src/auth/strategies/jwt-strategies/merchant-
 import { InternalServerErrorResponseDto } from '../../../../shared/dto/internal-server-error.dto';
 import { MerchantJwtAuthGuard } from '../../../../auth/guards/jwts/merchant-jwt-auth.guard';
 import { MerchantJwtPayload } from '../../../../auth/strategies/jwt-strategies/merchant-jwt-payload.interface';
-import { CreateMenuResponseDto, FetchMenuDto } from './dto';
-import { CreateMenuDto } from './dto/create-menu/create-menu.dto';
-import { FetchMenuOfRestaurantResponseDto } from './dto/fetch-menu/fetch-menu-response.dto';
-import { FetchMenuOfRestaurantUnauthorizedResponseDto } from './dto/fetch-menu/fetch-menu-unauthorized-response.dto';
+import { CreateMenuConflictResponseDto, CreateMenuDto, CreateMenuResponseDto, FetchMenuDto, FetchMenuOfRestaurantResponseDto, FetchMenuOfRestaurantUnauthorizedResponseDto } from './dto';
 import { MenuService } from './menu.service';
 
 @ApiTags('merchant/restaurant/menu')
@@ -39,21 +38,22 @@ export class MenuController {
     @Request() req: MerchantJwtRequest,
     @Param('merchantId') merchant,
     @Param('restaurantId') restaurant,
-    @Query() fetchMenuOfRestaurantDto: FetchMenuDto,
+    @Query() pagination: PaginationDto,
   ): Promise<FetchMenuOfRestaurantResponseDto> {
     const { user } = req;
     const { merchantId } = user;
-    if (merchantId !== merchant || restaurant !== fetchMenuOfRestaurantDto.restaurantId) {
+    if (merchantId !== merchant) {
       return {
         statusCode: 403,
         message: 'Unauthorized',
         data: null,
       };
     }
-    return await this.menuService.fetchMenuOfRestaurant(merchantId, fetchMenuOfRestaurantDto);
+    return await this.menuService.fetchMenuOfRestaurant(merchantId, { ...pagination, restaurantId: restaurant });
   }
 
   @ApiCreatedResponse({ type: CreateMenuResponseDto })
+  @ApiConflictResponse({ type: CreateMenuConflictResponseDto })
   @ApiBody({ type: CreateMenuDto })
   @ApiBearerAuth()
   @UseGuards(MerchantJwtAuthGuard)
