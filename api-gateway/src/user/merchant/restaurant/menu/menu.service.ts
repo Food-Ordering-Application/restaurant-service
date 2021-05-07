@@ -29,10 +29,11 @@ export class MenuService {
   }
 
   async fetchMenuOfRestaurant(merchantId: string, fetchMenuOfRestaurantDto: FetchMenuDto): Promise<FetchMenuOfRestaurantResponseDto> {
+    const { restaurantId } = fetchMenuOfRestaurantDto;
     const fetchMenuOfRestaurantResponse: IRestaurantServiceFetchMenuOfRestaurantResponse
       = await this.menuServiceClient
         .send('fetchMenuOfRestaurant', {
-          merchantId,
+          restaurantId,
           page: parseInt(fetchMenuOfRestaurantDto.page) || 0,
           size: parseInt(fetchMenuOfRestaurantDto.size) || 10
         })
