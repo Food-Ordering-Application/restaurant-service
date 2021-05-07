@@ -123,6 +123,6 @@ export class MenuGroupController {
         message: 'Unauthorized',
       };
     }
-    return await this.menuGroupService.deleteMenuGroup(menuGroup, merchantId, menu, restaurant);
+    return await this.menuGroupService.deleteMenuGroup(menuGroup, merchantId, restaurant, menu);
   }
 }
