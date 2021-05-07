@@ -1,6 +1,7 @@
 import { Restaurant } from '../../restaurant/entities/restaurant.entity';
 import {
   Column,
+  DeleteDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
@@ -29,4 +30,7 @@ export class ToppingGroup {
 
   @Column({ default: true })
   isActive: boolean;
+
+  @DeleteDateColumn()
+  deletedAt: Date;
 }
