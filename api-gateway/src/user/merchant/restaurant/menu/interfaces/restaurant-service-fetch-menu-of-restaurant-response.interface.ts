@@ -1,5 +1,5 @@
 import { IMenu } from './menu.interface';
-export interface IUserServiceFetchMenuOfRestaurantResponse {
+export interface IRestaurantServiceFetchMenuOfRestaurantResponse {
   status: number;
   message: string;
   data: {
