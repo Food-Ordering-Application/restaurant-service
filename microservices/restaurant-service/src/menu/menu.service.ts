@@ -1,7 +1,7 @@
 import { HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateMenuDto, FetchMenuOfRestaurantDto, MenuDto } from './dto';
+import { CreateMenuDto, FetchMenuOfRestaurantDto, MenuDto, UpdatedMenuDataDto, UpdateMenuDto } from './dto';
 import {
   Menu,
   MenuGroup,
@@ -14,6 +14,7 @@ import {
   IFetchMenuOfRestaurantResponse,
   IMenuInformationResponse,
   IMenuItemToppingResponse,
+  IUpdateMenuResponse,
 } from './interfaces';
 
 @Injectable()
@@ -98,7 +99,7 @@ export class MenuService {
   }
 
   async create(dto: CreateMenuDto): Promise<ICreateMenuResponse> {
-    const { merchantId, createMenuDto } = dto;
+    const { createMenuDto } = dto;
     const { isActive, name, restaurantId, index } = createMenuDto;
 
     const didRestaurantHaveMenu = await this.didRestaurantHaveMenu(restaurantId);
@@ -143,4 +144,31 @@ export class MenuService {
     };
   }
 
+  async update(updateMenuDto: UpdateMenuDto): Promise<IUpdateMenuResponse> {
+    const { data, menuId, restaurantId, merchantId } = updateMenuDto;
+
+    const fetchCountMenu = await this.menuRepository.count({ id: menuId, restaurantId: restaurantId });
+    if (fetchCountMenu === 0) {
+      return {
+        status: HttpStatus.NOT_FOUND,
+        message: 'Menu not found',
+      }
+    }
+
+    // remove unwanted field
+    const templateObject: UpdatedMenuDataDto = {
+      name: null,
+      index: null,
+      isActive: null
+    }
+    Object.keys(data).forEach(key => typeof templateObject[key] == 'undefined' ? delete data[key] : {});
+
+    // save to database
+    await this.menuRepository.update({ id: menuId }, { ...data });
+
+    return {
+      status: HttpStatus.OK,
+      message: 'Menu updated successfully',
+    };
+  }
 }
