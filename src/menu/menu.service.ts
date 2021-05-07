@@ -1,7 +1,7 @@
 import { HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateMenuDto, MenuDto } from './dto';
+import { CreateMenuDto, FetchMenuOfRestaurantDto, MenuDto } from './dto';
 import {
   Menu,
   MenuGroup,
@@ -11,6 +11,7 @@ import {
 } from './entities';
 import {
   ICreateMenuResponse,
+  IFetchMenuOfRestaurantResponse,
   IMenuInformationResponse,
   IMenuItemToppingResponse,
 } from './interfaces';
@@ -91,9 +92,23 @@ export class MenuService {
     }
   }
 
+  async didRestaurantHaveMenu(restaurantId: string) {
+    const count = await this.menuRepository.count({ restaurantId });
+    return count > 0;
+  }
+
   async create(dto: CreateMenuDto): Promise<ICreateMenuResponse> {
     const { merchantId, createMenuDto } = dto;
     const { isActive, name, restaurantId, index } = createMenuDto;
+
+    const didRestaurantHaveMenu = await this.didRestaurantHaveMenu(restaurantId);
+    if (didRestaurantHaveMenu) {
+      return {
+        status: HttpStatus.CONFLICT,
+        message: 'Restaurant already has menu',
+        data: null
+      };
+    }
 
     const menu = this.menuRepository.create({ restaurantId, name, isActive, index });
     const newMenu = await this.menuRepository.save(menu);
@@ -107,4 +122,25 @@ export class MenuService {
     };
 
   }
+
+  async fetchMenuOfRestaurant(fetchMenuOfRestaurantDto: FetchMenuOfRestaurantDto): Promise<IFetchMenuOfRestaurantResponse> {
+    const { restaurantId, size, page } = fetchMenuOfRestaurantDto;
+
+    const [results, total] = await this.menuRepository.findAndCount({
+      where: [{ restaurantId }],
+      take: size,
+      skip: page * size
+    });
+
+    return {
+      status: HttpStatus.OK,
+      message: 'Fetched menu successfully',
+      data: {
+        results: results.map((menu) => MenuDto.EntityToDto(menu)),
+        size,
+        total
+      }
+    };
+  }
+
 }
