@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IFetchMenuData } from '../../interfaces/fetch-menu-data.interface';
 
-export class FetchMenuOfMerchantResponseDto {
+export class FetchMenuOfRestaurantResponseDto {
   @ApiProperty({ example: 200 })
   statusCode: number;
   @ApiProperty({ example: 'Fetch successfully', type: 'string' })
