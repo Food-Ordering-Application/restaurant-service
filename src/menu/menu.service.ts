@@ -99,8 +99,8 @@ export class MenuService {
   }
 
   async create(dto: CreateMenuDto): Promise<ICreateMenuResponse> {
-    const { createMenuDto } = dto;
-    const { isActive, name, restaurantId, index } = createMenuDto;
+    const { data, merchantId, restaurantId } = dto;
+    const { isActive, name, index } = data;
 
     const didRestaurantHaveMenu = await this.didRestaurantHaveMenu(restaurantId);
     if (didRestaurantHaveMenu) {
