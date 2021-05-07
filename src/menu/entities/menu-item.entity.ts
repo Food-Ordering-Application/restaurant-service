@@ -20,9 +20,16 @@ export class MenuItem {
   @JoinColumn()
   menu: Menu;
 
+  @Column()
+  menuId: string;
+
+
   @ManyToOne(() => MenuGroup, (menuGroup) => menuGroup.menuItems)
   @JoinColumn()
   menuGroup: MenuGroup;
+
+  @Column()
+  menuGroupId: string;
 
   @OneToMany(
     () => MenuItemTopping,
