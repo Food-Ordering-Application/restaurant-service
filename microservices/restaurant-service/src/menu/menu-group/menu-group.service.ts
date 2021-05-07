@@ -95,7 +95,6 @@ export class MenuGroupService {
   async delete(deleteMenuGroupDto: DeleteMenuGroupDto): Promise<IDeleteMenuGroupResponse> {
     const { menuId, restaurantId, merchantId, menuGroupId } = deleteMenuGroupDto;
     const fetchCountMenuGroup = await this.menuGroupRepository.count({ id: menuGroupId, menuId: menuId });
-    console.log({ deleteMenuGroupDto, fetchCountMenuGroup })
     if (fetchCountMenuGroup === 0) {
       return {
         status: HttpStatus.NOT_FOUND,
@@ -112,4 +111,9 @@ export class MenuGroupService {
     };
   }
 
+  async doesMenuGroupExist(data: { menuId: string, menuGroupId: string }): Promise<boolean> {
+    const { menuId, menuGroupId } = data;
+    const count = await this.menuGroupRepository.count({ id: menuGroupId, menuId: menuId });
+    return count > 0;
+  }
 }
