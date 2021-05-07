@@ -8,4 +8,4 @@ export { IToppingGroup } from './topping-group.interface';
 export { IToppingItem } from './topping-item.interface';
 export { ICreateMenuResponse } from './create-menu-response.interface';
 export { IFetchMenuOfRestaurantResponse } from './fetch-menu-of-restaurant.interface';
-export { IUpdateMenuResponse } from './update-menu.interface';
+export { IUpdateMenuResponse } from './update-menu-response.interface';

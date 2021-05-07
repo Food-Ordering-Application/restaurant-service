@@ -1,8 +1,8 @@
 import { Controller } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
-import { CreateMenuGroupDto } from './dto';
+import { CreateMenuGroupDto, UpdateMenuGroupDto } from './dto';
 import { FetchMenuGroupOfMenuDto } from './dto/fetch-menu-group-of-menu.dto';
-import { ICreateMenuGroupResponse, IFetchMenuGroupOfMenuResponse } from './interfaces';
+import { ICreateMenuGroupResponse, IFetchMenuGroupOfMenuResponse, IUpdateMenuGroupResponse } from './interfaces';
 import { MenuGroupService } from './menu-group.service';
 
 @Controller()
@@ -19,10 +19,10 @@ export class MenuGroupController {
     return await this.menuGroupService.findAll(fetchMenuGroupDto);
   }
 
-  // @MessagePattern('updateMenuGroup')
-  // async update(@Payload() updateMenuGroupDto: UpdateMenuGroupDto): Promise<IMenuGroupServiceResponse> {
-  //   return await this.menuGroupService.update(updateMenuGroupDto);
-  // }
+  @MessagePattern('updateMenuGroup')
+  async update(@Payload() updateMenuGroupDto: UpdateMenuGroupDto): Promise<IUpdateMenuGroupResponse> {
+    return await this.menuGroupService.update(updateMenuGroupDto);
+  }
 
   // @MessagePattern('deleteMenuGroup')
   // async delete(@Payload() deleteMenuGroupDto: DeleteMenuGroupDto): Promise<IMenuGroupServiceResponse> {

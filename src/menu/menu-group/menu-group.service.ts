@@ -3,10 +3,10 @@ import { HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Like, Repository } from 'typeorm';
 import { MenuGroup } from '../entities/menu-group.entity';
-import { CreateMenuGroupDto } from './dto';
+import { CreateMenuGroupDto, UpdatedMenuGroupDataDto, UpdateMenuGroupDto } from './dto';
 import { FetchMenuGroupOfMenuDto } from './dto/fetch-menu-group-of-menu.dto';
 import { MenuGroupDto } from './dto/menu-group.dto';
-import { ICreateMenuGroupResponse } from './interfaces';
+import { ICreateMenuGroupResponse, IUpdateMenuGroupResponse } from './interfaces';
 import { IFetchMenuGroupOfMenuResponse } from './interfaces/fetch-menu-group-of-menu-response.interface';
 @Injectable()
 export class MenuGroupService {
@@ -63,47 +63,33 @@ export class MenuGroupService {
     };
   }
 
+  async update(updateMenuGroupDto: UpdateMenuGroupDto): Promise<IUpdateMenuGroupResponse> {
+    const { data, menuId, restaurantId, merchantId, menuGroupId } = updateMenuGroupDto;
 
-  // async update(updateMenuGroupDto: UpdateMenuGroupDto): Promise<IMenuGroupServiceResponse> {
-  //   const { data, menuGroupId, restaurantId } = updateMenuGroupDto;
-  //   // TODO handle valid uuid
-  //   const doesRestaurantExistPromise = this.merchantService.doesRestaurantExist(restaurantId);
-  //   const fetchMenuGroupPromise = this.menuGroupRepository.findOne({ id: menuGroupId });
+    const fetchCountMenuGroup = await this.menuGroupRepository.count({ id: menuGroupId, menuId: menuId });
+    if (fetchCountMenuGroup === 0) {
+      return {
+        status: HttpStatus.NOT_FOUND,
+        message: 'Menu group not found',
+      }
+    }
 
-  //   const [doesRestaurantExist, menuGroup] = await Promise.all([doesRestaurantExistPromise, fetchMenuGroupPromise]);
+    // remove unwanted field
+    const templateObject: UpdatedMenuGroupDataDto = {
+      name: null,
+      index: null,
+      isActive: null
+    }
+    Object.keys(data).forEach(key => typeof templateObject[key] == 'undefined' ? delete data[key] : {});
 
-  //   if (!menuGroup) {
-  //     return {
-  //       status: HttpStatus.NOT_FOUND,
-  //       message: 'MenuGroup not found',
-  //     }
-  //   }
+    // save to database
+    await this.menuGroupRepository.update({ id: menuGroupId }, data);
 
-  //   if (!doesRestaurantExist) {
-  //     return {
-  //       status: HttpStatus.NOT_FOUND,
-  //       message: 'Restaurant not found',
-  //     }
-  //   }
-
-  //   // remove unwanted field
-  //   const templateObject: UpdatedMenuGroupDataDto = {
-  //     firstName: null,
-  //     lastName: null,
-  //     phone: null,
-  //     IDNumber: null,
-  //     dateOfBirth: null
-  //   }
-  //   Object.keys(data).forEach(key => typeof templateObject[key] == 'undefined' ? delete data[key] : {});
-
-  //   // save to database
-  //   await this.menuGroupRepository.save({ ...menuGroup, ...data });
-
-  //   return {
-  //     status: HttpStatus.OK,
-  //     message: 'MenuGroup updated successfully',
-  //   };
-  // }
+    return {
+      status: HttpStatus.OK,
+      message: 'Menu group updated successfully',
+    };
+  }
 
 
   // async delete(deleteMenuGroupDto: DeleteMenuGroupDto): Promise<IMenuGroupServiceResponse> {
