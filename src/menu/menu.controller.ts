@@ -1,11 +1,12 @@
 import { ICreateMenuResponse } from './interfaces/create-menu-response.interface';
 import { Controller } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
-import { CreateMenuDto, FetchMenuOfRestaurantDto, GetMenuInformationDto, GetMenuItemToppingDto } from './dto';
+import { CreateMenuDto, FetchMenuOfRestaurantDto, GetMenuInformationDto, GetMenuItemToppingDto, UpdateMenuDto } from './dto';
 import {
   IFetchMenuOfRestaurantResponse,
   IMenuInformationResponse,
   IMenuItemToppingResponse,
+  IUpdateMenuResponse,
 } from './interfaces';
 import { MenuService } from './menu.service';
 
@@ -23,6 +24,11 @@ export class MenuController {
   @MessagePattern('fetchMenuOfRestaurant')
   async fetchMenuOfRestaurant(@Payload() fetchMenuOfRestaurantDto: FetchMenuOfRestaurantDto): Promise<IFetchMenuOfRestaurantResponse> {
     return await this.menuService.fetchMenuOfRestaurant(fetchMenuOfRestaurantDto);
+  }
+
+  @MessagePattern('updateMenu')
+  async update(@Payload() updateMenuDto: UpdateMenuDto): Promise<IUpdateMenuResponse> {
+    return await this.menuService.update(updateMenuDto);
   }
 
   @MessagePattern('getMenuInformation')
