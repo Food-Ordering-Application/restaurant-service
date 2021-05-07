@@ -1,5 +1,5 @@
 import { PaginationDto } from './../../../../shared/dto/pagination.dto';
-import { Controller, Get, Logger, Param, Post, Query, Req, Request, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Logger, Param, Patch, Post, Query, Req, Request, UseGuards } from '@nestjs/common';
 import { Payload } from '@nestjs/microservices';
 import {
   ApiBearerAuth,
@@ -7,6 +7,7 @@ import {
   ApiConflictResponse,
   ApiCreatedResponse,
   ApiInternalServerErrorResponse,
+  ApiNotFoundResponse,
   ApiOkResponse,
   ApiQuery,
   ApiTags,
@@ -16,7 +17,7 @@ import { MerchantJwtRequest } from 'src/auth/strategies/jwt-strategies/merchant-
 import { InternalServerErrorResponseDto } from '../../../../shared/dto/internal-server-error.dto';
 import { MerchantJwtAuthGuard } from '../../../../auth/guards/jwts/merchant-jwt-auth.guard';
 import { MerchantJwtPayload } from '../../../../auth/strategies/jwt-strategies/merchant-jwt-payload.interface';
-import { CreateMenuConflictResponseDto, CreateMenuDto, CreateMenuResponseDto, FetchMenuDto, FetchMenuOfRestaurantResponseDto, FetchMenuOfRestaurantUnauthorizedResponseDto } from './dto';
+import { CreateMenuConflictResponseDto, CreateMenuDto, CreateMenuResponseDto, FetchMenuDto, FetchMenuOfRestaurantResponseDto, FetchMenuOfRestaurantUnauthorizedResponseDto, UpdateMenuDto, UpdateMenuNotFoundResponseDto, UpdateMenuResponseDto } from './dto';
 import { MenuService } from './menu.service';
 
 @ApiTags('merchant/restaurant/menu')
@@ -49,7 +50,7 @@ export class MenuController {
         data: null,
       };
     }
-    return await this.menuService.fetchMenuOfRestaurant(merchantId, { ...pagination, restaurantId: restaurant });
+    return await this.menuService.fetchMenuOfRestaurant({ ...pagination, restaurantId: restaurant });
   }
 
   @ApiCreatedResponse({ type: CreateMenuResponseDto })
@@ -73,6 +74,29 @@ export class MenuController {
         data: null,
       };
     }
-    return await this.menuService.createMenu(merchantId, createMenuDto);
+    return await this.menuService.createMenu(createMenuDto);
+  }
+
+  @ApiOkResponse({ type: UpdateMenuResponseDto })
+  @ApiNotFoundResponse({ type: UpdateMenuNotFoundResponseDto })
+  @ApiBody({ type: UpdateMenuDto })
+  @UseGuards(MerchantJwtAuthGuard)
+  @Patch(':menuId')
+  async updateMenu(
+    @Request() req: MerchantJwtRequest,
+    @Param('merchantId') merchant,
+    @Param('restaurantId') restaurant,
+    @Param('menuId') menu,
+    @Body() updateMenuDto: UpdateMenuDto,
+  ): Promise<UpdateMenuResponseDto> {
+    const { user } = req;
+    const { merchantId } = user;
+    if (merchantId !== merchant) {
+      return {
+        statusCode: 403,
+        message: 'Unauthorized',
+      };
+    }
+    return await this.menuService.updateMenu(merchant, restaurant, menu, updateMenuDto);
   }
 }

@@ -1,6 +1,8 @@
 import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import * as constants from '../../../../constants';
+import { ISimpleResponse } from '../../interfaces';
+import { UpdateMenuDto, UpdateMenuResponseDto } from './dto';
 import { CreateMenuDto } from './dto/create-menu/create-menu.dto';
 import { FetchMenuOfRestaurantResponseDto } from './dto/fetch-menu/fetch-menu-response.dto';
 import { FetchMenuDto } from './dto/fetch-menu/fetch-menu.dto';
@@ -13,9 +15,9 @@ export class MenuService {
     @Inject(constants.RESTAURANT_SERVICE) private menuServiceClient: ClientProxy,
   ) { }
 
-  async createMenu(merchantId: string, createMenuDto: CreateMenuDto) {
+  async createMenu(createMenuDto: CreateMenuDto) {
     const createMenuResponse: IRestaurantServiceCreateMenuResponse = await this.menuServiceClient
-      .send('createMenu', { merchantId, createMenuDto })
+      .send('createMenu', { createMenuDto })
       .toPromise();
     const { status, message, data } = createMenuResponse;
     if (status !== HttpStatus.CREATED) {
@@ -28,7 +30,7 @@ export class MenuService {
     };
   }
 
-  async fetchMenuOfRestaurant(merchantId: string, fetchMenuOfRestaurantDto: FetchMenuDto): Promise<FetchMenuOfRestaurantResponseDto> {
+  async fetchMenuOfRestaurant(fetchMenuOfRestaurantDto: FetchMenuDto): Promise<FetchMenuOfRestaurantResponseDto> {
     const { restaurantId } = fetchMenuOfRestaurantDto;
     const fetchMenuOfRestaurantResponse: IRestaurantServiceFetchMenuOfRestaurantResponse
       = await this.menuServiceClient
@@ -52,6 +54,22 @@ export class MenuService {
         size,
         total
       }
+    };
+  }
+
+  async updateMenu(merchantId: string, restaurantId: string, menuId: string, updateMenuDto: UpdateMenuDto): Promise<UpdateMenuResponseDto> {
+    const updateMenuResponse: ISimpleResponse = await this.menuServiceClient
+      .send('updateMenu', { merchantId, restaurantId, menuId, data: updateMenuDto })
+      .toPromise();
+
+    const { status, message } = updateMenuResponse;
+    if (status !== HttpStatus.OK) {
+      throw new HttpException({ message, }, status,);
+    }
+
+    return {
+      statusCode: HttpStatus.OK,
+      message,
     };
   }
 }
