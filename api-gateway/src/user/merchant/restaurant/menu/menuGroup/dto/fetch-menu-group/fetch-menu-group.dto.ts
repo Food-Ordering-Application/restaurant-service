@@ -1,5 +1,6 @@
 import { PaginationDto } from '../../../../../../../shared/dto/pagination.dto';
 
-export class FetchMenuGroupDto extends PaginationDto {
+export class FetchMenuGroupQuery extends PaginationDto {
+  q: string;
 }
 

@@ -15,8 +15,8 @@ import {
 import { InternalServerErrorResponseDto } from '../../../../../shared/dto/internal-server-error.dto';
 import { MerchantJwtAuthGuard } from './../../../../../auth/guards/jwts/merchant-jwt-auth.guard';
 import { MerchantJwtRequest } from './../../../../../auth/strategies/jwt-strategies/merchant-jwt-request.interface';
-import { DeleteMenuGroupNotFoundResponseDto, DeleteMenuGroupResponseDto, UpdateMenuGroupDto, UpdateMenuGroupNotFoundResponseDto, UpdateMenuGroupResponseDto } from './dto';
-import { CreateMenuGroupConflictResponseDto, CreateMenuGroupDto, CreateMenuGroupResponseDto, FetchMenuGroupByMenuResponseDto, FetchMenuGroupByMenuUnauthorizedResponseDto, FetchMenuGroupDto } from './dto';
+import { DeleteMenuGroupNotFoundResponseDto, DeleteMenuGroupResponseDto, FetchMenuGroupQuery, UpdateMenuGroupDto, UpdateMenuGroupNotFoundResponseDto, UpdateMenuGroupResponseDto } from './dto';
+import { CreateMenuGroupConflictResponseDto, CreateMenuGroupDto, CreateMenuGroupResponseDto, FetchMenuGroupByMenuResponseDto, FetchMenuGroupByMenuUnauthorizedResponseDto } from './dto';
 import { MenuGroupService } from './menuGroup.service';
 
 @ApiTags('merchant/restaurant/menu/menuGroup')
@@ -31,7 +31,7 @@ export class MenuGroupController {
 
   @ApiOkResponse({ type: FetchMenuGroupByMenuResponseDto })
   @ApiUnauthorizedResponse({ type: FetchMenuGroupByMenuUnauthorizedResponseDto })
-  @ApiQuery({ type: FetchMenuGroupDto, required: false })
+  @ApiQuery({ type: FetchMenuGroupQuery, required: false })
   @UseGuards(MerchantJwtAuthGuard)
   @Get()
   async fetchMenuGroup(
@@ -39,7 +39,7 @@ export class MenuGroupController {
     @Param('merchantId') merchant,
     @Param('restaurantId') restaurant,
     @Param('menuId') menu,
-    @Query() fetchMenuGroupByMenuDto: FetchMenuGroupDto,
+    @Query() fetchMenuGroupByMenuQuery: FetchMenuGroupQuery,
   ): Promise<FetchMenuGroupByMenuResponseDto> {
     const { user } = req;
     const { merchantId } = user;
@@ -50,7 +50,7 @@ export class MenuGroupController {
         data: null,
       };
     }
-    return await this.menuGroupService.fetchMenuGroup(merchantId, restaurant, menu, fetchMenuGroupByMenuDto);
+    return await this.menuGroupService.fetchMenuGroup(merchantId, restaurant, menu, fetchMenuGroupByMenuQuery);
   }
 
   // Tao menu group

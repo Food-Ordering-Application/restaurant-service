@@ -7,7 +7,7 @@ import {
   CreateMenuGroupResponseDto,
   DeleteMenuGroupResponseDto,
   FetchMenuGroupByMenuResponseDto,
-  FetchMenuGroupDto,
+  FetchMenuGroupQuery,
   UpdateMenuGroupDto,
   UpdateMenuGroupResponseDto
 } from './dto';
@@ -16,12 +16,12 @@ import { IUserServiceCreateMenuGroupResponse, IUserServiceFetchMenuGroupByMenuRe
 @Injectable()
 export class MenuGroupService {
   constructor(
-    @Inject(constants.USER_SERVICE) private userServiceClient: ClientProxy,
+    @Inject(constants.RESTAURANT_SERVICE) private menuGroupServiceClient: ClientProxy,
   ) { }
 
   async createMenuGroup(merchantId: string, restaurantId: string, menuId: string, createMenuGroupDto: CreateMenuGroupDto): Promise<CreateMenuGroupResponseDto> {
-    const createMenuGroupResponse: IUserServiceCreateMenuGroupResponse = await this.userServiceClient
-      .send('createMenuGroup', { merchantId, restaurantId, menuId, data: createMenuGroupDto })
+    const createMenuGroupResponse: IUserServiceCreateMenuGroupResponse = await this.menuGroupServiceClient
+      .send('createMenuGroupOfMenu', { merchantId, restaurantId, menuId, data: createMenuGroupDto })
       .toPromise();
 
     const { status, message, data } = createMenuGroupResponse;
@@ -39,8 +39,8 @@ export class MenuGroupService {
   }
 
   async updateMenuGroup(menuGroupId: string, merchantId: string, restaurantId: string, menuId: string, updateMenuGroupDto: UpdateMenuGroupDto): Promise<UpdateMenuGroupResponseDto> {
-    const updateMenuGroupResponse: ISimpleResponse = await this.userServiceClient
-      .send('updateMenuGroup', { menuGroupId, merchantId, restaurantId, menuId, data: updateMenuGroupDto })
+    const updateMenuGroupResponse: ISimpleResponse = await this.menuGroupServiceClient
+      .send('updateMenuGroupOfMenu', { menuGroupId, merchantId, restaurantId, menuId, data: updateMenuGroupDto })
       .toPromise();
 
     const { status, message } = updateMenuGroupResponse;
@@ -55,8 +55,8 @@ export class MenuGroupService {
   }
 
   async deleteMenuGroup(menuGroupId: string, merchantId: string, restaurantId: string, menuId: string): Promise<DeleteMenuGroupResponseDto> {
-    const deleteMenuGroupResponse: ISimpleResponse = await this.userServiceClient
-      .send('deleteMenuGroup', { menuGroupId, merchantId, restaurantId, menuId })
+    const deleteMenuGroupResponse: ISimpleResponse = await this.menuGroupServiceClient
+      .send('deleteMenuGroupOfMenu', { menuGroupId, merchantId, restaurantId, menuId })
       .toPromise();
 
     const { status, message } = deleteMenuGroupResponse;
@@ -70,14 +70,15 @@ export class MenuGroupService {
     };
   }
 
-  async fetchMenuGroup(merchantId: string, restaurantId: string, menuId: string, fetchMenuGroupByMenuDto: FetchMenuGroupDto): Promise<FetchMenuGroupByMenuResponseDto> {
-    const fetchMenuGroupResponse: IUserServiceFetchMenuGroupByMenuResponse = await this.userServiceClient
-      .send('fetchMenuGroup', {
+  async fetchMenuGroup(merchantId: string, restaurantId: string, menuId: string, fetchMenuGroupByMenuQuery: FetchMenuGroupQuery): Promise<FetchMenuGroupByMenuResponseDto> {
+    const fetchMenuGroupResponse: IUserServiceFetchMenuGroupByMenuResponse = await this.menuGroupServiceClient
+      .send('fetchMenuGroupOfMenu', {
         merchantId,
         restaurantId,
         menuId,
-        page: parseInt(fetchMenuGroupByMenuDto.page) || 0,
-        size: parseInt(fetchMenuGroupByMenuDto.size) || 10
+        page: parseInt(fetchMenuGroupByMenuQuery.page) || 0,
+        size: parseInt(fetchMenuGroupByMenuQuery.size) || 10,
+        search: fetchMenuGroupByMenuQuery.q
       })
       .toPromise();
 
