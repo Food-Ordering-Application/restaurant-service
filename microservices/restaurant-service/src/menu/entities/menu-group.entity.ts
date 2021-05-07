@@ -18,11 +18,17 @@ export class MenuGroup {
   @JoinColumn()
   menu: Menu;
 
+  @Column()
+  menuId: string;
+
   @OneToMany(() => MenuItem, (menuItem) => menuItem.menuGroup)
   menuItems: MenuItem[];
 
   @Column()
   name: string;
+
+  @Column({ default: true })
+  isActive: boolean;
 
   @Column()
   index: number;
