@@ -1,6 +1,6 @@
 import { MenuService } from './merchant/restaurant/menu/menu.service';
-import { MenuGroupService } from './merchant/restaurant/menu/menuGroup/menuGroup.service';
-import { MenuGroupController } from './merchant/restaurant/menu/menuGroup/menuGroup.controller';
+import { MenuGroupService } from './merchant/restaurant/menu/menu-group/menu-group.service';
+import { MenuGroupController } from './merchant/restaurant/menu/menu-group/menu-group.controller';
 import { forwardRef, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ClientsModule, Transport } from '@nestjs/microservices';

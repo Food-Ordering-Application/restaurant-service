@@ -1,4 +1,4 @@
-import { POSITION_GAP } from './../../../../../../../constants';
+import { POSITION_GAP } from '../../../../../../../constants';
 import { ApiProperty } from '@nestjs/swagger';
 import { IFetchMenuGroupData } from '../../interfaces';
 

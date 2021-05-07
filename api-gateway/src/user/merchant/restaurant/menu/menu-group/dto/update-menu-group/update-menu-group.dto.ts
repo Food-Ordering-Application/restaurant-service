@@ -1,12 +1,8 @@
-import { POSITION_GAP } from './../../../../../../../constants';
-import { ApiProperty } from '@nestjs/swagger';
-import { IsBoolean, IsNumber, IsString, IsUUID } from 'class-validator';
+import { POSITION_GAP } from '../../../../../../../constants';
+import { ApiProperty, PartialType, ApiPropertyOptional } from '@nestjs/swagger';
+import { IsBoolean, IsDate, IsDateString, IsNumber, IsOptional, IsString } from 'class-validator';
 
-export class CreateMenuGroupDto {
-  @ApiProperty({ example: '148cd922-b73b-47d3-bada-facdf7b4ef54', required: true, description: 'Id của menu' })
-  @IsUUID()
-  menuId: string;
-
+export class UpdateMenuGroupFullDto {
   @ApiProperty({ example: 'Mì', required: true, description: 'Tên nhóm món ăn' })
   @IsString()
   name: string;
@@ -20,3 +16,4 @@ export class CreateMenuGroupDto {
   isActive: boolean;
 }
 
+export class UpdateMenuGroupDto extends PartialType(UpdateMenuGroupFullDto) { }

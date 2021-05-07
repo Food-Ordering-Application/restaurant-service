@@ -13,15 +13,15 @@ import {
   ApiUnauthorizedResponse
 } from '@nestjs/swagger';
 import { InternalServerErrorResponseDto } from '../../../../../shared/dto/internal-server-error.dto';
-import { MerchantJwtAuthGuard } from './../../../../../auth/guards/jwts/merchant-jwt-auth.guard';
-import { MerchantJwtRequest } from './../../../../../auth/strategies/jwt-strategies/merchant-jwt-request.interface';
+import { MerchantJwtAuthGuard } from '../../../../../auth/guards/jwts/merchant-jwt-auth.guard';
+import { MerchantJwtRequest } from '../../../../../auth/strategies/jwt-strategies/merchant-jwt-request.interface';
 import { DeleteMenuGroupNotFoundResponseDto, DeleteMenuGroupResponseDto, FetchMenuGroupQuery, UpdateMenuGroupDto, UpdateMenuGroupNotFoundResponseDto, UpdateMenuGroupResponseDto } from './dto';
 import { CreateMenuGroupConflictResponseDto, CreateMenuGroupDto, CreateMenuGroupResponseDto, FetchMenuGroupByMenuResponseDto, FetchMenuGroupByMenuUnauthorizedResponseDto } from './dto';
-import { MenuGroupService } from './menuGroup.service';
+import { MenuGroupService } from './menu-group.service';
 
-@ApiTags('merchant/restaurant/menu/menuGroup')
+@ApiTags('merchant/restaurant/menu/menu-group')
 @ApiInternalServerErrorResponse({ type: InternalServerErrorResponseDto })
-@Controller('user/merchant/:merchantId/restaurant/:restaurantId/menu/:menuId/menuGroup')
+@Controller('user/merchant/:merchantId/restaurant/:restaurantId/menu/:menuId/menu-group')
 export class MenuGroupController {
   private logger = new Logger('MenuGroupController');
 
