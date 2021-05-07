@@ -171,4 +171,9 @@ export class MenuService {
       message: 'Menu updated successfully',
     };
   }
+
+  async doesMenuExist(menuId: string, restaurantId: string): Promise<boolean> {
+    const count = await this.menuRepository.count({ id: menuId, restaurantId });
+    return count > 0;
+  }
 }
