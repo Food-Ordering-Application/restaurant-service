@@ -93,9 +93,9 @@ export class MenuService {
 
   async create(dto: CreateMenuDto): Promise<ICreateMenuResponse> {
     const { merchantId, createMenuDto } = dto;
-    const { isActive, name, restaurantId } = createMenuDto;
+    const { isActive, name, restaurantId, index } = createMenuDto;
 
-    const menu = this.menuRepository.create({ restaurantId, name, isActive });
+    const menu = this.menuRepository.create({ restaurantId, name, isActive, index });
     const newMenu = await this.menuRepository.save(menu);
 
     return {
