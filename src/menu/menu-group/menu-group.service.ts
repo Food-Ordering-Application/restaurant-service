@@ -3,10 +3,10 @@ import { HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Like, Repository } from 'typeorm';
 import { MenuGroup } from '../entities/menu-group.entity';
-import { CreateMenuGroupDto, UpdatedMenuGroupDataDto, UpdateMenuGroupDto } from './dto';
+import { CreateMenuGroupDto, DeleteMenuGroupDto, UpdatedMenuGroupDataDto, UpdateMenuGroupDto } from './dto';
 import { FetchMenuGroupOfMenuDto } from './dto/fetch-menu-group-of-menu.dto';
 import { MenuGroupDto } from './dto/menu-group.dto';
-import { ICreateMenuGroupResponse, IUpdateMenuGroupResponse } from './interfaces';
+import { ICreateMenuGroupResponse, IDeleteMenuGroupResponse, IUpdateMenuGroupResponse } from './interfaces';
 import { IFetchMenuGroupOfMenuResponse } from './interfaces/fetch-menu-group-of-menu-response.interface';
 @Injectable()
 export class MenuGroupService {
@@ -92,35 +92,24 @@ export class MenuGroupService {
   }
 
 
-  // async delete(deleteMenuGroupDto: DeleteMenuGroupDto): Promise<IMenuGroupServiceResponse> {
-  //   const { menuGroupId, restaurantId } = deleteMenuGroupDto;
-  //   // TODO handle valid uuid
-  //   const doesRestaurantExistPromise = this.merchantService.doesRestaurantExist(restaurantId);
-  //   const fetchMenuGroupPromise = this.menuGroupRepository.findOne({ id: menuGroupId });
+  async delete(deleteMenuGroupDto: DeleteMenuGroupDto): Promise<IDeleteMenuGroupResponse> {
+    const { menuId, restaurantId, merchantId, menuGroupId } = deleteMenuGroupDto;
+    const fetchCountMenuGroup = await this.menuGroupRepository.count({ id: menuGroupId, menuId: menuId });
+    console.log({ deleteMenuGroupDto, fetchCountMenuGroup })
+    if (fetchCountMenuGroup === 0) {
+      return {
+        status: HttpStatus.NOT_FOUND,
+        message: 'Menu group not found',
+      }
+    }
 
-  //   const [doesRestaurantExist, menuGroup] = await Promise.all([doesRestaurantExistPromise, fetchMenuGroupPromise]);
+    // shallow delete to database
+    await this.menuGroupRepository.softDelete({ id: menuGroupId });
 
-  //   if (!menuGroup) {
-  //     return {
-  //       status: HttpStatus.NOT_FOUND,
-  //       message: 'MenuGroup not found',
-  //     }
-  //   }
-
-  //   if (!doesRestaurantExist) {
-  //     return {
-  //       status: HttpStatus.NOT_FOUND,
-  //       message: 'Restaurant not found',
-  //     }
-  //   }
-
-  //   // shallow delete to database
-  //   await this.menuGroupRepository.softDelete({ id: menuGroupId });
-
-  //   return {
-  //     status: HttpStatus.OK,
-  //     message: 'MenuGroup deleted successfully',
-  //   };
-  // }
+    return {
+      status: HttpStatus.OK,
+      message: 'MenuGroup deleted successfully',
+    };
+  }
 
 }
