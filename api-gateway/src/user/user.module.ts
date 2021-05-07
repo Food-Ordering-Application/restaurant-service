@@ -1,5 +1,4 @@
-import { MenuController } from './../../../microservices/restaurant-service/src/menu/menu.controller';
-import { MenuService } from './../../../microservices/restaurant-service/src/menu/menu.service';
+import { MenuService } from './merchant/restaurant/menu/menu.service';
 import { MenuGroupService } from './merchant/restaurant/menu/menuGroup/menuGroup.service';
 import { MenuGroupController } from './merchant/restaurant/menu/menuGroup/menuGroup.controller';
 import { forwardRef, Module } from '@nestjs/common';
@@ -20,6 +19,7 @@ import { StaffController } from './merchant/restaurant/staff/staff.controller';
 import { StaffService } from './merchant/restaurant/staff/staff.service';
 import { PosController } from './pos/pos.controller';
 import { PosService } from './pos/pos.service';
+import { MenuController } from './merchant/restaurant/menu/menu.controller';
 
 @Module({
   imports: [
