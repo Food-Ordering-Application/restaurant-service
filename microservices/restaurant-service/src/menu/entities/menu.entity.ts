@@ -19,6 +19,9 @@ export class Menu {
   @JoinColumn()
   restaurant: Restaurant;
 
+  @Column()
+  restaurantId: string;
+
   @OneToMany(() => MenuGroup, (menuGroup) => menuGroup.menu)
   menuGroups: MenuGroup[];
 
@@ -30,4 +33,7 @@ export class Menu {
 
   @Column()
   index: number;
+
+  @Column({ default: true })
+  isActive: boolean;
 }
