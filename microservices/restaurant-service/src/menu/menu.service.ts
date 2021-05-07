@@ -1,6 +1,7 @@
 import { HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { CreateMenuDto, MenuDto } from './dto';
 import {
   Menu,
   MenuGroup,
@@ -9,6 +10,7 @@ import {
   ToppingGroup,
 } from './entities';
 import {
+  ICreateMenuResponse,
   IMenuInformationResponse,
   IMenuItemToppingResponse,
 } from './interfaces';
@@ -26,7 +28,7 @@ export class MenuService {
     private menuItemRepository: Repository<MenuItem>,
     @InjectRepository(ToppingGroup)
     private toppingGroupRepository: Repository<ToppingGroup>,
-  ) {}
+  ) { }
 
   async getMenuInformation(
     restaurantId: string,
@@ -87,5 +89,22 @@ export class MenuService {
         toppingGroups: null,
       };
     }
+  }
+
+  async create(dto: CreateMenuDto): Promise<ICreateMenuResponse> {
+    const { merchantId, createMenuDto } = dto;
+    const { isActive, name, restaurantId } = createMenuDto;
+
+    const menu = this.menuRepository.create({ restaurantId, name, isActive });
+    const newMenu = await this.menuRepository.save(menu);
+
+    return {
+      status: HttpStatus.CREATED,
+      message: 'Menu was created',
+      data: {
+        menu: MenuDto.EntityToDto(newMenu)
+      }
+    };
+
   }
 }
