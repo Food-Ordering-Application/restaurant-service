@@ -1,5 +1,6 @@
 import {
   Column,
+  DeleteDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
@@ -41,4 +42,7 @@ export class ToppingItem {
 
   @Column({ default: true })
   isActive: boolean;
+
+  @DeleteDateColumn()
+  deletedAt: Date;
 }

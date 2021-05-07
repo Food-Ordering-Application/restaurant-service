@@ -1,5 +1,6 @@
 import {
   Column,
+  DeleteDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
@@ -32,4 +33,7 @@ export class MenuGroup {
 
   @Column()
   index: number;
+
+  @DeleteDateColumn()
+  deletedAt: Date;
 }

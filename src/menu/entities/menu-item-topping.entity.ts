@@ -1,5 +1,6 @@
 import {
   Column,
+  DeleteDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
@@ -22,4 +23,7 @@ export class MenuItemTopping {
 
   @Column()
   customPrice: number;
+
+  @DeleteDateColumn()
+  deletedAt: Date;
 }
