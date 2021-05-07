@@ -1,6 +1,7 @@
+import { ICreateMenuResponse } from './interfaces/create-menu-response.interface';
 import { Controller } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
-import { GetMenuInformationDto, GetMenuItemToppingDto } from './dto';
+import { CreateMenuDto, GetMenuInformationDto, GetMenuItemToppingDto } from './dto';
 import {
   IMenuInformationResponse,
   IMenuItemToppingResponse,
@@ -9,7 +10,15 @@ import { MenuService } from './menu.service';
 
 @Controller()
 export class MenuController {
-  constructor(private readonly menuService: MenuService) {}
+  constructor(private readonly menuService: MenuService) { }
+
+  @MessagePattern('createMenu')
+  async createMenu(
+    @Payload() createMenuDto: CreateMenuDto,
+  ): Promise<ICreateMenuResponse> {
+    return await this.menuService.create(createMenuDto);
+  }
+
 
   @MessagePattern('getMenuInformation')
   getMenuInformation(
