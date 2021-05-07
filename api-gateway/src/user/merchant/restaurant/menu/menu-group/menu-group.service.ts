@@ -56,7 +56,7 @@ export class MenuGroupService {
 
   async deleteMenuGroup(menuGroupId: string, merchantId: string, restaurantId: string, menuId: string): Promise<DeleteMenuGroupResponseDto> {
     const deleteMenuGroupResponse: ISimpleResponse = await this.menuGroupServiceClient
-      .send('deleteMenuGroupOfMenu', { menuGroupId, merchantId, restaurantId, menuId })
+      .send('deleteMenuGroup', { menuGroupId, merchantId, restaurantId, menuId })
       .toPromise();
 
     const { status, message } = deleteMenuGroupResponse;
