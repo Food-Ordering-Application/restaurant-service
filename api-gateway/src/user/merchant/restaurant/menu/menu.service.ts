@@ -15,9 +15,9 @@ export class MenuService {
     @Inject(constants.RESTAURANT_SERVICE) private menuServiceClient: ClientProxy,
   ) { }
 
-  async createMenu(createMenuDto: CreateMenuDto) {
+  async createMenu(merchantId: string, restaurantId: string, createMenuDto: CreateMenuDto) {
     const createMenuResponse: IRestaurantServiceCreateMenuResponse = await this.menuServiceClient
-      .send('createMenu', { createMenuDto })
+      .send('createMenu', { merchantId, restaurantId, data: createMenuDto })
       .toPromise();
     const { status, message, data } = createMenuResponse;
     if (status !== HttpStatus.CREATED) {

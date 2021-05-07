@@ -67,14 +67,14 @@ export class MenuController {
   ) {
     const merchantPayload: MerchantJwtPayload = req.user;
     const { merchantId } = merchantPayload;
-    if (merchantId !== merchant || restaurant != createMenuDto.restaurantId) {
+    if (merchantId !== merchant) {
       return {
         statusCode: 403,
         message: 'Unauthorized',
         data: null,
       };
     }
-    return await this.menuService.createMenu(createMenuDto);
+    return await this.menuService.createMenu(merchant, restaurant, createMenuDto);
   }
 
   @ApiOkResponse({ type: UpdateMenuResponseDto })
