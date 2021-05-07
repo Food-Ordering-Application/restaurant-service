@@ -21,7 +21,7 @@ export class MenuGroupService {
 
   async createMenuGroup(merchantId: string, restaurantId: string, menuId: string, createMenuGroupDto: CreateMenuGroupDto): Promise<CreateMenuGroupResponseDto> {
     const createMenuGroupResponse: IUserServiceCreateMenuGroupResponse = await this.menuGroupServiceClient
-      .send('createMenuGroupOfMenu', { merchantId, restaurantId, menuId, data: createMenuGroupDto })
+      .send('createMenuGroup', { merchantId, restaurantId, menuId, data: createMenuGroupDto })
       .toPromise();
 
     const { status, message, data } = createMenuGroupResponse;
