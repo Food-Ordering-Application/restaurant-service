@@ -72,7 +72,7 @@ export class ToppingGroupService {
 
   async fetchToppingGroup(merchantId: string, restaurantId: string, menuId: string, fetchToppingGroupByMenuQuery: FetchToppingGroupQuery): Promise<FetchToppingGroupByMenuResponseDto> {
     const fetchToppingGroupResponse: IRestaurantServiceFetchToppingGroupByMenuResponse = await this.toppingGroupServiceClient
-      .send('fetchToppingGroupOfTopping', {
+      .send('fetchToppingGroupOfMenu', {
         merchantId,
         restaurantId,
         menuId,
