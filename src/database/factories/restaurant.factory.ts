@@ -1,15 +1,16 @@
 import { define } from 'typeorm-seeding';
 import Faker from 'faker';
-import { Restaurant } from '../../restaurant/entities/index';
-import { Area } from '../../restaurant/enums/index';
+import { Category, Restaurant } from '../../restaurant/entities/index';
+import { Area, CategoryType } from '../../restaurant/enums/index';
 import * as _ from 'lodash';
 
 interface Context {
   restaurantId?: string;
+  categories: CategoryType[]
 }
 
 define(Restaurant, (faker: typeof Faker, context: Context) => {
-  const { restaurantId } = context;
+  const { restaurantId, categories } = context;
   let id;
   if (!restaurantId) {
     id = faker.random.uuid();
@@ -52,5 +53,10 @@ define(Restaurant, (faker: typeof Faker, context: Context) => {
   restaurant.area = area;
   restaurant.isActive = isActive;
   restaurant.isVerified = isVerified;
+
+  const newCategory = new Category();
+  newCategory.type = _.sample(Object.values(CategoryType)) as CategoryType;
+
+  restaurant.categories = [newCategory];
   return restaurant;
 });
