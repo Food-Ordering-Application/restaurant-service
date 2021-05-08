@@ -25,7 +25,10 @@ export class ToppingItem {
 
   @ManyToOne(() => ToppingGroup, (toppingGroup) => toppingGroup.toppingItems)
   @JoinColumn()
-  group: ToppingGroup;
+  toppingGroup: ToppingGroup;
+
+  @Column()
+  toppingGroupId: string;
 
   @OneToMany(
     () => MenuItemTopping,
