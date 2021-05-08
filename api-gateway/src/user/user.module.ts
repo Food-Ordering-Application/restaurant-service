@@ -1,3 +1,5 @@
+import { ToppingGroupService } from './merchant/restaurant/menu/topping-group/topping-group.service';
+import { ToppingGroupController } from './merchant/restaurant/menu/topping-group/topping-group.controller';
 import { MenuItemService } from './merchant/restaurant/menu/menu-item/menu-item.service';
 import { MenuItemController } from './merchant/restaurant/menu/menu-item/menu-item.controller';
 import { MenuService } from './merchant/restaurant/menu/menu.service';
@@ -69,7 +71,8 @@ import { MenuController } from './merchant/restaurant/menu/menu.controller';
     StaffController,
     MenuController,
     MenuGroupController,
-    MenuItemController
+    MenuItemController,
+    ToppingGroupController
   ],
   providers: [
     CustomerService,
@@ -80,7 +83,8 @@ import { MenuController } from './merchant/restaurant/menu/menu.controller';
     StaffService,
     MenuService,
     MenuGroupService,
-    MenuItemService
+    MenuItemService,
+    ToppingGroupService
   ],
   exports: [
     CustomerService,
@@ -91,7 +95,8 @@ import { MenuController } from './merchant/restaurant/menu/menu.controller';
     StaffService,
     MenuService,
     MenuGroupService,
-    MenuItemService
+    MenuItemService,
+    ToppingGroupService
   ],
 })
 export class UserModule { }
