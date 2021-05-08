@@ -9,15 +9,19 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { ToppingItem } from './topping-item.entity';
+import { Menu } from '.';
 
 @Entity()
 export class ToppingGroup {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(() => Restaurant, (restaurant) => restaurant.toppingGroups)
+  @ManyToOne(() => Menu, (menu) => menu.toppingGroups)
   @JoinColumn()
-  restaurant: Restaurant;
+  menu: Menu;
+
+  @Column()
+  menuId: string;
 
   @OneToMany(() => ToppingItem, (toppingItem) => toppingItem.group)
   toppingItems: ToppingItem[];
@@ -25,11 +29,11 @@ export class ToppingGroup {
   @Column()
   name: string;
 
-  @Column()
-  index: number;
-
   @Column({ default: true })
   isActive: boolean;
+
+  @Column()
+  index: number;
 
   @DeleteDateColumn()
   deletedAt: Date;
