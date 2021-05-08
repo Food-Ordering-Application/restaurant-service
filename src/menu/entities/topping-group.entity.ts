@@ -23,7 +23,7 @@ export class ToppingGroup {
   @Column()
   menuId: string;
 
-  @OneToMany(() => ToppingItem, (toppingItem) => toppingItem.group)
+  @OneToMany(() => ToppingItem, (toppingItem) => toppingItem.toppingGroup)
   toppingItems: ToppingItem[];
 
   @Column()
