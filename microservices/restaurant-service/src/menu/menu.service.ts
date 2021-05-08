@@ -36,12 +36,7 @@ export class MenuService {
     restaurantId: string,
   ): Promise<IMenuInformationResponse> {
     try {
-      const menu = await this.menuRepository
-        .createQueryBuilder('menu')
-        .leftJoin('menu.restaurant', 'restaurant')
-        .where('restaurant.id = :restaurantId', { restaurantId: restaurantId })
-        .getOne();
-
+      const menu = await this.menuRepository.findOne({ restaurantId });
       const menuGroups = await this.menuGroupRepository
         .createQueryBuilder('menuG')
         .leftJoin('menuG.menu', 'menu')
