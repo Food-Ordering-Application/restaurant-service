@@ -68,7 +68,7 @@ export class Restaurant {
   })
   openHours: OpenHour[];
 
-  @ManyToMany(() => Category, (category) => category.restaurants, {
+  @OneToMany(() => Category, (category) => category.restaurant, {
     cascade: ['update', 'insert'],
     eager: true,
   })
@@ -77,9 +77,6 @@ export class Restaurant {
 
   @OneToOne(() => Menu, (menu) => menu.restaurant)
   menu: Menu;
-
-  @OneToMany(() => ToppingGroup, (toppingGroup) => toppingGroup.restaurant)
-  toppingGroups: ToppingGroup[];
 
   @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   created_at: Date;
