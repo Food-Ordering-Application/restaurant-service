@@ -15,290 +15,68 @@ import {
   ToppingItem,
 } from '../../menu/entities/index';
 
+const NUMBER_OF_RESETAURANTS = 10;
+const NUMBER_OF_OPENHOURS = 7;
+
+const NUMBER_OF_MENU_GROUP_PER_RESTAURANT = 3;
+const NUMBER_OF_MENU_ITEM_PER_MENU_GROUP = 2;
+
+const NUMBER_OF_TOPPING_GROUP_PER_RESTAURANT = 3;
+const NUMBER_OF_TOPPING_ITEM_PER_TOPPING_GROUP = 3;
+
 export default class CreateFakeData implements Seeder {
   public async run(factory: Factory, connection: Connection): Promise<any> {
-    const restaurants = await factory(Restaurant)({}).createMany(299);
+    const restaurants = await factory(Restaurant)({}).createMany(NUMBER_OF_RESETAURANTS);
     for (const restaurant of restaurants) {
       // Với mỗi nhà hàng tạo 7 openHour
-      await factory(OpenHour)({ restaurantId: restaurant.id }).createMany(7);
+      await factory(OpenHour)({ restaurantId: restaurant.id }).createMany(NUMBER_OF_OPENHOURS);
+      // Menu
       // Với mỗi nhà hàng tạo 1 menu
       const menu = await factory(Menu)({
         restaurantId: restaurant.id,
       }).create();
+
+      // MenuGroup & ToppingGroup
       // Với mỗi menu tạo 3 menuGroup
-      const menuGroups = await factory(MenuGroup)({
+      const menuGroupsPromise = factory(MenuGroup)({
         menuId: menu.id,
-      }).createMany(3);
-      // Với mỗi nhà hàng tạo 3 toppingGroup
-      const toppingGroups = await factory(ToppingGroup)({
-        restaurantId: restaurant.id,
-      }).createMany(3);
-      // Tạo MenuItem
-      const menuItems = await Promise.all([
+      }).createMany(NUMBER_OF_MENU_GROUP_PER_RESTAURANT);
+      // Với mỗi menu tạo 3 toppingGroup
+      const toppingGroupsPromise = factory(ToppingGroup)({
+        menuId: menu.id,
+      }).createMany(NUMBER_OF_TOPPING_GROUP_PER_RESTAURANT);
+
+      const [menuGroups, toppingGroups] = await Promise.all([menuGroupsPromise, toppingGroupsPromise]);
+
+      // MenuItem & ToppingItem
+      // Mỗi menuGroup tạo nhiều menuItem
+      const menuItemsPromise = Promise.all(menuGroups.map((menuGroup) =>
         factory(MenuItem)({
           menu: menu,
-          menuGroup: menuGroups[0],
-        }).createMany(2),
-        factory(MenuItem)({
-          menu: menu,
-          menuGroup: menuGroups[1],
-        }).createMany(2),
-        factory(MenuItem)({
-          menu: menu,
-          menuGroup: menuGroups[2],
-        }).createMany(2),
-      ]);
+          menuGroup: menuGroup,
+        }).createMany(NUMBER_OF_MENU_ITEM_PER_MENU_GROUP)));
+
       // Mỗi toppingGroup tạo nhiều toppingItem
-      const toppingItems = await Promise.all([
+      const toppingItemsPromise = Promise.all(toppingGroups.map((toppingGroup) =>
         factory(ToppingItem)({
-          toppingGroup: toppingGroups[0],
-        }).createMany(3),
-        factory(ToppingItem)({
-          toppingGroup: toppingGroups[1],
-        }).createMany(3),
-        factory(ToppingItem)({
-          toppingGroup: toppingGroups[2],
-        }).createMany(3),
-      ]);
+          menu: menu,
+          toppingGroup: toppingGroup,
+        }).createMany(NUMBER_OF_TOPPING_ITEM_PER_TOPPING_GROUP)));
+
+      const [menuItems, toppingItems] = await Promise.all([menuItemsPromise, toppingItemsPromise]);
+
+      const menuItemsArray = menuItems.reduce((prev, menuItems) => prev.concat(menuItems), []);
+      const toppingItemsArray = toppingItems.reduce((prev, toppingItems) => prev.concat(toppingItems), []);
 
       // Tạo MenuItemTopping
-      const menuItemToppings = await Promise.all([
-        factory(MenuItemTopping)({
-          menuItem: menuItems[0][0],
-          toppingItem: toppingItems[0][0],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[0][0],
-          toppingItem: toppingItems[0][1],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[0][0],
-          toppingItem: toppingItems[0][2],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[0][0],
-          toppingItem: toppingItems[1][0],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[0][0],
-          toppingItem: toppingItems[1][1],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[0][0],
-          toppingItem: toppingItems[1][2],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[0][0],
-          toppingItem: toppingItems[2][0],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[0][0],
-          toppingItem: toppingItems[2][1],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[0][0],
-          toppingItem: toppingItems[2][2],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[0][1],
-          toppingItem: toppingItems[0][0],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[0][1],
-          toppingItem: toppingItems[0][1],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[0][1],
-          toppingItem: toppingItems[0][2],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[0][1],
-          toppingItem: toppingItems[1][0],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[0][1],
-          toppingItem: toppingItems[1][1],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[0][1],
-          toppingItem: toppingItems[1][2],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[0][1],
-          toppingItem: toppingItems[2][0],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[0][1],
-          toppingItem: toppingItems[2][1],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[0][1],
-          toppingItem: toppingItems[2][2],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[1][0],
-          toppingItem: toppingItems[0][0],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[1][0],
-          toppingItem: toppingItems[0][1],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[1][0],
-          toppingItem: toppingItems[0][2],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[1][0],
-          toppingItem: toppingItems[1][0],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[1][0],
-          toppingItem: toppingItems[1][1],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[1][0],
-          toppingItem: toppingItems[1][2],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[1][0],
-          toppingItem: toppingItems[2][0],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[1][0],
-          toppingItem: toppingItems[2][1],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[1][0],
-          toppingItem: toppingItems[2][2],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[1][1],
-          toppingItem: toppingItems[0][0],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[1][1],
-          toppingItem: toppingItems[0][1],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[1][1],
-          toppingItem: toppingItems[0][2],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[1][1],
-          toppingItem: toppingItems[1][0],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[1][1],
-          toppingItem: toppingItems[1][1],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[1][1],
-          toppingItem: toppingItems[1][2],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[1][1],
-          toppingItem: toppingItems[2][0],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[1][1],
-          toppingItem: toppingItems[2][1],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[1][1],
-          toppingItem: toppingItems[2][2],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[2][0],
-          toppingItem: toppingItems[0][0],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[2][0],
-          toppingItem: toppingItems[0][1],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[2][0],
-          toppingItem: toppingItems[0][2],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[2][0],
-          toppingItem: toppingItems[1][0],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[2][0],
-          toppingItem: toppingItems[1][1],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[2][0],
-          toppingItem: toppingItems[1][2],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[2][0],
-          toppingItem: toppingItems[2][0],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[2][0],
-          toppingItem: toppingItems[2][1],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[2][0],
-          toppingItem: toppingItems[2][2],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[2][1],
-          toppingItem: toppingItems[0][0],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[2][1],
-          toppingItem: toppingItems[0][1],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[2][1],
-          toppingItem: toppingItems[0][2],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[2][1],
-          toppingItem: toppingItems[1][0],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[2][1],
-          toppingItem: toppingItems[1][1],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[2][1],
-          toppingItem: toppingItems[1][2],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[2][1],
-          toppingItem: toppingItems[2][0],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[2][1],
-          toppingItem: toppingItems[2][1],
-        }).create(),
-        factory(MenuItemTopping)({
-          menuItem: menuItems[2][1],
-          toppingItem: toppingItems[2][2],
-        }).create(),
-      ]);
+      const menuItemToppings = menuItemsArray.reduce((prev, menuItem) => {
+        const menuItemToppingOfCurrentItem = toppingItemsArray.map(toppingItem =>
+          factory(MenuItemTopping)({
+            menuItem: menuItem,
+            toppingItem: toppingItem,
+          }).create());
+        return [...prev, ...menuItemToppingOfCurrentItem];
+      }, [] as Promise<MenuItemTopping>[]);
     }
-    // Tạo 4 restaurant-category và mỗi category gán 5 nhà hàng
-    await factory(Category)({ restaurants: restaurants.slice(0, 50) }).create({
-      type: CategoryType.CAFEDESSERT,
-    });
-    await factory(Category)({ restaurants: restaurants.slice(50, 100) }).create(
-      {
-        type: CategoryType.RESTAURANT,
-      },
-    );
-    await factory(Category)({
-      restaurants: restaurants.slice(100, 150),
-    }).create({
-      type: CategoryType.STREETFOOD,
-    });
-    await factory(Category)({
-      restaurants: restaurants.slice(150, 200),
-    }).create({
-      type: CategoryType.VETERIAN,
-    });
   }
 }
