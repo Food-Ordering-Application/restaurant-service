@@ -1,5 +1,6 @@
 import {
   Column,
+  DeleteDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
@@ -19,9 +20,16 @@ export class MenuItem {
   @JoinColumn()
   menu: Menu;
 
+  @Column()
+  menuId: string;
+
+
   @ManyToOne(() => MenuGroup, (menuGroup) => menuGroup.menuItems)
   @JoinColumn()
   menuGroup: MenuGroup;
+
+  @Column()
+  menuGroupId: string;
 
   @OneToMany(
     () => MenuItemTopping,
@@ -46,4 +54,7 @@ export class MenuItem {
 
   @Column({ default: true })
   isActive: boolean;
+
+  @DeleteDateColumn()
+  deletedAt: Date;
 }

@@ -1,5 +1,6 @@
 export class GetSomeRestaurantDto {
-  pageNumber: number;
+  page: number;
+  size: number;
   area: string;
   search?: string;
   category?: string;

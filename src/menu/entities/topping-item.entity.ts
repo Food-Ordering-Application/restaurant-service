@@ -1,11 +1,13 @@
 import {
   Column,
+  DeleteDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { Menu } from '.';
 import { MenuItemTopping } from './menu-item-topping.entity';
 import { ToppingGroup } from './topping-group.entity';
 
@@ -14,9 +16,19 @@ export class ToppingItem {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  @ManyToOne(() => Menu, (menu) => menu.toppingItems)
+  @JoinColumn()
+  menu: Menu;
+
+  @Column()
+  menuId: string;
+
   @ManyToOne(() => ToppingGroup, (toppingGroup) => toppingGroup.toppingItems)
   @JoinColumn()
-  group: ToppingGroup;
+  toppingGroup: ToppingGroup;
+
+  @Column()
+  toppingGroupId: string;
 
   @OneToMany(
     () => MenuItemTopping,
@@ -41,4 +53,7 @@ export class ToppingItem {
 
   @Column({ default: true })
   isActive: boolean;
+
+  @DeleteDateColumn()
+  deletedAt: Date;
 }
