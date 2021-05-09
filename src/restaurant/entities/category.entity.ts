@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { CategoryType } from '../enums/category-type.enum';
 import { Restaurant } from './restaurant.entity';
 
@@ -10,6 +10,6 @@ export class Category {
   @Column({ enum: CategoryType })
   type: string;
 
-  @ManyToMany(() => Restaurant, (restaurant) => restaurant.categories)
-  restaurants: Restaurant[];
+  @ManyToOne(() => Restaurant, (restaurant) => restaurant.categories)
+  restaurant: Restaurant;
 }

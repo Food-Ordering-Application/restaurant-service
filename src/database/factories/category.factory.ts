@@ -3,15 +3,13 @@ import Faker from 'faker';
 import { Category, Restaurant } from '../../restaurant/entities/index';
 
 interface Context {
-  restaurants: Restaurant[];
-  type: string;
+  restaurant: Restaurant;
 }
 
 define(Category, (faker: typeof Faker, context: Context) => {
-  const { restaurants, type } = context;
+  const { restaurant } = context;
   const category = new Category();
   category.id = faker.random.uuid();
-  category.type = type;
-  category.restaurants = restaurants;
+  category.restaurant = restaurant;
   return category;
 });

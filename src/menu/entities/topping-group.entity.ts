@@ -1,6 +1,7 @@
 import { Restaurant } from '../../restaurant/entities/restaurant.entity';
 import {
   Column,
+  DeleteDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
@@ -8,25 +9,32 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { ToppingItem } from './topping-item.entity';
+import { Menu } from '.';
 
 @Entity()
 export class ToppingGroup {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(() => Restaurant, (restaurant) => restaurant.toppingGroups)
+  @ManyToOne(() => Menu, (menu) => menu.toppingGroups)
   @JoinColumn()
-  restaurant: Restaurant;
+  menu: Menu;
 
-  @OneToMany(() => ToppingItem, (toppingItem) => toppingItem.group)
+  @Column()
+  menuId: string;
+
+  @OneToMany(() => ToppingItem, (toppingItem) => toppingItem.toppingGroup)
   toppingItems: ToppingItem[];
 
   @Column()
   name: string;
 
+  @Column({ default: true })
+  isActive: boolean;
+
   @Column()
   index: number;
 
-  @Column({ default: true })
-  isActive: boolean;
+  @DeleteDateColumn()
+  deletedAt: Date;
 }

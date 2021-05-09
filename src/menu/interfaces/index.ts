@@ -6,3 +6,6 @@ export { IMenuItemToppingResponse } from './get-menu-topping-info-response.inter
 export { IMenuItemTopping } from './menu-item-topping.interface';
 export { IToppingGroup } from './topping-group.interface';
 export { IToppingItem } from './topping-item.interface';
+export { ICreateMenuResponse } from './create-menu-response.interface';
+export { IFetchMenuOfRestaurantResponse } from './fetch-menu-of-restaurant.interface';
+export { IUpdateMenuResponse } from './update-menu-response.interface';

@@ -2,6 +2,7 @@ import { Menu } from '../../menu/entities/menu.entity';
 import { ToppingGroup } from '../../menu/entities/topping-group.entity';
 import {
   Column,
+  CreateDateColumn,
   Entity,
   JoinTable,
   ManyToMany,
@@ -17,13 +18,13 @@ export class Restaurant {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
+  @Column({ nullable: false })
   owner: string;
 
-  @Column()
+  @Column({ nullable: false })
   name: string;
 
-  @Column()
+  @Column({ nullable: false })
   phone: string;
 
   @Column({ nullable: true })
@@ -41,28 +42,34 @@ export class Restaurant {
   @Column({ default: 0 })
   rating: number;
 
-  @Column({ nullable: true })
+  @Column({ nullable: false })
   address: string;
 
-  @Column({ default: 'TPHCM' })
+  @Column({ nullable: false, default: 'TPHCM' })
   city: string;
 
-  @Column({ default: 'TPHCM' })
+  @Column({ nullable: false, default: 'TPHCM' })
   area: string;
 
-  @Column({ type: 'geometry', spatialFeatureType: 'Point', srid: 4326 })
+  @Column({ nullable: false, type: 'geometry', spatialFeatureType: 'Point', srid: 4326 })
   geom: { type: string; coordinates: number[] };
 
   @Column({ default: true })
   isActive: boolean;
 
-  @Column({ default: true })
+  @Column({ default: false })
   isVerified: boolean;
 
-  @OneToMany(() => OpenHour, (openHours) => openHours.restaurant)
-  openhours: OpenHour[];
+  @Column({ default: false })
+  isBanned: boolean;
 
-  @ManyToMany(() => Category, (category) => category.restaurants, {
+  @OneToMany(() => OpenHour, (openHours) => openHours.restaurant, {
+    cascade: ['update', 'insert']
+  })
+  openHours: OpenHour[];
+
+  @OneToMany(() => Category, (category) => category.restaurant, {
+    cascade: ['update', 'insert'],
     eager: true,
   })
   @JoinTable()
@@ -71,6 +78,9 @@ export class Restaurant {
   @OneToOne(() => Menu, (menu) => menu.restaurant)
   menu: Menu;
 
-  @OneToMany(() => ToppingGroup, (toppingGroup) => toppingGroup.restaurant)
-  toppingGroups: ToppingGroup[];
+  @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
+  created_at: Date;
+
+  @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
+  updated_at: Date;
 }
