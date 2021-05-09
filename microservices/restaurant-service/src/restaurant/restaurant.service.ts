@@ -78,7 +78,7 @@ export class RestaurantService {
       merchantId,
       restaurantId: id,
       data: {
-        name, phone, area, address, isActive, isBanned, isVerified, city
+        name, phone, area, address, coverImageUrl, isActive, isBanned, isVerified, city
       }
     }
 
