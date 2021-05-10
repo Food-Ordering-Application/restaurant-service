@@ -230,13 +230,14 @@ export class ToppingItemService {
       };
     }
 
-    const { menuItems = [] } = data;
+    const { menuItemToppings = [] } = data;
 
     // save to database
     await this.menuItemToppingRepository.delete({ toppingItemId });
 
-    const menuItemToppingsEntity = menuItems.map(({ id, customPrice }) =>
-      this.menuItemToppingRepository.create({ menuItemId: id, customPrice }),
+    const menuItemToppingsEntity = menuItemToppings.map(
+      ({ menuItemId, customPrice }) =>
+        this.menuItemToppingRepository.create({ menuItemId, customPrice }),
     );
     await this.toppingItemRepository.update(
       { id: toppingItemId },

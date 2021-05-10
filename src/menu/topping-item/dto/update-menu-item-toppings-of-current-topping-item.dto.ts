@@ -7,8 +7,8 @@ export class UpdateMenuItemToppingsOfCurrentToppingItemDto {
 }
 
 export class UpdateMenuItemToppingsOfCurrentToppingItemDataDto {
-  menuItems: {
-    id: string;
+  menuItemToppings: {
+    menuItemId: string;
     customPrice: number;
   }[];
 }
