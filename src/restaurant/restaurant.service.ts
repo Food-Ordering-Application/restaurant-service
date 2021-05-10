@@ -3,39 +3,53 @@ import { ClientProxy } from '@nestjs/microservices';
 import { InjectRepository } from '@nestjs/typeorm';
 import { USER_SERVICE } from 'src/constants';
 import { Repository, SelectQueryBuilder } from 'typeorm';
-import { GetRestaurantInformationDto, GetSomeRestaurantDto } from './dto';
+import {
+  GetRestaurantAddressInfoDto,
+  GetRestaurantInformationDto,
+  GetSomeRestaurantDto,
+} from './dto';
 import { CreateRestaurantDto } from './dto/create-restaurant.dto';
 import { RestaurantDto } from './dto/restaurant.dto';
 import { Category, Restaurant } from './entities';
 import { OpenHour } from './entities/openhours.entity';
 import { RestaurantCreatedEventPayload } from './events/restaurant-created.event';
 import { RestaurantProfileUpdatedEventPayload } from './events/restaurant-profile-updated.event';
-import { IRestaurantResponse, IRestaurantsResponse } from './interfaces';
+import {
+  IGetRestaurantAddressResponse,
+  IRestaurantResponse,
+  IRestaurantsResponse,
+} from './interfaces';
 import { ICreateRestaurantResponse } from './interfaces/create-restaurant-response.interface';
-
 
 @Injectable()
 export class RestaurantService {
   private readonly logger = new Logger('RestaurantService');
   constructor(
     @Inject(USER_SERVICE) private userServiceClient: ClientProxy,
-    @InjectRepository(Restaurant) private restaurantRepository: Repository<Restaurant>,
-    @InjectRepository(OpenHour) private openHourRepository: Repository<OpenHour>,
-    @InjectRepository(Category) private categoryRepository: Repository<Category>,
-  ) { }
+    @InjectRepository(Restaurant)
+    private restaurantRepository: Repository<Restaurant>,
+    @InjectRepository(OpenHour)
+    private openHourRepository: Repository<OpenHour>,
+    @InjectRepository(Category)
+    private categoryRepository: Repository<Category>,
+  ) {}
 
-  async handleRestaurantProfileUpdated(payload: RestaurantProfileUpdatedEventPayload) {
+  async handleRestaurantProfileUpdated(
+    payload: RestaurantProfileUpdatedEventPayload,
+  ) {
     const { restaurantId, data } = payload;
     const templateObject: {
-      isVerified?: boolean,
-      isActive?: boolean,
-      isBanned?: boolean
+      isVerified?: boolean;
+      isActive?: boolean;
+      isBanned?: boolean;
     } = {
       isVerified: null,
       isActive: null,
-      isBanned: null
-    }
-    Object.keys(data).forEach(key => typeof templateObject[key] == 'undefined' ? delete data[key] : {});
+      isBanned: null,
+    };
+    Object.keys(data).forEach((key) =>
+      typeof templateObject[key] == 'undefined' ? delete data[key] : {},
+    );
     await this.restaurantRepository.update(restaurantId, data);
   }
 
@@ -43,17 +57,33 @@ export class RestaurantService {
     const { merchantId, createRestaurantDto } = dto;
     // TODO
     const {
-      name, phone,
-      address, area, city, geo,
-      coverImageUrl, verifiedImageUrl, videoUrl = '',
+      name,
+      phone,
+      address,
+      area,
+      city,
+      geo,
+      coverImageUrl,
+      verifiedImageUrl,
+      videoUrl = '',
       categories: categoriesData,
       openHours: openHoursData,
     } = createRestaurantDto;
 
-    const categories: Category[] = categoriesData.map((category) => this.categoryRepository.create({ type: category }));
-    const openHours: OpenHour[] = openHoursData.map(({ fromHour, fromMinute, toHour, toMinute, day }) => {
-      return this.openHourRepository.create({ day, fromHour, fromMinute, toHour, toMinute });
-    });
+    const categories: Category[] = categoriesData.map((category) =>
+      this.categoryRepository.create({ type: category }),
+    );
+    const openHours: OpenHour[] = openHoursData.map(
+      ({ fromHour, fromMinute, toHour, toMinute, day }) => {
+        return this.openHourRepository.create({
+          day,
+          fromHour,
+          fromMinute,
+          toHour,
+          toMinute,
+        });
+      },
+    );
 
     const restaurant = this.restaurantRepository.create({
       owner: merchantId,
@@ -68,29 +98,39 @@ export class RestaurantService {
       city,
       geom: {
         type: 'Point',
-        coordinates: [geo.latitude, geo.longitude]
+        coordinates: [geo.latitude, geo.longitude],
       },
       openHours,
-    })
+    });
     const newRestaurant = await this.restaurantRepository.save(restaurant);
     const { id, isActive, isBanned, isVerified } = newRestaurant;
     const restaurantCreatedEventPayload: RestaurantCreatedEventPayload = {
       merchantId,
       restaurantId: id,
       data: {
-        name, phone, area, address, coverImageUrl, isActive, isBanned, isVerified, city
-      }
-    }
+        name,
+        phone,
+        area,
+        address,
+        coverImageUrl,
+        isActive,
+        isBanned,
+        isVerified,
+        city,
+      },
+    };
 
-    this.userServiceClient.emit({ event: 'restaurant_created' }, restaurantCreatedEventPayload);
+    this.userServiceClient.emit(
+      { event: 'restaurant_created' },
+      restaurantCreatedEventPayload,
+    );
     return {
       status: HttpStatus.CREATED,
       message: 'Restaurant was created',
       data: {
-        restaurant: RestaurantDto.EntityToDTO(newRestaurant)
-      }
+        restaurant: RestaurantDto.EntityToDTO(newRestaurant),
+      },
     };
-
   }
 
   async getSomeRestaurant(
@@ -112,26 +152,30 @@ export class RestaurantService {
         .leftJoinAndSelect('res.categories', 'categories')
         .where('res.area = :area', {
           area: area,
-        }).andWhere('res.isActive = :active', {
-          active: true
-        }).andWhere('res.isBanned = :not_banned', {
-          not_banned: false
-        }).andWhere('res.isVerified = :verified', {
-          verified: true
         })
+        .andWhere('res.isActive = :active', {
+          active: true,
+        })
+        .andWhere('res.isBanned = :not_banned', {
+          not_banned: false,
+        })
+        .andWhere('res.isVerified = :verified', {
+          verified: true,
+        });
       if (category) {
         queryBuilder = queryBuilder.where('categories.type = :categoryType', {
           categoryType: category,
-        })
+        });
       }
 
       if (search) {
         queryBuilder = queryBuilder.where('res.name LIKE :restaurantName', {
           restaurantName: `%${search.toLowerCase()}%`,
-        })
+        });
       }
 
-      const restaurants = await queryBuilder.skip((page - 1) * size)
+      const restaurants = await queryBuilder
+        .skip((page - 1) * size)
         .take(pageSize)
         .getMany();
 
@@ -169,6 +213,33 @@ export class RestaurantService {
         status: HttpStatus.INTERNAL_SERVER_ERROR,
         message: error.message,
         restaurant: null,
+      };
+    }
+  }
+
+  async getRestaurantAddressInfo(
+    getRestaurantAddressInfoDto: GetRestaurantAddressInfoDto,
+  ): Promise<IGetRestaurantAddressResponse> {
+    const { restaurantId } = getRestaurantAddressInfoDto;
+    try {
+      const restaurant = await this.restaurantRepository.findOne({
+        id: restaurantId,
+      });
+
+      return {
+        status: HttpStatus.OK,
+        message: 'Restaurant address fetched successfully',
+        data: {
+          address: restaurant.address,
+          geom: restaurant.geom,
+        },
+      };
+    } catch (error) {
+      this.logger.error(error);
+      return {
+        status: HttpStatus.INTERNAL_SERVER_ERROR,
+        message: error.message,
+        data: null,
       };
     }
   }
