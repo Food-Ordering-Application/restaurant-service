@@ -30,11 +30,14 @@ define(Restaurant, (faker: typeof Faker, context: Context) => {
   const area = _.sample(Object.values(Area)) as Area;
   const isActive = true;
   const isVerified = true;
-  const latitude = faker.address.latitude();
-  const longtitude = faker.address.longitude();
+
+  const latitudes = [10.7058661, 10.7566764, 10.7380495];
+  const longtitudes = [106.7049702, 106.6626456, 106.6788235];
+
+  const random = Math.floor(Math.random() * latitudes.length);
   const geom = {
     type: 'Point',
-    coordinates: [parseFloat(longtitude), parseFloat(latitude)],
+    coordinates: [latitudes[random], longtitudes[random]],
   };
 
   const restaurant = new Restaurant();

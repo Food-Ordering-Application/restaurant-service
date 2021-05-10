@@ -1,10 +1,18 @@
 import { CreateRestaurantDto } from './dto/create-restaurant.dto';
 import { Controller } from '@nestjs/common';
 import { EventPattern, MessagePattern, Payload } from '@nestjs/microservices';
-import { GetSomeRestaurantDto, GetRestaurantInformationDto } from './dto';
-import { IRestaurantResponse, IRestaurantsResponse } from './interfaces';
+import {
+  GetSomeRestaurantDto,
+  GetRestaurantInformationDto,
+  GetRestaurantAddressInfoDto,
+} from './dto';
+import {
+  IGetRestaurantAddressResponse,
+  IRestaurantResponse,
+  IRestaurantsResponse,
+  ICreateRestaurantResponse,
+} from './interfaces';
 import { RestaurantService } from './restaurant.service';
-import { ICreateRestaurantResponse } from './interfaces/create-restaurant-response.interface';
 import { RestaurantProfileUpdatedEventPayload } from './events/restaurant-profile-updated.event';
 
 @Controller()
@@ -22,6 +30,7 @@ export class RestaurantController {
   getSomeRestaurant(
     @Payload() getSomeRestaurantDto: GetSomeRestaurantDto,
   ): Promise<IRestaurantsResponse> {
+    console.log('haha');
     return this.restaurantService.getSomeRestaurant(getSomeRestaurantDto);
   }
 
@@ -39,5 +48,14 @@ export class RestaurantController {
     data: RestaurantProfileUpdatedEventPayload,
   ) {
     return await this.restaurantService.handleRestaurantProfileUpdated(data);
+  }
+
+  @MessagePattern('getRestaurantAddressInfo')
+  getRestaurantAddressInfo(
+    @Payload() getRestaurantAddressInfoDto: GetRestaurantAddressInfoDto,
+  ): Promise<IGetRestaurantAddressResponse> {
+    return this.restaurantService.getRestaurantAddressInfo(
+      getRestaurantAddressInfoDto,
+    );
   }
 }

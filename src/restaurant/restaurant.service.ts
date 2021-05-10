@@ -3,14 +3,22 @@ import { ClientProxy } from '@nestjs/microservices';
 import { InjectRepository } from '@nestjs/typeorm';
 import { USER_SERVICE } from 'src/constants';
 import { Repository, SelectQueryBuilder } from 'typeorm';
-import { GetRestaurantInformationDto, GetSomeRestaurantDto } from './dto';
+import {
+  GetRestaurantAddressInfoDto,
+  GetRestaurantInformationDto,
+  GetSomeRestaurantDto,
+} from './dto';
 import { CreateRestaurantDto } from './dto/create-restaurant.dto';
 import { RestaurantDto } from './dto/restaurant.dto';
 import { Category, Restaurant } from './entities';
 import { OpenHour } from './entities/openhours.entity';
 import { RestaurantCreatedEventPayload } from './events/restaurant-created.event';
 import { RestaurantProfileUpdatedEventPayload } from './events/restaurant-profile-updated.event';
-import { IRestaurantResponse, IRestaurantsResponse } from './interfaces';
+import {
+  IGetRestaurantAddressResponse,
+  IRestaurantResponse,
+  IRestaurantsResponse,
+} from './interfaces';
 import { ICreateRestaurantResponse } from './interfaces/create-restaurant-response.interface';
 
 @Injectable()
@@ -205,6 +213,33 @@ export class RestaurantService {
         status: HttpStatus.INTERNAL_SERVER_ERROR,
         message: error.message,
         restaurant: null,
+      };
+    }
+  }
+
+  async getRestaurantAddressInfo(
+    getRestaurantAddressInfoDto: GetRestaurantAddressInfoDto,
+  ): Promise<IGetRestaurantAddressResponse> {
+    const { restaurantId } = getRestaurantAddressInfoDto;
+    try {
+      const restaurant = await this.restaurantRepository.findOne({
+        id: restaurantId,
+      });
+
+      return {
+        status: HttpStatus.OK,
+        message: 'Restaurant address fetched successfully',
+        data: {
+          address: restaurant.address,
+          geom: restaurant.geom,
+        },
+      };
+    } catch (error) {
+      this.logger.error(error);
+      return {
+        status: HttpStatus.INTERNAL_SERVER_ERROR,
+        message: error.message,
+        data: null,
       };
     }
   }
