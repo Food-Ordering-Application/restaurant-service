@@ -4,6 +4,7 @@ import {
   CreateToppingItemDto,
   DeleteToppingItemDto,
   FetchMenuItemToppingsOfCurrentToppingItemDto,
+  UpdateMenuItemToppingsOfCurrentToppingItemDto,
   UpdateToppingItemDto,
 } from './dto';
 import { FetchToppingItemOfMenuDto } from './dto/fetch-topping-item-of-menu.dto';
@@ -12,6 +13,7 @@ import {
   IDeleteToppingItemResponse,
   IFetchMenuItemToppingsOfCurrentToppingItemResponse,
   IFetchToppingItemOfMenuResponse,
+  IUpdateMenuItemToppingsOfCurrentToppingItemResponse,
   IUpdateToppingItemResponse,
 } from './interfaces';
 import { ToppingItemService } from './topping-item.service';
@@ -55,6 +57,16 @@ export class ToppingItemController {
   ): Promise<IFetchMenuItemToppingsOfCurrentToppingItemResponse> {
     return await this.menuGroupService.fetchMenuItemTopping(
       fetchMenuItemToppingDto,
+    );
+  }
+
+  @MessagePattern('updateMenuItemToppingsOfCurrentToppingItem')
+  async updateMenuItemTopping(
+    @Payload()
+    updateMenuItemToppingDto: UpdateMenuItemToppingsOfCurrentToppingItemDto,
+  ): Promise<IUpdateMenuItemToppingsOfCurrentToppingItemResponse> {
+    return await this.menuGroupService.updateMenuItemTopping(
+      updateMenuItemToppingDto,
     );
   }
 }

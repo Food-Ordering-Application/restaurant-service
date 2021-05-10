@@ -1,13 +1,15 @@
-import { MenuService } from '../menu.service';
 import { HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Like, Repository } from 'typeorm';
+import { MenuItemTopping } from '../entities';
 import { ToppingItem } from '../entities/topping-item.entity';
+import { ToppingGroupService } from '../topping-group/topping-group.service';
 import {
   CreateToppingItemDto,
   DeleteToppingItemDto,
   FetchMenuItemToppingsOfCurrentToppingItemDto,
   UpdatedToppingItemDataDto,
+  UpdateMenuItemToppingsOfCurrentToppingItemDto,
   UpdateToppingItemDto,
 } from './dto';
 import { FetchToppingItemOfMenuDto } from './dto/fetch-topping-item-of-menu.dto';
@@ -16,12 +18,10 @@ import {
   ICreateToppingItemResponse,
   IDeleteToppingItemResponse,
   IFetchMenuItemToppingsOfCurrentToppingItemResponse,
+  IUpdateMenuItemToppingsOfCurrentToppingItemResponse,
   IUpdateToppingItemResponse,
 } from './interfaces';
 import { IFetchToppingItemOfMenuResponse } from './interfaces/fetch-topping-item-of-menu-response.interface';
-import { MenuGroupService } from '../menu-group/menu-group.service';
-import { ToppingGroupService } from '../topping-group/topping-group.service';
-import { MenuItemTopping } from '../entities';
 @Injectable()
 export class ToppingItemService {
   constructor(
@@ -206,6 +206,46 @@ export class ToppingItemService {
       data: {
         results,
       },
+    };
+  }
+  async updateMenuItemTopping(
+    updateMenuItemToppingDto: UpdateMenuItemToppingsOfCurrentToppingItemDto,
+  ): Promise<IUpdateMenuItemToppingsOfCurrentToppingItemResponse> {
+    const {
+      data,
+      menuId,
+      restaurantId,
+      merchantId,
+      toppingItemId,
+    } = updateMenuItemToppingDto;
+
+    const fetchCountToppingItem = await this.toppingItemRepository.count({
+      id: toppingItemId,
+      menuId: menuId,
+    });
+    if (fetchCountToppingItem === 0) {
+      return {
+        status: HttpStatus.NOT_FOUND,
+        message: 'Topping item not found',
+      };
+    }
+
+    const { menuItems = [] } = data;
+
+    // save to database
+    await this.menuItemToppingRepository.delete({ toppingItemId });
+
+    const menuItemToppingsEntity = menuItems.map(({ id, customPrice }) =>
+      this.menuItemToppingRepository.create({ menuItemId: id, customPrice }),
+    );
+    await this.toppingItemRepository.update(
+      { id: toppingItemId },
+      { menuItemToppings: menuItemToppingsEntity },
+    );
+
+    return {
+      status: HttpStatus.OK,
+      message: 'Topping item updated successfully',
     };
   }
 }

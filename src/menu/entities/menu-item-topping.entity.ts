@@ -27,7 +27,7 @@ export class MenuItemTopping {
   @Column()
   toppingItemId: string;
 
-  @Column()
+  @Column({ nullable: true })
   customPrice: number;
 
   @DeleteDateColumn()

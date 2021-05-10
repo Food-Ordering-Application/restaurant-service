@@ -8,3 +8,7 @@ export {
 } from './update-topping-item.dto';
 export { DeleteToppingItemDto } from './delete-topping-item.dto';
 export { FetchMenuItemToppingsOfCurrentToppingItemDto } from './fetch-menu-item-toppings-item-of-current-topping-item.dto';
+export {
+  UpdateMenuItemToppingsOfCurrentToppingItemDto,
+  UpdateMenuItemToppingsOfCurrentToppingItemDataDto,
+} from './update-menu-item-toppings-of-current-topping-item.dto';
