@@ -51,7 +51,12 @@ export class Restaurant {
   @Column({ nullable: false, default: 'TPHCM' })
   area: string;
 
-  @Column({ nullable: false, type: 'geometry', spatialFeatureType: 'Point', srid: 4326 })
+  @Column({
+    nullable: false,
+    type: 'geometry',
+    spatialFeatureType: 'Point',
+    srid: 4326,
+  })
   geom: { type: string; coordinates: number[] };
 
   @Column({ default: true })
@@ -64,7 +69,7 @@ export class Restaurant {
   isBanned: boolean;
 
   @OneToMany(() => OpenHour, (openHours) => openHours.restaurant, {
-    cascade: ['update', 'insert']
+    cascade: ['update', 'insert'],
   })
   openHours: OpenHour[];
 
