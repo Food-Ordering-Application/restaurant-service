@@ -24,7 +24,6 @@ import { RestaurantService } from './restaurant.service';
             queue: configService.get('USERS_AMQP_QUEUE'),
             queueOptions: {
               durable: false,
-
             },
           },
         }),
@@ -34,4 +33,4 @@ import { RestaurantService } from './restaurant.service';
   controllers: [RestaurantController],
   providers: [RestaurantService],
 })
-export class RestaurantModule { }
+export class RestaurantModule {}

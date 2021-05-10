@@ -3,8 +3,8 @@ export interface IFetchMenuOfRestaurantResponse {
   status: number;
   message: string;
   data: {
-    results: MenuDto[],
-    total: number,
-    size: number,
+    results: MenuDto[];
+    total: number;
+    size: number;
   };
 }

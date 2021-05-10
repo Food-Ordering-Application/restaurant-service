@@ -5,5 +5,5 @@ export interface ICreateMenuGroupResponse {
   message: string;
   data: {
     menuGroup: MenuGroupDto;
-  }
+  };
 }

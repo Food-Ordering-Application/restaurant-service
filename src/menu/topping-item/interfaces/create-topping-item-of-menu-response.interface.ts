@@ -5,5 +5,5 @@ export interface ICreateToppingItemResponse {
   message: string;
   data: {
     toppingItem: ToppingItemDto;
-  }
+  };
 }

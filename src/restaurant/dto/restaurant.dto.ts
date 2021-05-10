@@ -1,4 +1,4 @@
-import { Restaurant } from "../entities";
+import { Restaurant } from '../entities';
 
 export class RestaurantDto {
   id: string;
@@ -11,7 +11,27 @@ export class RestaurantDto {
   city: string;
   area: string;
   static EntityToDTO(restaurant: Restaurant): RestaurantDto {
-    const { id, name, owner, coverImageUrl, videoUrl, address, city, area, phone } = restaurant;
-    return { id, name, owner, coverImageUrl, videoUrl, address, city, area, phone };
+    const {
+      id,
+      name,
+      owner,
+      coverImageUrl,
+      videoUrl,
+      address,
+      city,
+      area,
+      phone,
+    } = restaurant;
+    return {
+      id,
+      name,
+      owner,
+      coverImageUrl,
+      videoUrl,
+      address,
+      city,
+      area,
+      phone,
+    };
   }
 }

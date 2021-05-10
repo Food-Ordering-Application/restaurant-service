@@ -6,7 +6,7 @@ import * as _ from 'lodash';
 
 interface Context {
   restaurantId?: string;
-  categories: CategoryType[]
+  categories: CategoryType[];
 }
 
 define(Restaurant, (faker: typeof Faker, context: Context) => {

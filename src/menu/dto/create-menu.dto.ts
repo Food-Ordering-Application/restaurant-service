@@ -1,4 +1,4 @@
-import { MenuDataDto } from "./menu-data.dto";
+import { MenuDataDto } from './menu-data.dto';
 
 export class CreateMenuDto {
   merchantId: string;

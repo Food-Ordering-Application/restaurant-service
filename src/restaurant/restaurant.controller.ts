@@ -9,7 +9,7 @@ import { RestaurantProfileUpdatedEventPayload } from './events/restaurant-profil
 
 @Controller()
 export class RestaurantController {
-  constructor(private readonly restaurantService: RestaurantService) { }
+  constructor(private readonly restaurantService: RestaurantService) {}
 
   @MessagePattern('createRestaurant')
   createRestaurant(
@@ -35,7 +35,9 @@ export class RestaurantController {
   }
 
   @EventPattern({ event: 'restaurant_profile_updated' })
-  async handleRestaurantProfileUpdated(data: RestaurantProfileUpdatedEventPayload) {
+  async handleRestaurantProfileUpdated(
+    data: RestaurantProfileUpdatedEventPayload,
+  ) {
     return await this.restaurantService.handleRestaurantProfileUpdated(data);
   }
 }

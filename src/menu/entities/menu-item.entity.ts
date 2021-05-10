@@ -23,7 +23,6 @@ export class MenuItem {
   @Column()
   menuId: string;
 
-
   @ManyToOne(() => MenuGroup, (menuGroup) => menuGroup.menuItems)
   @JoinColumn()
   menuGroup: MenuGroup;

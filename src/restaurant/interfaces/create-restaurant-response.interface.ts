@@ -6,5 +6,5 @@ export interface ICreateRestaurantResponse {
   message: string;
   data: {
     restaurant: RestaurantDto;
-  }
+  };
 }

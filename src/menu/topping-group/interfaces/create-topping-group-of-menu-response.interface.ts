@@ -5,5 +5,5 @@ export interface ICreateToppingGroupResponse {
   message: string;
   data: {
     toppingGroup: ToppingGroupDto;
-  }
+  };
 }

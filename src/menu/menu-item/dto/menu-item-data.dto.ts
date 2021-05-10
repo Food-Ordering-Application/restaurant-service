@@ -1,4 +1,3 @@
-
 export class MenuItemDataDto {
   menuGroupId: string;
   name: string;
@@ -8,4 +7,3 @@ export class MenuItemDataDto {
   isActive: boolean;
   index: number;
 }
-
