@@ -1,7 +1,7 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Like, Repository } from 'typeorm';
-import { MenuItemTopping } from '../entities';
+import { In, Like, Repository } from 'typeorm';
+import { MenuItem, MenuItemTopping } from '../entities';
 import { ToppingItem } from '../entities/topping-item.entity';
 import { ToppingGroupService } from '../topping-group/topping-group.service';
 import {
@@ -30,6 +30,8 @@ export class ToppingItemService {
     private toppingItemRepository: Repository<ToppingItem>,
     @InjectRepository(MenuItemTopping)
     private menuItemToppingRepository: Repository<MenuItemTopping>,
+    @InjectRepository(MenuItem)
+    private menuItemRepository: Repository<MenuItem>,
     private toppingGroupService: ToppingGroupService,
   ) {}
 
@@ -231,6 +233,18 @@ export class ToppingItemService {
     }
 
     const { menuItemToppings = [] } = data;
+
+    const menuItemIds = menuItemToppings.map(({ menuItemId }) => menuItemId);
+    const numberOfValidMenuItemIds = await this.menuItemRepository.count({
+      id: In(menuItemIds),
+    });
+
+    if (numberOfValidMenuItemIds !== menuItemIds.length) {
+      return {
+        status: HttpStatus.BAD_REQUEST,
+        message: 'One of menu item ids is not valid. Please check again',
+      };
+    }
 
     // save to database
     await this.menuItemToppingRepository.delete({ toppingItemId });
