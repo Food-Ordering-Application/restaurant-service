@@ -237,13 +237,14 @@ export class ToppingItemService {
 
     const menuItemToppingsEntity = menuItemToppings.map(
       ({ menuItemId, customPrice }) =>
-        this.menuItemToppingRepository.create({ menuItemId, customPrice }),
-    );
-    await this.toppingItemRepository.update(
-      { id: toppingItemId },
-      { menuItemToppings: menuItemToppingsEntity },
+        this.menuItemToppingRepository.create({
+          toppingItemId,
+          menuItemId,
+          customPrice,
+        }),
     );
 
+    await this.menuItemToppingRepository.save(menuItemToppingsEntity);
     return {
       status: HttpStatus.OK,
       message: 'Topping item updated successfully',
