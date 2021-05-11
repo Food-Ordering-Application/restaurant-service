@@ -1,7 +1,10 @@
+import { MenuItemToppingOfToppingItemDto } from '../dto';
+
 export interface IFetchMenuItemToppingsOfCurrentToppingItemResponse {
   status: number;
   message: string;
   data: {
-    results: string[];
+    toppingItemId: string;
+    results: MenuItemToppingOfToppingItemDto[];
   };
 }

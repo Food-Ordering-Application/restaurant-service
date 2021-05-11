@@ -12,3 +12,4 @@ export {
   UpdateMenuItemToppingsOfCurrentToppingItemDto,
   UpdateMenuItemToppingsOfCurrentToppingItemDataDto,
 } from './update-menu-item-toppings-of-current-topping-item.dto';
+export { MenuItemToppingOfToppingItemDto } from './menu-item-topping.dto';

@@ -1,3 +1,5 @@
+import { MenuItemToppingOfToppingItemDto } from '.';
+
 export class UpdateMenuItemToppingsOfCurrentToppingItemDto {
   merchantId: string;
   restaurantId: string;
@@ -7,8 +9,5 @@ export class UpdateMenuItemToppingsOfCurrentToppingItemDto {
 }
 
 export class UpdateMenuItemToppingsOfCurrentToppingItemDataDto {
-  menuItemToppings: {
-    menuItemId: string;
-    customPrice: number;
-  }[];
+  menuItemToppings: MenuItemToppingOfToppingItemDto[];
 }

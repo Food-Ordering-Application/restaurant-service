@@ -8,6 +8,7 @@ import {
   CreateToppingItemDto,
   DeleteToppingItemDto,
   FetchMenuItemToppingsOfCurrentToppingItemDto,
+  MenuItemToppingOfToppingItemDto,
   UpdatedToppingItemDataDto,
   UpdateMenuItemToppingsOfCurrentToppingItemDto,
   UpdateToppingItemDto,
@@ -196,15 +197,14 @@ export class ToppingItemService {
       toppingItemId,
     });
 
-    const results: string[] = menuItemTopping.map(
-      ({ menuItemId }) => menuItemId,
-    );
-
     return {
       status: HttpStatus.OK,
-      message: 'Fetched menu item toppings successfully',
+      message: 'Fetched menu item toppings of topping item successfully',
       data: {
-        results,
+        toppingItemId,
+        results: menuItemTopping.map((menuItemTopping) =>
+          MenuItemToppingOfToppingItemDto.EntityToDto(menuItemTopping),
+        ),
       },
     };
   }
