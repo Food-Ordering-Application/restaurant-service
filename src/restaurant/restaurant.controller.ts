@@ -5,12 +5,14 @@ import {
   GetSomeRestaurantDto,
   GetRestaurantInformationDto,
   GetRestaurantAddressInfoDto,
+  FetchRestaurantsOfMerchantDto,
 } from './dto';
 import {
   IGetRestaurantAddressResponse,
   IRestaurantResponse,
   IRestaurantsResponse,
   ICreateRestaurantResponse,
+  IFetchRestaurantsOfMerchantResponse,
 } from './interfaces';
 import { RestaurantService } from './restaurant.service';
 import { RestaurantProfileUpdatedEventPayload } from './events/restaurant-profile-updated.event';
@@ -24,6 +26,15 @@ export class RestaurantController {
     @Payload() createRestaurantDto: CreateRestaurantDto,
   ): Promise<ICreateRestaurantResponse> {
     return this.restaurantService.create(createRestaurantDto);
+  }
+
+  @MessagePattern('fetchRestaurantsOfMerchant')
+  async fetchRestaurantsOfMerchant(
+    @Payload() fetchRestaurantsOfMerchantDto: FetchRestaurantsOfMerchantDto,
+  ): Promise<IFetchRestaurantsOfMerchantResponse> {
+    return await this.restaurantService.fetchRestaurantsOfMerchant(
+      fetchRestaurantsOfMerchantDto,
+    );
   }
 
   @MessagePattern('getSomeRestaurant')

@@ -4,17 +4,19 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { USER_SERVICE } from 'src/constants';
 import { Repository, SelectQueryBuilder } from 'typeorm';
 import {
+  FetchRestaurantsOfMerchantDto,
   GetRestaurantAddressInfoDto,
   GetRestaurantInformationDto,
   GetSomeRestaurantDto,
 } from './dto';
 import { CreateRestaurantDto } from './dto/create-restaurant.dto';
-import { RestaurantDto } from './dto/restaurant.dto';
+import { RestaurantOfMerchantDto } from './dto/restaurant-of-merchant.dto';
 import { Category, Restaurant } from './entities';
 import { OpenHour } from './entities/openhours.entity';
 import { RestaurantCreatedEventPayload } from './events/restaurant-created.event';
 import { RestaurantProfileUpdatedEventPayload } from './events/restaurant-profile-updated.event';
 import {
+  IFetchRestaurantsOfMerchantResponse,
   IGetRestaurantAddressResponse,
   IRestaurantResponse,
   IRestaurantsResponse,
@@ -128,7 +130,7 @@ export class RestaurantService {
       status: HttpStatus.CREATED,
       message: 'Restaurant was created',
       data: {
-        restaurant: RestaurantDto.EntityToDTO(newRestaurant),
+        restaurant: RestaurantOfMerchantDto.EntityToDTO(newRestaurant),
       },
     };
   }
@@ -246,5 +248,31 @@ export class RestaurantService {
 
   async doesRestaurantExist(id: string): Promise<boolean> {
     return (await this.restaurantRepository.count({ id: id })) != 0;
+  }
+
+  async fetchRestaurantsOfMerchant(
+    fetchRestaurantsOfMerchantDto: FetchRestaurantsOfMerchantDto,
+  ): Promise<IFetchRestaurantsOfMerchantResponse> {
+    const { merchantId, size, page } = fetchRestaurantsOfMerchantDto;
+
+    const [results, total] = await this.restaurantRepository.findAndCount({
+      where: [{ owner: merchantId }],
+      take: size,
+      skip: page * size,
+      loadEagerRelations: false,
+      order: { isVerified: 'ASC', isActive: 'ASC', created_at: 'ASC' },
+    });
+
+    return {
+      status: HttpStatus.OK,
+      message: 'Fetched restaurants successfully',
+      data: {
+        results: results.map((staff) =>
+          RestaurantOfMerchantDto.EntityToDTO(staff),
+        ),
+        size,
+        total,
+      },
+    };
   }
 }
