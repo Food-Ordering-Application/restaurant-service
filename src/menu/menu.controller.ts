@@ -3,12 +3,14 @@ import { Controller } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import {
   CreateMenuDto,
+  FetchMenuGroupsAndItemsDto,
   FetchMenuOfRestaurantDto,
   GetMenuInformationDto,
   GetMenuItemToppingDto,
   UpdateMenuDto,
 } from './dto';
 import {
+  IFetchMenuGroupsAndItemsResponse,
   IFetchMenuOfRestaurantResponse,
   IMenuInformationResponse,
   IMenuItemToppingResponse,
@@ -33,6 +35,15 @@ export class MenuController {
   ): Promise<IFetchMenuOfRestaurantResponse> {
     return await this.menuService.fetchMenuOfRestaurant(
       fetchMenuOfRestaurantDto,
+    );
+  }
+
+  @MessagePattern('fetchMenuGroupsAndItems')
+  async fetchMenuGroupsAndItems(
+    @Payload() fetchMenuGroupsAndItemsDto: FetchMenuGroupsAndItemsDto,
+  ): Promise<IFetchMenuGroupsAndItemsResponse> {
+    return await this.menuService.fetchMenuGroupsAndItems(
+      fetchMenuGroupsAndItemsDto,
     );
   }
 

@@ -4,14 +4,17 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import {
   CreateMenuDto,
+  FetchMenuGroupsAndItemsDto,
   FetchMenuOfRestaurantDto,
   MenuDto,
+  MenuWithMenuGroupsAndItemsDto,
   UpdatedMenuDataDto,
   UpdateMenuDto,
 } from './dto';
 import { Menu, MenuGroup, MenuItem, ToppingGroup } from './entities';
 import {
   ICreateMenuResponse,
+  IFetchMenuGroupsAndItemsResponse,
   IFetchMenuOfRestaurantResponse,
   IMenuInformationResponse,
   IMenuItemToppingResponse,
@@ -203,5 +206,44 @@ export class MenuService {
   async doesMenuExist(menuId: string, restaurantId: string): Promise<boolean> {
     const count = await this.menuRepository.count({ id: menuId, restaurantId });
     return count > 0;
+  }
+
+  async fetchMenuGroupsAndItems(
+    fetchMenuGroupsAndItemsDto: FetchMenuGroupsAndItemsDto,
+  ): Promise<IFetchMenuGroupsAndItemsResponse> {
+    const { menuId, merchantId, restaurantId } = fetchMenuGroupsAndItemsDto;
+
+    const doesMenuExist = await this.doesMenuExist(menuId, restaurantId);
+    if (!doesMenuExist) {
+      return {
+        status: HttpStatus.NOT_FOUND,
+        message: 'Menu not found',
+        data: null,
+      };
+    }
+
+    const menu = await this.menuRepository
+      .createQueryBuilder('menu')
+      .leftJoinAndSelect('menu.menuGroups', 'menuGroup')
+      .leftJoinAndSelect('menuGroup.menuItems', 'menuItem')
+      .where('menu.id = :id', { id: menuId })
+      .orderBy({
+        'menuGroup.index': 'ASC',
+        'menuItem.index': 'ASC',
+      })
+      .select([
+        'menu.id',
+        'menuGroup.id',
+        'menuGroup.name',
+        'menuItem.id',
+        'menuItem.name',
+      ])
+      .getOne();
+
+    return {
+      status: HttpStatus.OK,
+      message: 'Fetched menu groups and items of menu successfully',
+      data: MenuWithMenuGroupsAndItemsDto.EntityToDto(menu),
+    };
   }
 }
