@@ -7,6 +7,8 @@ export class RestaurantOfMerchantDto {
   name: string;
   phone: string;
   coverImageUrl: string;
+  videoUrl: string;
+  verifiedImageUrl: string;
   address: string;
   city: string;
   area: string;
@@ -26,6 +28,8 @@ export class RestaurantOfMerchantDto {
       name,
       phone,
       coverImageUrl,
+      videoUrl,
+      verifiedImageUrl,
       address,
       city,
       area,
@@ -41,6 +45,8 @@ export class RestaurantOfMerchantDto {
       name,
       owner,
       coverImageUrl,
+      videoUrl,
+      verifiedImageUrl,
       address,
       city,
       area,

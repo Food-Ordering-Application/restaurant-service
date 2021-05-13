@@ -5,3 +5,4 @@ export { IRestaurantAddressData } from './get-restaurant-address-data.interface'
 export { IGetRestaurantAddressResponse } from './get-restaurant-address-response.interface';
 export { ICreateRestaurantResponse } from './create-restaurant-response.interface';
 export { IFetchRestaurantsOfMerchantResponse } from './fetch-restaurants-of-merchant-response.interface';
+export { IFetchRestaurantDetailOfMerchantResponse } from './fetch-restaurant-detail-of-merchant-response.interface';

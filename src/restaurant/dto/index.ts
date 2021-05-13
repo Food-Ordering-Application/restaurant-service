@@ -6,3 +6,4 @@ export { CategoryDto } from './category.dto';
 export { OpenHourDto } from './open-hour.dto';
 export { FetchRestaurantsOfMerchantDto } from './fetch-restaurants-of-merchant.dto';
 export { RestaurantOfMerchantDto } from './restaurant-of-merchant.dto';
+export { FetchRestaurantDetailOfMerchantDto } from './fetch-restaurant-detail-of-merchant.dto';

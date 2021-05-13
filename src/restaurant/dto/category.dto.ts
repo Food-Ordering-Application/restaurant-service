@@ -1,5 +1,4 @@
 import { Category } from './../entities/';
-import { CategoryType } from '../enums';
 
 export class CategoryDto {
   id: string;
