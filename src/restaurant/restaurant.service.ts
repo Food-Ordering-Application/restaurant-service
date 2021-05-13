@@ -4,6 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { USER_SERVICE } from 'src/constants';
 import { Repository, SelectQueryBuilder } from 'typeorm';
 import {
+  FetchRestaurantDetailOfMerchantDto,
   FetchRestaurantsOfMerchantDto,
   GetRestaurantAddressInfoDto,
   GetRestaurantInformationDto,
@@ -16,6 +17,7 @@ import { OpenHour } from './entities/openhours.entity';
 import { RestaurantCreatedEventPayload } from './events/restaurant-created.event';
 import { RestaurantProfileUpdatedEventPayload } from './events/restaurant-profile-updated.event';
 import {
+  IFetchRestaurantDetailOfMerchantResponse,
   IFetchRestaurantsOfMerchantResponse,
   IGetRestaurantAddressResponse,
   IRestaurantResponse,
@@ -272,6 +274,35 @@ export class RestaurantService {
         ),
         size,
         total,
+      },
+    };
+  }
+
+  async fetchRestaurantDetailOfMerchant(
+    fetchRestaurantDetailOfMerchantDto: FetchRestaurantDetailOfMerchantDto,
+  ): Promise<IFetchRestaurantDetailOfMerchantResponse> {
+    const { restaurantId, merchantId } = fetchRestaurantDetailOfMerchantDto;
+    const doesRestaurantExist = await this.doesRestaurantExist(restaurantId);
+    if (!doesRestaurantExist) {
+      return {
+        status: HttpStatus.NOT_FOUND,
+        message: 'Restaurant not found',
+        data: null,
+      };
+    }
+
+    const restaurant = await this.restaurantRepository.findOne(
+      {
+        id: restaurantId,
+      },
+      { relations: ['categories', 'openHours'] },
+    );
+
+    return {
+      status: HttpStatus.OK,
+      message: 'Restaurant fetched successfully',
+      data: {
+        restaurant: RestaurantOfMerchantDto.EntityToDTO(restaurant),
       },
     };
   }
