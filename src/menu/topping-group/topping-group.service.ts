@@ -37,7 +37,7 @@ export class ToppingGroupService {
     if (!doesMenuExist) {
       return {
         status: HttpStatus.NOT_FOUND,
-        message: 'Topping not found',
+        message: 'Menu not found',
         data: null,
       };
     }

@@ -1,3 +1,4 @@
+import { RestaurantModule } from './../restaurant/restaurant.module';
 import { Module } from '@nestjs/common';
 import { MenuService } from './menu.service';
 import { MenuController } from './menu.controller';
@@ -29,6 +30,7 @@ import { ToppingItemService } from './topping-item/topping-item.service';
       ToppingItem,
       MenuItemTopping,
     ]),
+    RestaurantModule,
   ],
   controllers: [
     MenuController,

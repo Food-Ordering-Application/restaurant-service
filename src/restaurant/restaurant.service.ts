@@ -243,4 +243,8 @@ export class RestaurantService {
       };
     }
   }
+
+  async doesRestaurantExist(id: string): Promise<boolean> {
+    return (await this.restaurantRepository.count({ id: id })) != 0;
+  }
 }

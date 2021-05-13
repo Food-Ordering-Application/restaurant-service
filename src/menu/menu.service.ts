@@ -1,3 +1,4 @@
+import { RestaurantService } from './../restaurant/restaurant.service';
 import { HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -8,13 +9,7 @@ import {
   UpdatedMenuDataDto,
   UpdateMenuDto,
 } from './dto';
-import {
-  Menu,
-  MenuGroup,
-  MenuItem,
-  MenuItemTopping,
-  ToppingGroup,
-} from './entities';
+import { Menu, MenuGroup, MenuItem, ToppingGroup } from './entities';
 import {
   ICreateMenuResponse,
   IFetchMenuOfRestaurantResponse,
@@ -36,6 +31,7 @@ export class MenuService {
     private menuItemRepository: Repository<MenuItem>,
     @InjectRepository(ToppingGroup)
     private toppingGroupRepository: Repository<ToppingGroup>,
+    private restaurantService: RestaurantService,
   ) {}
 
   async getMenuInformation(
@@ -103,9 +99,27 @@ export class MenuService {
     const { data, merchantId, restaurantId } = dto;
     const { isActive, name, index } = data;
 
-    const didRestaurantHaveMenu = await this.didRestaurantHaveMenu(
+    // menu co restaurant => check menu
+    const doesRestaurantExistPromise = this.restaurantService.doesRestaurantExist(
       restaurantId,
     );
+    const didRestaurantHaveMenuPromise = this.didRestaurantHaveMenu(
+      restaurantId,
+    );
+
+    const [doesRestaurantExist, didRestaurantHaveMenu] = await Promise.all([
+      doesRestaurantExistPromise,
+      didRestaurantHaveMenuPromise,
+    ]);
+
+    if (doesRestaurantExist) {
+      return {
+        status: HttpStatus.BAD_REQUEST,
+        message: 'Restaurant not found',
+        data: null,
+      };
+    }
+
     if (didRestaurantHaveMenu) {
       return {
         status: HttpStatus.CONFLICT,
