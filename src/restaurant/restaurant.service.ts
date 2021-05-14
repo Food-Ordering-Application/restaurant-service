@@ -142,66 +142,56 @@ export class RestaurantService {
     getSomeRestaurantDto: GetSomeRestaurantDto,
   ): Promise<IRestaurantsResponse> {
     const { area, page, size, category, search } = getSomeRestaurantDto;
-    try {
-      const pageSize = 0;
-      let queryBuilder: SelectQueryBuilder<Restaurant> = this.restaurantRepository
-        .createQueryBuilder('res')
-        .select([
-          'res.id',
-          'res.name',
-          'res.address',
-          'res.coverImageUrl',
-          'res.rating',
-          'res.numRate',
-        ])
-        .leftJoinAndSelect('res.categories', 'categories')
-        .where('res.area = :area', {
-          area: area,
-        })
-        .andWhere('res.isActive = :active', {
-          active: true,
-        })
-        .andWhere('res.isBanned = :not_banned', {
-          not_banned: false,
-        })
-        .andWhere('res.isVerified = :verified', {
-          verified: true,
-        });
-      if (category) {
-        queryBuilder = queryBuilder.andWhere(
-          'categories.type = :categoryType',
-          {
-            categoryType: category,
-          },
-        );
-      }
-
-      if (search) {
-        queryBuilder = queryBuilder.andWhere('res.name iLIKE :restaurantName', {
-          restaurantName: `%${search.toLowerCase()}%`,
-        });
-      }
-
-      const restaurants = await queryBuilder
-        .orderBy('res.rating', 'DESC')
-        .addOrderBy('res.numRate', 'DESC')
-        .skip((page - 1) * size)
-        .take(pageSize)
-        .getMany();
-
-      return {
-        status: HttpStatus.OK,
-        message: 'Restaurant fetched successfully',
-        restaurants: restaurants,
-      };
-    } catch (error) {
-      this.logger.error(error);
-      return {
-        status: HttpStatus.INTERNAL_SERVER_ERROR,
-        message: error.message,
-        restaurants: null,
-      };
+    const pageSize = 0;
+    let queryBuilder: SelectQueryBuilder<Restaurant> = this.restaurantRepository
+      .createQueryBuilder('res')
+      .select([
+        'res.id',
+        'res.name',
+        'res.address',
+        'res.coverImageUrl',
+        'res.rating',
+        'res.numRate',
+      ])
+      .leftJoinAndSelect('res.categories', 'categories')
+      .where('res.area = :area', {
+        area: area,
+      })
+      .andWhere('res.isActive = :active', {
+        active: true,
+      })
+      .andWhere('res.isBanned = :not_banned', {
+        not_banned: false,
+      })
+      .andWhere('res.isVerified = :verified', {
+        verified: true,
+      });
+    if (category) {
+      queryBuilder = queryBuilder.andWhere('categories.type = :categoryType', {
+        categoryType: category,
+      });
     }
+
+    if (search) {
+      queryBuilder = queryBuilder.andWhere('res.name iLIKE :restaurantName', {
+        restaurantName: `%${search.toLowerCase()}%`,
+      });
+    }
+
+    const restaurants = await queryBuilder
+      .orderBy('res.rating', 'DESC')
+      .addOrderBy('res.numRate', 'DESC')
+      .skip((page - 1) * size)
+      .take(pageSize)
+      .getMany();
+
+    return {
+      status: HttpStatus.OK,
+      message: 'Restaurant fetched successfully',
+      data: {
+        restaurants,
+      },
+    };
   }
 
   async getRestaurantInformation(
