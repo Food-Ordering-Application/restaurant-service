@@ -7,6 +7,7 @@ import {
   FetchMenuGroupsAndItemsDto,
   FetchMenuOfRestaurantDto,
   MenuDto,
+  MenuForOrderDto,
   MenuWithMenuGroupsAndItemsDto,
   UpdatedMenuDataDto,
   UpdateMenuDto,
@@ -40,30 +41,40 @@ export class MenuService {
   async getMenuInformation(
     restaurantId: string,
   ): Promise<IMenuInformationResponse> {
-    try {
-      const menu = await this.menuRepository.findOne({ restaurantId });
-      const menuGroups = await this.menuGroupRepository
-        .createQueryBuilder('menuG')
-        .leftJoin('menuG.menu', 'menu')
-        .leftJoinAndSelect('menuG.menuItems', 'menuI')
-        .where('menu.id = :menuId', { menuId: menu.id })
-        .getMany();
+    const menu = await this.menuRepository
+      .createQueryBuilder('menu')
+      .leftJoinAndSelect('menu.menuGroups', 'menuGroup')
+      .leftJoinAndSelect('menuGroup.menuItems', 'menuItem')
+      .where('menu.restaurantId = :restaurantId', { restaurantId })
+      .andWhere('menu.isActive = :activeMenu', {
+        activeMenu: true,
+      })
+      .andWhere('menuGroup.isActive = :activeMenuGroup', {
+        activeMenuGroup: true,
+      })
+      .andWhere('menuItem.isActive = :activeMenuItem', {
+        activeMenuItem: true,
+      })
+      .orderBy({
+        'menuGroup.index': 'ASC',
+        'menuItem.index': 'ASC',
+      })
+      .getOne();
 
+    if (!menu) {
       return {
-        status: HttpStatus.OK,
-        message: 'Restaurant fetched successfully',
-        menu: menu,
-        menuGroups: menuGroups,
-      };
-    } catch (error) {
-      this.logger.error(error);
-      return {
-        status: HttpStatus.INTERNAL_SERVER_ERROR,
-        message: error.message,
-        menu: null,
-        menuGroups: null,
+        status: HttpStatus.NOT_FOUND,
+        message: 'Restaurant not found or it have not had menu yet',
+        data: null,
       };
     }
+    return {
+      status: HttpStatus.OK,
+      message: 'Fetched menu information successfully',
+      data: {
+        menu: MenuForOrderDto.EntityToDto(menu),
+      },
+    };
   }
 
   async getMenuItemToppingInfo(
@@ -243,7 +254,9 @@ export class MenuService {
     return {
       status: HttpStatus.OK,
       message: 'Fetched menu groups and items of menu successfully',
-      data: MenuWithMenuGroupsAndItemsDto.EntityToDto(menu),
+      data: {
+        menu: MenuWithMenuGroupsAndItemsDto.EntityToDto(menu),
+      },
     };
   }
 }
