@@ -1,12 +1,14 @@
 import { CategoryDto, OpenHourDto } from '.';
 import { Restaurant } from '../entities';
 
-export class RestaurantForCustomerDto {
+export class RestaurantDetailForCustomerDto {
   id: string;
   name: string;
   phone: string;
   coverImageUrl: string;
   videoUrl: string;
+  numRate: number;
+  rating: number;
   address: string;
   city: string;
   area: string;
@@ -16,13 +18,15 @@ export class RestaurantForCustomerDto {
   };
   openHours?: OpenHourDto[];
   categories?: CategoryDto[];
-  static EntityToDTO(restaurant: Restaurant): RestaurantForCustomerDto {
+  static EntityToDTO(restaurant: Restaurant): RestaurantDetailForCustomerDto {
     const {
       id,
       name,
       phone,
       coverImageUrl,
       videoUrl,
+      numRate,
+      rating,
       address,
       city,
       area,
@@ -35,6 +39,8 @@ export class RestaurantForCustomerDto {
       name,
       coverImageUrl,
       videoUrl,
+      numRate,
+      rating,
       address,
       city,
       area,

@@ -7,4 +7,4 @@ export { OpenHourDto } from './open-hour.dto';
 export { FetchRestaurantsOfMerchantDto } from './fetch-restaurants-of-merchant.dto';
 export { RestaurantForMerchantDto } from './restaurant-for-merchant.dto';
 export { FetchRestaurantDetailOfMerchantDto } from './fetch-restaurant-detail-of-merchant.dto';
-export { RestaurantForCustomerDto } from './restaurant-for-customer.dto';
+export { RestaurantDetailForCustomerDto } from './restaurant-detail-for-customer.dto';
