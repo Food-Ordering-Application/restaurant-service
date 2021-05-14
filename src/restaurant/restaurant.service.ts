@@ -177,7 +177,7 @@ export class RestaurantService {
       }
 
       if (search) {
-        queryBuilder = queryBuilder.andWhere('res.name LIKE :restaurantName', {
+        queryBuilder = queryBuilder.andWhere('res.name iLIKE :restaurantName', {
           restaurantName: `%${search.toLowerCase()}%`,
         });
       }
