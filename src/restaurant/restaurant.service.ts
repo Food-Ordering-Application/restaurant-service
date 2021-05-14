@@ -10,6 +10,7 @@ import {
   GetRestaurantInformationDto,
   GetSomeRestaurantDto,
   RestaurantDetailForCustomerDto,
+  RestaurantForCustomerDto,
 } from './dto';
 import { CreateRestaurantDto } from './dto/create-restaurant.dto';
 import { RestaurantForMerchantDto } from './dto/restaurant-for-merchant.dto';
@@ -189,7 +190,7 @@ export class RestaurantService {
       status: HttpStatus.OK,
       message: 'Restaurant fetched successfully',
       data: {
-        restaurants,
+        restaurants: restaurants.map(RestaurantForCustomerDto.EntityToDTO),
       },
     };
   }

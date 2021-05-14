@@ -8,3 +8,4 @@ export { FetchRestaurantsOfMerchantDto } from './fetch-restaurants-of-merchant.d
 export { RestaurantForMerchantDto } from './restaurant-for-merchant.dto';
 export { FetchRestaurantDetailOfMerchantDto } from './fetch-restaurant-detail-of-merchant.dto';
 export { RestaurantDetailForCustomerDto } from './restaurant-detail-for-customer.dto';
+export { RestaurantForCustomerDto } from './restaurant-for-customer.dto';

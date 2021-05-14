@@ -1,9 +1,9 @@
-import { IRestaurant } from './restaurant.interface';
+import { RestaurantForCustomerDto } from '../dto';
 
 export interface IRestaurantsResponse {
   status: number;
   message: string;
   data: {
-    restaurants: IRestaurant[] | null;
+    restaurants: RestaurantForCustomerDto[];
   };
 }
