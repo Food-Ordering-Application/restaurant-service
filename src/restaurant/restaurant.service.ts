@@ -9,6 +9,7 @@ import {
   GetRestaurantAddressInfoDto,
   GetRestaurantInformationDto,
   GetSomeRestaurantDto,
+  RestaurantForCustomerDto,
 } from './dto';
 import { CreateRestaurantDto } from './dto/create-restaurant.dto';
 import { RestaurantForMerchantDto } from './dto/restaurant-for-merchant.dto';
@@ -182,6 +183,8 @@ export class RestaurantService {
       }
 
       const restaurants = await queryBuilder
+        .orderBy('res.rating', 'DESC')
+        .addOrderBy('res.numRate', 'DESC')
         .skip((page - 1) * size)
         .take(pageSize)
         .getMany();
@@ -204,24 +207,28 @@ export class RestaurantService {
   async getRestaurantInformation(
     getRestaurantInformationDto: GetRestaurantInformationDto,
   ): Promise<IRestaurantResponse> {
-    try {
-      const restaurant = await this.restaurantRepository.findOne({
-        id: getRestaurantInformationDto.restaurantId,
-      });
-      this.logger.log(restaurant);
+    const { restaurantId } = getRestaurantInformationDto;
+    const doesRestaurantExist = await this.doesRestaurantExist(restaurantId);
+    if (!doesRestaurantExist) {
       return {
-        status: HttpStatus.OK,
-        message: 'Restaurant fetched successfully',
-        restaurant: restaurant,
-      };
-    } catch (error) {
-      this.logger.error(error);
-      return {
-        status: HttpStatus.INTERNAL_SERVER_ERROR,
-        message: error.message,
+        status: HttpStatus.NOT_FOUND,
+        message: 'Restaurant not found',
         restaurant: null,
       };
     }
+
+    const restaurant = await this.restaurantRepository.findOne(
+      {
+        id: restaurantId,
+      },
+      { relations: ['categories', 'openHours'] },
+    );
+
+    return {
+      status: HttpStatus.OK,
+      message: 'Restaurant fetched successfully',
+      restaurant: RestaurantForCustomerDto.EntityToDTO(restaurant),
+    };
   }
 
   async getRestaurantAddressInfo(
