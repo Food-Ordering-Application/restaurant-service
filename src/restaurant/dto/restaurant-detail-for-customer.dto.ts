@@ -1,5 +1,6 @@
-import { CategoryDto, OpenHourDto } from '.';
+import { OpenHourDto } from '.';
 import { Restaurant } from '../entities';
+import { CategoryType } from '../enums';
 
 export class RestaurantDetailForCustomerDto {
   id: string;
@@ -17,7 +18,7 @@ export class RestaurantDetailForCustomerDto {
     longitude: number;
   };
   openHours?: OpenHourDto[];
-  categories?: CategoryDto[];
+  categories?: CategoryType[];
   static EntityToDTO(restaurant: Restaurant): RestaurantDetailForCustomerDto {
     const {
       id,
@@ -55,9 +56,7 @@ export class RestaurantDetailForCustomerDto {
         ),
       }),
       ...(categories && {
-        categories: categories.map((category) =>
-          CategoryDto.EntityToDto(category),
-        ),
+        categories: categories.map(({ type }) => type as CategoryType),
       }),
     };
   }
