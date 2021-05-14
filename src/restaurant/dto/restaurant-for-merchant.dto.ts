@@ -1,7 +1,7 @@
 import { CategoryDto, OpenHourDto } from '.';
 import { Restaurant } from '../entities';
 
-export class RestaurantOfMerchantDto {
+export class RestaurantForMerchantDto {
   id: string;
   owner: string;
   name: string;
@@ -21,7 +21,7 @@ export class RestaurantOfMerchantDto {
   isActive: boolean;
   isVerified: boolean;
   isBanned: boolean;
-  static EntityToDTO(restaurant: Restaurant): RestaurantOfMerchantDto {
+  static EntityToDTO(restaurant: Restaurant): RestaurantForMerchantDto {
     const {
       id,
       owner,

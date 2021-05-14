@@ -11,7 +11,7 @@ import {
   GetSomeRestaurantDto,
 } from './dto';
 import { CreateRestaurantDto } from './dto/create-restaurant.dto';
-import { RestaurantOfMerchantDto } from './dto/restaurant-of-merchant.dto';
+import { RestaurantForMerchantDto } from './dto/restaurant-for-merchant.dto';
 import { Category, Restaurant } from './entities';
 import { OpenHour } from './entities/openhours.entity';
 import { RestaurantCreatedEventPayload } from './events/restaurant-created.event';
@@ -132,7 +132,7 @@ export class RestaurantService {
       status: HttpStatus.CREATED,
       message: 'Restaurant was created',
       data: {
-        restaurant: RestaurantOfMerchantDto.EntityToDTO(newRestaurant),
+        restaurant: RestaurantForMerchantDto.EntityToDTO(newRestaurant),
       },
     };
   }
@@ -146,12 +146,12 @@ export class RestaurantService {
       let queryBuilder: SelectQueryBuilder<Restaurant> = this.restaurantRepository
         .createQueryBuilder('res')
         .select([
+          'res.id',
           'res.name',
-          'res.isActive',
           'res.address',
           'res.coverImageUrl',
-          'res.id',
           'res.rating',
+          'res.numRate',
         ])
         .leftJoinAndSelect('res.categories', 'categories')
         .where('res.area = :area', {
@@ -167,13 +167,16 @@ export class RestaurantService {
           verified: true,
         });
       if (category) {
-        queryBuilder = queryBuilder.where('categories.type = :categoryType', {
-          categoryType: category,
-        });
+        queryBuilder = queryBuilder.andWhere(
+          'categories.type = :categoryType',
+          {
+            categoryType: category,
+          },
+        );
       }
 
       if (search) {
-        queryBuilder = queryBuilder.where('res.name LIKE :restaurantName', {
+        queryBuilder = queryBuilder.andWhere('res.name LIKE :restaurantName', {
           restaurantName: `%${search.toLowerCase()}%`,
         });
       }
@@ -270,7 +273,7 @@ export class RestaurantService {
       message: 'Fetched restaurants successfully',
       data: {
         results: results.map((staff) =>
-          RestaurantOfMerchantDto.EntityToDTO(staff),
+          RestaurantForMerchantDto.EntityToDTO(staff),
         ),
         size,
         total,
@@ -302,7 +305,7 @@ export class RestaurantService {
       status: HttpStatus.OK,
       message: 'Restaurant fetched successfully',
       data: {
-        restaurant: RestaurantOfMerchantDto.EntityToDTO(restaurant),
+        restaurant: RestaurantForMerchantDto.EntityToDTO(restaurant),
       },
     };
   }

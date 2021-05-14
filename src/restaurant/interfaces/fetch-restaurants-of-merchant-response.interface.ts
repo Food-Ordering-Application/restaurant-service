@@ -1,10 +1,10 @@
-import { RestaurantOfMerchantDto } from '../dto';
+import { RestaurantForMerchantDto } from '../dto';
 
 export interface IFetchRestaurantsOfMerchantResponse {
   status: number;
   message: string;
   data: {
-    results: RestaurantOfMerchantDto[];
+    results: RestaurantForMerchantDto[];
     total: number;
     size: number;
   };
