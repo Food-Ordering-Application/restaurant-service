@@ -1,4 +1,4 @@
-import { MenuGroup } from './../entities/menu-group.entity';
+import { MenuGroup } from '../../entities/';
 export class MenuGroupWithMenuItemsDto {
   id: string;
   name: string;

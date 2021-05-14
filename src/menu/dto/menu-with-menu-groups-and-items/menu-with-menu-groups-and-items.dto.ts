@@ -1,5 +1,5 @@
-import { MenuGroupWithMenuItemsDto } from '.';
-import { Menu } from '../entities';
+import { MenuGroupWithMenuItemsDto } from './menu-group-with-menu-items.dto';
+import { Menu } from '../../entities';
 
 export class MenuWithMenuGroupsAndItemsDto {
   menuId: string;
