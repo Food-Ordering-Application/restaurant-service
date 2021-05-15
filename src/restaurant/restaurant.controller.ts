@@ -4,12 +4,12 @@ import { EventPattern, MessagePattern, Payload } from '@nestjs/microservices';
 import {
   GetSomeRestaurantDto,
   GetRestaurantInformationDto,
-  GetRestaurantAddressInfoDto,
+  GetRestaurantAddressInfoAndMenuItemDto,
   FetchRestaurantsOfMerchantDto,
   FetchRestaurantDetailOfMerchantDto,
 } from './dto';
 import {
-  IGetRestaurantAddressResponse,
+  IGetRestaurantAddressAndMenuItemResponse,
   IRestaurantResponse,
   IRestaurantsResponse,
   ICreateRestaurantResponse,
@@ -73,12 +73,13 @@ export class RestaurantController {
     return await this.restaurantService.handleRestaurantProfileUpdated(data);
   }
 
-  @MessagePattern('getRestaurantAddressInfo')
-  getRestaurantAddressInfo(
-    @Payload() getRestaurantAddressInfoDto: GetRestaurantAddressInfoDto,
-  ): Promise<IGetRestaurantAddressResponse> {
-    return this.restaurantService.getRestaurantAddressInfo(
-      getRestaurantAddressInfoDto,
+  @MessagePattern('getRestaurantAddressInfoAndMenuItemInfo')
+  getRestaurantAddressInfoAndMenuItemInfo(
+    @Payload()
+    getRestaurantAddressInfoAndMenuItemInfoDto: GetRestaurantAddressInfoAndMenuItemDto,
+  ): Promise<IGetRestaurantAddressAndMenuItemResponse> {
+    return this.restaurantService.getRestaurantAddressInfoAndMenuItemInfo(
+      getRestaurantAddressInfoAndMenuItemInfoDto,
     );
   }
 }

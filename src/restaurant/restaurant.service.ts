@@ -3,29 +3,32 @@ import { ClientProxy } from '@nestjs/microservices';
 import { InjectRepository } from '@nestjs/typeorm';
 import { USER_SERVICE } from 'src/constants';
 import { Repository, SelectQueryBuilder } from 'typeorm';
+import { MenuItem, MenuItemTopping } from '../menu/entities';
 import {
   FetchRestaurantDetailOfMerchantDto,
   FetchRestaurantsOfMerchantDto,
-  GetRestaurantAddressInfoDto,
+  GetRestaurantAddressInfoAndMenuItemDto,
   GetRestaurantInformationDto,
   GetSomeRestaurantDto,
   RestaurantDetailForCustomerDto,
   RestaurantForCustomerDto,
+  CreateRestaurantDto,
+  RestaurantForMerchantDto,
 } from './dto';
-import { CreateRestaurantDto } from './dto/create-restaurant.dto';
-import { RestaurantForMerchantDto } from './dto/restaurant-for-merchant.dto';
-import { Category, Restaurant } from './entities';
-import { OpenHour } from './entities/openhours.entity';
-import { RestaurantCreatedEventPayload } from './events/restaurant-created.event';
-import { RestaurantProfileUpdatedEventPayload } from './events/restaurant-profile-updated.event';
+import { Category, Restaurant, OpenHour } from './entities';
+import {
+  RestaurantCreatedEventPayload,
+  RestaurantProfileUpdatedEventPayload,
+} from './events';
 import {
   IFetchRestaurantDetailOfMerchantResponse,
   IFetchRestaurantsOfMerchantResponse,
-  IGetRestaurantAddressResponse,
+  IGetRestaurantAddressAndMenuItemResponse,
   IRestaurantResponse,
   IRestaurantsResponse,
+  ICreateRestaurantResponse,
+  IIdNameAndPriceData,
 } from './interfaces';
-import { ICreateRestaurantResponse } from './interfaces/create-restaurant-response.interface';
 
 @Injectable()
 export class RestaurantService {
@@ -34,6 +37,10 @@ export class RestaurantService {
     @Inject(USER_SERVICE) private userServiceClient: ClientProxy,
     @InjectRepository(Restaurant)
     private restaurantRepository: Repository<Restaurant>,
+    @InjectRepository(MenuItem)
+    private menuItemRepository: Repository<MenuItem>,
+    @InjectRepository(MenuItemTopping)
+    private menuItemToppingRepository: Repository<MenuItemTopping>,
     @InjectRepository(OpenHour)
     private openHourRepository: Repository<OpenHour>,
     @InjectRepository(Category)
@@ -224,14 +231,51 @@ export class RestaurantService {
     };
   }
 
-  async getRestaurantAddressInfo(
-    getRestaurantAddressInfoDto: GetRestaurantAddressInfoDto,
-  ): Promise<IGetRestaurantAddressResponse> {
-    const { restaurantId } = getRestaurantAddressInfoDto;
+  async getRestaurantAddressInfoAndMenuItemInfo(
+    getRestaurantAddressInfoAndMenuItemInfoDto: GetRestaurantAddressInfoAndMenuItemDto,
+  ): Promise<IGetRestaurantAddressAndMenuItemResponse> {
+    const {
+      restaurantId,
+      orderItem,
+    } = getRestaurantAddressInfoAndMenuItemInfoDto;
     try {
+      //TODO: Lấy thông tin địa chỉ restaurant
       const restaurant = await this.restaurantRepository.findOne({
         id: restaurantId,
       });
+
+      //TODO: Lấy thông tin menuItem, menuItemTopping bao gồm price và name
+      const menuItem = await this.menuItemRepository.findOne(
+        {
+          id: orderItem.menuItemId,
+        },
+        { select: ['price', 'name'] },
+      );
+      const menuItemToppingIds = [];
+      for (let i = 0; i < orderItem.orderItemToppings.length; i++) {
+        menuItemToppingIds.push(
+          orderItem.orderItemToppings[i].menuItemToppingId,
+        );
+      }
+
+      const menuItemToppings = await this.menuItemToppingRepository.findByIds(
+        menuItemToppingIds,
+        {
+          select: ['customPrice', 'id'],
+          relations: ['toppingItem'],
+        },
+      );
+
+      const menuItemToppingsTransform: IIdNameAndPriceData[] = menuItemToppings.map(
+        (menuItemTopping): IIdNameAndPriceData => {
+          const { customPrice, toppingItem, id } = menuItemTopping;
+          return {
+            id: id,
+            price: customPrice,
+            name: toppingItem.name,
+          };
+        },
+      );
 
       return {
         status: HttpStatus.OK,
@@ -239,6 +283,8 @@ export class RestaurantService {
         data: {
           address: restaurant.address,
           geom: restaurant.geom,
+          menuItem: menuItem,
+          menuItemToppings: menuItemToppingsTransform,
         },
       };
     } catch (error) {

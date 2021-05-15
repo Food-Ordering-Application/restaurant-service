@@ -8,10 +8,17 @@ import { USER_SERVICE } from 'src/constants';
 import { Restaurant } from './entities/restaurant.entity';
 import { RestaurantController } from './restaurant.controller';
 import { RestaurantService } from './restaurant.service';
+import { MenuItem, MenuItemTopping } from '../menu/entities';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Restaurant, OpenHour, Category]),
+    TypeOrmModule.forFeature([
+      Restaurant,
+      OpenHour,
+      Category,
+      MenuItem,
+      MenuItemTopping,
+    ]),
     ClientsModule.registerAsync([
       {
         name: USER_SERVICE,
