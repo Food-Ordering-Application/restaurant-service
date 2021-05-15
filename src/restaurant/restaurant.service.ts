@@ -204,7 +204,7 @@ export class RestaurantService {
       return {
         status: HttpStatus.NOT_FOUND,
         message: 'Restaurant not found',
-        restaurant: null,
+        data: null,
       };
     }
 
@@ -218,7 +218,9 @@ export class RestaurantService {
     return {
       status: HttpStatus.OK,
       message: 'Restaurant fetched successfully',
-      restaurant: RestaurantDetailForCustomerDto.EntityToDTO(restaurant),
+      data: {
+        restaurant: RestaurantDetailForCustomerDto.EntityToDTO(restaurant),
+      },
     };
   }
 

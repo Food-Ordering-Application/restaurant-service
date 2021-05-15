@@ -1,6 +1,8 @@
 import { RestaurantDetailForCustomerDto } from './../dto';
-export interface IRestaurantResponse {
+export interface IRestaurantDetailResponse {
   status: number;
   message: string;
-  restaurant: RestaurantDetailForCustomerDto;
+  data: {
+    restaurant: RestaurantDetailForCustomerDto;
+  };
 }
