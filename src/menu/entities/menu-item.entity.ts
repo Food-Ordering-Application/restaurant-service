@@ -54,6 +54,9 @@ export class MenuItem {
   @Column({ default: true })
   isActive: boolean;
 
+  @Column({ default: false })
+  isOutOfStock: boolean;
+
   @DeleteDateColumn()
   deletedAt: Date;
 }
