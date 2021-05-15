@@ -116,6 +116,9 @@ export class MenuService {
         const customToppingItems = toppingItems.map((toppingItem) => {
           const { price } = toppingItem;
           const { menuItemToppings, ...newToppingItem } = toppingItem;
+          if (!menuItemToppings.length) {
+            return newToppingItem;
+          }
           const { customPrice } = menuItemToppings[0];
           return {
             ...newToppingItem,
