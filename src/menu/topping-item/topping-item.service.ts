@@ -50,6 +50,7 @@ export class ToppingItemService {
       where: [{ menuId, name: Like(`%${search}%`) }],
       take: size,
       skip: page * size,
+      order: { index: 'ASC' },
     });
 
     return {
@@ -198,7 +199,7 @@ export class ToppingItemService {
     const menuItemTopping = await this.menuItemToppingRepository.find({
       toppingItemId,
     });
-
+    // TODO
     return {
       status: HttpStatus.OK,
       message: 'Fetched menu item toppings of topping item successfully',
