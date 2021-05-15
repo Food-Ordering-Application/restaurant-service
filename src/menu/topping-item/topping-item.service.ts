@@ -252,6 +252,7 @@ export class ToppingItemService {
     const menuItemToppingsEntity = menuItemToppings.map(
       ({ menuItemId, customPrice }) =>
         this.menuItemToppingRepository.create({
+          menuId,
           toppingItemId,
           menuItemId,
           customPrice,

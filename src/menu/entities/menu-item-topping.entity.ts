@@ -1,3 +1,4 @@
+import { Menu, MenuItem, ToppingItem } from '.';
 import {
   Column,
   DeleteDateColumn,
@@ -6,13 +7,17 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { MenuItem } from './menu-item.entity';
-import { ToppingItem } from './topping-item.entity';
-
 @Entity()
 export class MenuItemTopping {
   @PrimaryGeneratedColumn('uuid')
   id: string;
+
+  @ManyToOne(() => Menu, (menu) => menu.menuItemToppings)
+  @JoinColumn()
+  menu: Menu;
+
+  @Column()
+  menuId: string;
 
   @ManyToOne(() => MenuItem, (menuItem) => menuItem.menuItemToppings)
   @JoinColumn()

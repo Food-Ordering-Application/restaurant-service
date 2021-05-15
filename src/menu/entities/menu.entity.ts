@@ -1,3 +1,4 @@
+import { MenuItemTopping } from './menu-item-topping.entity';
 import { ToppingItem } from './topping-item.entity';
 import { Restaurant } from '../../restaurant/entities/restaurant.entity';
 import {
@@ -36,6 +37,9 @@ export class Menu {
 
   @OneToMany(() => ToppingItem, (toppingItem) => toppingItem.menu)
   toppingItems: ToppingItem[];
+
+  @OneToMany(() => MenuItemTopping, (menuItemTopping) => menuItemTopping.menu)
+  menuItemToppings: MenuItemTopping[];
 
   @Column()
   name: string;
