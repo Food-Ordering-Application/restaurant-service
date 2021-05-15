@@ -1,4 +1,4 @@
-import { Menu } from './../entities/menu.entity';
+import { Menu } from '../../entities/menu.entity';
 export class MenuDto {
   id: string;
   restaurantId: string;

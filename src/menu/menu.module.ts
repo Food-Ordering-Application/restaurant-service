@@ -1,8 +1,16 @@
+import { RestaurantModule } from './../restaurant/restaurant.module';
 import { Module } from '@nestjs/common';
 import { MenuService } from './menu.service';
 import { MenuController } from './menu.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Menu, MenuGroup, MenuItem, ToppingGroup, ToppingItem } from './entities';
+import {
+  Menu,
+  MenuGroup,
+  MenuItem,
+  MenuItemTopping,
+  ToppingGroup,
+  ToppingItem,
+} from './entities';
 import { MenuGroupService } from './menu-group/menu-group.service';
 import { MenuGroupController } from './menu-group/menu-group.controller';
 import { MenuItemService } from './menu-item/menu-item.service';
@@ -14,9 +22,29 @@ import { ToppingItemService } from './topping-item/topping-item.service';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Menu, MenuGroup, MenuItem, ToppingGroup, ToppingItem]),
+    TypeOrmModule.forFeature([
+      Menu,
+      MenuGroup,
+      MenuItem,
+      ToppingGroup,
+      ToppingItem,
+      MenuItemTopping,
+    ]),
+    RestaurantModule,
   ],
-  controllers: [MenuController, MenuGroupController, MenuItemController, ToppingGroupController, ToppingItemController],
-  providers: [MenuService, MenuGroupService, MenuItemService, ToppingGroupService, ToppingItemService],
+  controllers: [
+    MenuController,
+    MenuGroupController,
+    MenuItemController,
+    ToppingGroupController,
+    ToppingItemController,
+  ],
+  providers: [
+    MenuService,
+    MenuGroupService,
+    MenuItemService,
+    ToppingGroupService,
+    ToppingItemService,
+  ],
 })
-export class MenuModule { }
+export class MenuModule {}

@@ -4,17 +4,23 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { USER_SERVICE } from 'src/constants';
 import { Repository, SelectQueryBuilder } from 'typeorm';
 import {
+  FetchRestaurantDetailOfMerchantDto,
+  FetchRestaurantsOfMerchantDto,
   GetRestaurantAddressInfoDto,
   GetRestaurantInformationDto,
   GetSomeRestaurantDto,
+  RestaurantDetailForCustomerDto,
+  RestaurantForCustomerDto,
 } from './dto';
 import { CreateRestaurantDto } from './dto/create-restaurant.dto';
-import { RestaurantDto } from './dto/restaurant.dto';
+import { RestaurantForMerchantDto } from './dto/restaurant-for-merchant.dto';
 import { Category, Restaurant } from './entities';
 import { OpenHour } from './entities/openhours.entity';
 import { RestaurantCreatedEventPayload } from './events/restaurant-created.event';
 import { RestaurantProfileUpdatedEventPayload } from './events/restaurant-profile-updated.event';
 import {
+  IFetchRestaurantDetailOfMerchantResponse,
+  IFetchRestaurantsOfMerchantResponse,
   IGetRestaurantAddressResponse,
   IRestaurantResponse,
   IRestaurantsResponse,
@@ -128,7 +134,7 @@ export class RestaurantService {
       status: HttpStatus.CREATED,
       message: 'Restaurant was created',
       data: {
-        restaurant: RestaurantDto.EntityToDTO(newRestaurant),
+        restaurant: RestaurantForMerchantDto.EntityToDTO(newRestaurant),
       },
     };
   }
@@ -137,84 +143,85 @@ export class RestaurantService {
     getSomeRestaurantDto: GetSomeRestaurantDto,
   ): Promise<IRestaurantsResponse> {
     const { area, page, size, category, search } = getSomeRestaurantDto;
-    try {
-      const pageSize = 0;
-      let queryBuilder: SelectQueryBuilder<Restaurant> = this.restaurantRepository
-        .createQueryBuilder('res')
-        .select([
-          'res.name',
-          'res.isActive',
-          'res.address',
-          'res.coverImageUrl',
-          'res.id',
-          'res.rating',
-        ])
-        .leftJoinAndSelect('res.categories', 'categories')
-        .where('res.area = :area', {
-          area: area,
-        })
-        .andWhere('res.isActive = :active', {
-          active: true,
-        })
-        .andWhere('res.isBanned = :not_banned', {
-          not_banned: false,
-        })
-        .andWhere('res.isVerified = :verified', {
-          verified: true,
-        });
-      if (category) {
-        queryBuilder = queryBuilder.where('categories.type = :categoryType', {
-          categoryType: category,
-        });
-      }
-
-      if (search) {
-        queryBuilder = queryBuilder.where('res.name LIKE :restaurantName', {
-          restaurantName: `%${search.toLowerCase()}%`,
-        });
-      }
-
-      const restaurants = await queryBuilder
-        .skip((page - 1) * size)
-        .take(pageSize)
-        .getMany();
-
-      return {
-        status: HttpStatus.OK,
-        message: 'Restaurant fetched successfully',
-        restaurants: restaurants,
-      };
-    } catch (error) {
-      this.logger.error(error);
-      return {
-        status: HttpStatus.INTERNAL_SERVER_ERROR,
-        message: error.message,
-        restaurants: null,
-      };
+    const pageSize = 0;
+    let queryBuilder: SelectQueryBuilder<Restaurant> = this.restaurantRepository
+      .createQueryBuilder('res')
+      .select([
+        'res.id',
+        'res.name',
+        'res.address',
+        'res.coverImageUrl',
+        'res.rating',
+        'res.numRate',
+      ])
+      .leftJoinAndSelect('res.categories', 'categories')
+      .where('res.area = :area', {
+        area: area,
+      })
+      .andWhere('res.isActive = :active', {
+        active: true,
+      })
+      .andWhere('res.isBanned = :not_banned', {
+        not_banned: false,
+      })
+      .andWhere('res.isVerified = :verified', {
+        verified: true,
+      });
+    if (category) {
+      queryBuilder = queryBuilder.andWhere('categories.type = :categoryType', {
+        categoryType: category,
+      });
     }
+
+    if (search) {
+      queryBuilder = queryBuilder.andWhere('res.name iLIKE :restaurantName', {
+        restaurantName: `%${search.toLowerCase()}%`,
+      });
+    }
+
+    const restaurants = await queryBuilder
+      .orderBy('res.rating', 'DESC')
+      .addOrderBy('res.numRate', 'DESC')
+      .skip((page - 1) * size)
+      .take(pageSize)
+      .getMany();
+
+    return {
+      status: HttpStatus.OK,
+      message: 'Restaurant fetched successfully',
+      data: {
+        restaurants: restaurants.map(RestaurantForCustomerDto.EntityToDTO),
+      },
+    };
   }
 
   async getRestaurantInformation(
     getRestaurantInformationDto: GetRestaurantInformationDto,
   ): Promise<IRestaurantResponse> {
-    try {
-      const restaurant = await this.restaurantRepository.findOne({
-        id: getRestaurantInformationDto.restaurantId,
-      });
-      this.logger.log(restaurant);
+    const { restaurantId } = getRestaurantInformationDto;
+    const doesRestaurantExist = await this.doesRestaurantExist(restaurantId);
+    if (!doesRestaurantExist) {
       return {
-        status: HttpStatus.OK,
-        message: 'Restaurant fetched successfully',
-        restaurant: restaurant,
-      };
-    } catch (error) {
-      this.logger.error(error);
-      return {
-        status: HttpStatus.INTERNAL_SERVER_ERROR,
-        message: error.message,
-        restaurant: null,
+        status: HttpStatus.NOT_FOUND,
+        message: 'Restaurant not found',
+        data: null,
       };
     }
+
+    const restaurant = await this.restaurantRepository.findOne(
+      {
+        id: restaurantId,
+      },
+      { relations: ['categories', 'openHours'] },
+    );
+
+    return {
+      status: HttpStatus.OK,
+      message: 'Restaurant fetched successfully',
+      data: {
+        restaurant: RestaurantDetailForCustomerDto.EntityToDTO(restaurant),
+      },
+    };
   }
 
   async getRestaurantAddressInfo(
@@ -242,5 +249,64 @@ export class RestaurantService {
         data: null,
       };
     }
+  }
+
+  async doesRestaurantExist(id: string): Promise<boolean> {
+    return (await this.restaurantRepository.count({ id: id })) != 0;
+  }
+
+  async fetchRestaurantsOfMerchant(
+    fetchRestaurantsOfMerchantDto: FetchRestaurantsOfMerchantDto,
+  ): Promise<IFetchRestaurantsOfMerchantResponse> {
+    const { merchantId, size, page } = fetchRestaurantsOfMerchantDto;
+
+    const [results, total] = await this.restaurantRepository.findAndCount({
+      where: [{ owner: merchantId }],
+      take: size,
+      skip: page * size,
+      loadEagerRelations: false,
+      order: { isVerified: 'ASC', isActive: 'ASC', created_at: 'ASC' },
+    });
+
+    return {
+      status: HttpStatus.OK,
+      message: 'Fetched restaurants successfully',
+      data: {
+        results: results.map((staff) =>
+          RestaurantForMerchantDto.EntityToDTO(staff),
+        ),
+        size,
+        total,
+      },
+    };
+  }
+
+  async fetchRestaurantDetailOfMerchant(
+    fetchRestaurantDetailOfMerchantDto: FetchRestaurantDetailOfMerchantDto,
+  ): Promise<IFetchRestaurantDetailOfMerchantResponse> {
+    const { restaurantId, merchantId } = fetchRestaurantDetailOfMerchantDto;
+    const doesRestaurantExist = await this.doesRestaurantExist(restaurantId);
+    if (!doesRestaurantExist) {
+      return {
+        status: HttpStatus.NOT_FOUND,
+        message: 'Restaurant not found',
+        data: null,
+      };
+    }
+
+    const restaurant = await this.restaurantRepository.findOne(
+      {
+        id: restaurantId,
+      },
+      { relations: ['categories', 'openHours'] },
+    );
+
+    return {
+      status: HttpStatus.OK,
+      message: 'Restaurant fetched successfully',
+      data: {
+        restaurant: RestaurantForMerchantDto.EntityToDTO(restaurant),
+      },
+    };
   }
 }

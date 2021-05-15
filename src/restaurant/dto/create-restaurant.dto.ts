@@ -1,4 +1,4 @@
-import { RestaurantDataDto } from "./restaurant-data.dto";
+import { RestaurantDataDto } from './restaurant-data.dto';
 
 export class CreateRestaurantDto {
   merchantId: string;

@@ -10,7 +10,27 @@ export class MenuItemDto {
   isActive: boolean;
   index: number;
   static EntityToDto(menu: MenuItem): MenuItemDto {
-    const { id, menuId, menuGroupId, name, description, price, imageUrl, isActive, index } = menu;
-    return { id, menuId, menuGroupId, name, description, price, imageUrl, isActive, index };
+    const {
+      id,
+      menuId,
+      menuGroupId,
+      name,
+      description,
+      price,
+      imageUrl,
+      isActive,
+      index,
+    } = menu;
+    return {
+      id,
+      menuId,
+      menuGroupId,
+      name,
+      description,
+      price,
+      imageUrl,
+      isActive,
+      index,
+    };
   }
 }

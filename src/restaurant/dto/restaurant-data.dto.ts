@@ -1,4 +1,4 @@
-import { CategoryType, DaysOfWeek } from "../enums";
+import { CategoryType, DaysOfWeek } from '../enums';
 
 export class RestaurantDataDto {
   name: string;
@@ -18,7 +18,7 @@ export class RestaurantDataDto {
     fromMinute: number;
     toHour: number;
     toMinute: number;
-    day: DaysOfWeek
+    day: DaysOfWeek;
   }[];
   categories: CategoryType[];
 }

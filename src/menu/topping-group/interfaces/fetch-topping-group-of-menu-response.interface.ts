@@ -1,11 +1,11 @@
-import { ToppingGroupDto } from "../dto";
+import { ToppingGroupDto } from '../dto';
 
 export interface IFetchToppingGroupOfMenuResponse {
   status: number;
   message: string;
   data: {
-    results: ToppingGroupDto[],
-    total: number,
-    size: number,
+    results: ToppingGroupDto[];
+    total: number;
+    size: number;
   };
 }

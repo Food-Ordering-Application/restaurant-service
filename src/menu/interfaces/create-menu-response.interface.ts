@@ -5,5 +5,5 @@ export interface ICreateMenuResponse {
   message: string;
   data: {
     menu: MenuDto;
-  }
+  };
 }

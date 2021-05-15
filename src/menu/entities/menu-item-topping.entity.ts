@@ -18,10 +18,16 @@ export class MenuItemTopping {
   @JoinColumn()
   menuItem: MenuItem;
 
+  @Column()
+  menuItemId: string;
+
   @ManyToOne(() => ToppingItem, (toppingItem) => toppingItem.menuItemToppings)
   toppingItem: ToppingItem;
 
   @Column()
+  toppingItemId: string;
+
+  @Column({ nullable: true })
   customPrice: number;
 
   @DeleteDateColumn()

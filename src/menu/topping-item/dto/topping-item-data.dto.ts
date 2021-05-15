@@ -1,4 +1,3 @@
-
 export class ToppingItemDataDto {
   toppingGroupId: string;
   name: string;
@@ -8,4 +7,3 @@ export class ToppingItemDataDto {
   isActive: boolean;
   index: number;
 }
-

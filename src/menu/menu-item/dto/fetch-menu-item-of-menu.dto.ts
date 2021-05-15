@@ -1,4 +1,3 @@
-
 export class FetchMenuItemOfMenuDto {
   merchantId: string;
   restaurantId: string;
