@@ -1,3 +1,5 @@
+import { MenuItemToppingService } from './menu-item-topping/menu-item-topping.service';
+import { MenuItemToppingController } from './menu-item-topping/menu-item-topping.controller';
 import { RestaurantModule } from './../restaurant/restaurant.module';
 import { Module } from '@nestjs/common';
 import { MenuService } from './menu.service';
@@ -38,6 +40,7 @@ import { ToppingItemService } from './topping-item/topping-item.service';
     MenuItemController,
     ToppingGroupController,
     ToppingItemController,
+    MenuItemToppingController,
   ],
   providers: [
     MenuService,
@@ -45,6 +48,7 @@ import { ToppingItemService } from './topping-item/topping-item.service';
     MenuItemService,
     ToppingGroupService,
     ToppingItemService,
+    MenuItemToppingService,
   ],
 })
 export class MenuModule {}

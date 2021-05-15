@@ -77,6 +77,7 @@ export class ToppingGroupService {
       where: [{ menuId, name: Like(`%${search}%`) }],
       take: size,
       skip: page * size,
+      order: { index: 'ASC' },
     });
 
     return {
