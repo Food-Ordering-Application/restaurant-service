@@ -4,20 +4,22 @@ import { EventPattern, MessagePattern, Payload } from '@nestjs/microservices';
 import {
   GetSomeRestaurantDto,
   GetRestaurantInformationDto,
-  GetRestaurantAddressInfoAndMenuItemDto,
   FetchRestaurantsOfMerchantDto,
   FetchRestaurantDetailOfMerchantDto,
+  GetMenuItemInfoDto,
 } from './dto';
 import {
-  IGetRestaurantAddressAndMenuItemResponse,
   IRestaurantResponse,
   IRestaurantsResponse,
   ICreateRestaurantResponse,
   IFetchRestaurantsOfMerchantResponse,
   IFetchRestaurantDetailOfMerchantResponse,
+  IGetRestaurantAddressResponse,
+  IGetMenuItemResponse,
 } from './interfaces';
 import { RestaurantService } from './restaurant.service';
 import { RestaurantProfileUpdatedEventPayload } from './events/restaurant-profile-updated.event';
+import { GetRestaurantAddressInfoDto } from './dto/get-restaurant-address-info.dto';
 
 @Controller()
 export class RestaurantController {
@@ -73,13 +75,21 @@ export class RestaurantController {
     return await this.restaurantService.handleRestaurantProfileUpdated(data);
   }
 
-  @MessagePattern('getRestaurantAddressInfoAndMenuItemInfo')
-  getRestaurantAddressInfoAndMenuItemInfo(
+  @MessagePattern('getRestaurantAddressInfo')
+  getRestaurantAddressInfo(
     @Payload()
-    getRestaurantAddressInfoAndMenuItemInfoDto: GetRestaurantAddressInfoAndMenuItemDto,
-  ): Promise<IGetRestaurantAddressAndMenuItemResponse> {
-    return this.restaurantService.getRestaurantAddressInfoAndMenuItemInfo(
-      getRestaurantAddressInfoAndMenuItemInfoDto,
+    getRestaurantAddressInfoDto: GetRestaurantAddressInfoDto,
+  ): Promise<IGetRestaurantAddressResponse> {
+    return this.restaurantService.getRestaurantAddressInfo(
+      getRestaurantAddressInfoDto,
     );
+  }
+
+  @MessagePattern('getMenuItemInfo')
+  getMenuItemInfo(
+    @Payload()
+    getMenuItemInfoDto: GetMenuItemInfoDto,
+  ): Promise<IGetMenuItemResponse> {
+    return this.restaurantService.getMenuItemInfo(getMenuItemInfoDto);
   }
 }

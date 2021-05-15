@@ -7,14 +7,15 @@ import { MenuItem, MenuItemTopping } from '../menu/entities';
 import {
   FetchRestaurantDetailOfMerchantDto,
   FetchRestaurantsOfMerchantDto,
-  GetRestaurantAddressInfoAndMenuItemDto,
   GetRestaurantInformationDto,
   GetSomeRestaurantDto,
   RestaurantDetailForCustomerDto,
   RestaurantForCustomerDto,
   CreateRestaurantDto,
   RestaurantForMerchantDto,
+  GetMenuItemInfoDto,
 } from './dto';
+import { GetRestaurantAddressInfoDto } from './dto/get-restaurant-address-info.dto';
 import { Category, Restaurant, OpenHour } from './entities';
 import {
   RestaurantCreatedEventPayload,
@@ -23,11 +24,12 @@ import {
 import {
   IFetchRestaurantDetailOfMerchantResponse,
   IFetchRestaurantsOfMerchantResponse,
-  IGetRestaurantAddressAndMenuItemResponse,
   IRestaurantResponse,
   IRestaurantsResponse,
   ICreateRestaurantResponse,
   IIdNameAndPriceData,
+  IGetRestaurantAddressResponse,
+  IGetMenuItemResponse,
 } from './interfaces';
 
 @Injectable()
@@ -231,40 +233,58 @@ export class RestaurantService {
     };
   }
 
-  async getRestaurantAddressInfoAndMenuItemInfo(
-    getRestaurantAddressInfoAndMenuItemInfoDto: GetRestaurantAddressInfoAndMenuItemDto,
-  ): Promise<IGetRestaurantAddressAndMenuItemResponse> {
-    const {
-      restaurantId,
-      orderItem,
-    } = getRestaurantAddressInfoAndMenuItemInfoDto;
+  async getRestaurantAddressInfo(
+    getRestaurantAddressInfoDto: GetRestaurantAddressInfoDto,
+  ): Promise<IGetRestaurantAddressResponse> {
+    const { restaurantId } = getRestaurantAddressInfoDto;
     try {
       //TODO: Lấy thông tin địa chỉ restaurant
       const restaurant = await this.restaurantRepository.findOne({
         id: restaurantId,
       });
 
-      //TODO: Lấy thông tin menuItem, menuItemTopping bao gồm price và name
-      const menuItem = await this.menuItemRepository.findOne(
-        {
-          id: orderItem.menuItemId,
+      return {
+        status: HttpStatus.OK,
+        message: 'Restaurant address fetched successfully',
+        data: {
+          address: restaurant.address,
+          geom: restaurant.geom,
         },
-        { select: ['price', 'name'] },
-      );
+      };
+    } catch (error) {
+      this.logger.error(error);
+      return {
+        status: HttpStatus.INTERNAL_SERVER_ERROR,
+        message: error.message,
+        data: null,
+      };
+    }
+  }
+
+  async getMenuItemInfo(
+    getMenuItemInfoDto: GetMenuItemInfoDto,
+  ): Promise<IGetMenuItemResponse> {
+    const { orderItem } = getMenuItemInfoDto;
+    try {
       const menuItemToppingIds = [];
       for (let i = 0; i < orderItem.orderItemToppings.length; i++) {
         menuItemToppingIds.push(
           orderItem.orderItemToppings[i].menuItemToppingId,
         );
       }
-
-      const menuItemToppings = await this.menuItemToppingRepository.findByIds(
-        menuItemToppingIds,
-        {
+      //TODO: Lấy thông tin menuItem, menuItemTopping bao gồm price và name
+      const [menuItem, menuItemToppings] = await Promise.all([
+        this.menuItemRepository.findOne(
+          {
+            id: orderItem.menuItemId,
+          },
+          { select: ['price', 'name'] },
+        ),
+        this.menuItemToppingRepository.findByIds(menuItemToppingIds, {
           select: ['customPrice', 'id'],
           relations: ['toppingItem'],
-        },
-      );
+        }),
+      ]);
 
       const menuItemToppingsTransform: IIdNameAndPriceData[] = menuItemToppings.map(
         (menuItemTopping): IIdNameAndPriceData => {
@@ -281,8 +301,6 @@ export class RestaurantService {
         status: HttpStatus.OK,
         message: 'Restaurant address fetched successfully',
         data: {
-          address: restaurant.address,
-          geom: restaurant.geom,
           menuItem: menuItem,
           menuItemToppings: menuItemToppingsTransform,
         },

@@ -1,6 +1,3 @@
-import { IOrderItemData } from '../interfaces';
-
-export class GetRestaurantAddressInfoAndMenuItemDto {
+export class GetRestaurantAddressInfoDto {
   restaurantId: string;
-  orderItem: IOrderItemData;
 }
