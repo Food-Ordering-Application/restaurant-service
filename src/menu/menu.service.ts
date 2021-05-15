@@ -85,14 +85,52 @@ export class MenuService {
         .createQueryBuilder('topG')
         .leftJoinAndSelect('topG.toppingItems', 'topI')
         .leftJoinAndSelect('topI.menuItemToppings', 'menuITop')
-        .leftJoin('menuITop.menuItem', 'menuI')
-        .where('menuI.id = :menuItemId', { menuItemId: menuItemId })
+        .where('menuITop.menuItemId = :menuItemId', {
+          menuItemId: menuItemId,
+        })
+        .andWhere('topI.isActive = :activeToppingItem', {
+          activeToppingItem: true,
+        })
+        .andWhere('topG.isActive = :activeToppingGroup', {
+          activeToppingGroup: true,
+        })
+        .orderBy({
+          'topG.index': 'ASC',
+          'topI.index': 'ASC',
+        })
+        .select([
+          'topG.id',
+          'topG.name',
+          'topI.id',
+          'topI.name',
+          'topI.description',
+          'topI.price',
+          'topI.maxQuantity',
+          'menuITop.customPrice',
+        ])
         .getMany();
+
+      const customToppingGroups = toppingGroups.map((toppingGroup) => {
+        const { toppingItems } = toppingGroup;
+        const customToppingItems = toppingItems.map((toppingItem) => {
+          const { price } = toppingItem;
+          const { menuItemToppings, ...newToppingItem } = toppingItem;
+          const { customPrice } = menuItemToppings[0];
+          return {
+            ...newToppingItem,
+            price: customPrice === null ? price : customPrice,
+          };
+        });
+        return {
+          ...toppingGroup,
+          toppingItems: customToppingItems,
+        };
+      });
 
       return {
         status: HttpStatus.OK,
         message: 'MenuItemToppings fetched successfully',
-        toppingGroups,
+        toppingGroups: customToppingGroups,
       };
     } catch (error) {
       this.logger.error(error);
