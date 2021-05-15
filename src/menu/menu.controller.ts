@@ -7,6 +7,7 @@ import {
   FetchMenuOfRestaurantDto,
   GetMenuInformationDto,
   GetMenuItemToppingDto,
+  GetToppingInfoOfAMenuDto,
   UpdateMenuDto,
 } from './dto';
 import {
@@ -68,5 +69,12 @@ export class MenuController {
   ): Promise<IMenuItemToppingResponse> {
     const { menuItemId } = getMenuItemToppingDto;
     return this.menuService.getMenuItemToppingInfo(menuItemId);
+  }
+
+  @MessagePattern('getToppingInfoOfAMenu')
+  getToppingInfoOfAMenu(
+    @Payload() getToppingInfoOfAMenuDto: GetToppingInfoOfAMenuDto,
+  ): Promise<IMenuItemToppingResponse> {
+    return this.menuService.getToppingInfoOfAMenu(getToppingInfoOfAMenuDto);
   }
 }

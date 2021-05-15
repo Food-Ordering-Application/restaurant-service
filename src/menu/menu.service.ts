@@ -6,6 +6,7 @@ import {
   CreateMenuDto,
   FetchMenuGroupsAndItemsDto,
   FetchMenuOfRestaurantDto,
+  GetToppingInfoOfAMenuDto,
   MenuDto,
   MenuForOrderDto,
   MenuWithMenuGroupsAndItemsDto,
@@ -131,6 +132,33 @@ export class MenuService {
         status: HttpStatus.OK,
         message: 'MenuItemToppings fetched successfully',
         toppingGroups: customToppingGroups,
+      };
+    } catch (error) {
+      this.logger.error(error);
+      return {
+        status: HttpStatus.INTERNAL_SERVER_ERROR,
+        message: error.message,
+        toppingGroups: null,
+      };
+    }
+  }
+
+  async getToppingInfoOfAMenu(
+    getToppingInfoOfAMenuDto: GetToppingInfoOfAMenuDto,
+  ): Promise<IMenuItemToppingResponse> {
+    const { menuId, restaurantId } = getToppingInfoOfAMenuDto;
+    try {
+      const toppingGroups = await this.toppingGroupRepository
+        .createQueryBuilder('topG')
+        .leftJoinAndSelect('topG.toppingItems', 'topI')
+        .leftJoinAndSelect('topI.menuItemToppings', 'menuITop')
+        .where('topG.menuId = :menuId', { menuId: menuId })
+        .getMany();
+
+      return {
+        status: HttpStatus.OK,
+        message: 'Toppings fetched successfully',
+        toppingGroups,
       };
     } catch (error) {
       this.logger.error(error);
