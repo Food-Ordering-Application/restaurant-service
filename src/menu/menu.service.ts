@@ -346,14 +346,17 @@ export class MenuService {
   ): Promise<IGetMenuItemResponse> {
     const { orderItem } = getMenuItemInfoDto;
     try {
+      console.log('OrderItem', orderItem);
       //? Nếu orderItem gửi lên có topping
       if (orderItem.orderItemToppings) {
+        console.log('Have topping');
         const menuItemToppingIds = [];
         for (let i = 0; i < orderItem.orderItemToppings.length; i++) {
           menuItemToppingIds.push(
             orderItem.orderItemToppings[i].menuItemToppingId,
           );
         }
+        console.log('menuItemToppingIds', menuItemToppingIds);
         //TODO: Lấy thông tin menuItem, menuItemTopping bao gồm price và name
         const [menuItem, menuItemToppings] = await Promise.all([
           this.menuItemRepository.findOne(
@@ -367,6 +370,8 @@ export class MenuService {
             relations: ['toppingItem'],
           }),
         ]);
+        console.log('menuItem', menuItem);
+        console.log('menuItemToppings', menuItemToppings);
 
         const menuItemToppingsTransform: IIdNameAndPriceData[] = menuItemToppings.map(
           (menuItemTopping): IIdNameAndPriceData => {
@@ -378,6 +383,7 @@ export class MenuService {
             };
           },
         );
+        console.log('menuItemToppingsTransform', menuItemToppingsTransform);
         return {
           status: HttpStatus.OK,
           message: 'Restaurant address fetched successfully',
