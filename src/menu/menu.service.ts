@@ -6,6 +6,7 @@ import {
   CreateMenuDto,
   FetchMenuGroupsAndItemsDto,
   FetchMenuOfRestaurantDto,
+  GetMenuItemInfoDto,
   GetToppingInfoOfAMenuDto,
   MenuDto,
   MenuForOrderDto,
@@ -13,14 +14,22 @@ import {
   UpdatedMenuDataDto,
   UpdateMenuDto,
 } from './dto';
-import { Menu, MenuGroup, MenuItem, ToppingGroup } from './entities';
+import {
+  Menu,
+  MenuGroup,
+  MenuItem,
+  MenuItemTopping,
+  ToppingGroup,
+} from './entities';
 import {
   ICreateMenuResponse,
   IFetchMenuGroupsAndItemsResponse,
   IFetchMenuOfRestaurantResponse,
+  IIdNameAndPriceData,
   IMenuInformationResponse,
   IMenuItemToppingResponse,
   IUpdateMenuResponse,
+  IGetMenuItemResponse,
 } from './interfaces';
 
 @Injectable()
@@ -34,6 +43,8 @@ export class MenuService {
     private menuGroupRepository: Repository<MenuGroup>,
     @InjectRepository(MenuItem)
     private menuItemRepository: Repository<MenuItem>,
+    @InjectRepository(MenuItemTopping)
+    private menuItemToppingRepository: Repository<MenuItemTopping>,
     @InjectRepository(ToppingGroup)
     private toppingGroupRepository: Repository<ToppingGroup>,
     private restaurantService: RestaurantService,
@@ -155,6 +166,7 @@ export class MenuService {
         .createQueryBuilder('topG')
         .leftJoinAndSelect('topG.toppingItems', 'topI')
         .leftJoinAndSelect('topI.menuItemToppings', 'menuITop')
+        .leftJoinAndSelect('menuITop.menuItem', 'menuI')
         .where('topG.menuId = :menuId', { menuId: menuId })
         .getMany();
 
@@ -327,5 +339,78 @@ export class MenuService {
         menu: MenuWithMenuGroupsAndItemsDto.EntityToDto(menu),
       },
     };
+  }
+
+  async getMenuItemInfo(
+    getMenuItemInfoDto: GetMenuItemInfoDto,
+  ): Promise<IGetMenuItemResponse> {
+    const { orderItem } = getMenuItemInfoDto;
+    try {
+      //? Nếu orderItem gửi lên có topping
+      if (orderItem.orderItemToppings) {
+        const menuItemToppingIds = [];
+        for (let i = 0; i < orderItem.orderItemToppings.length; i++) {
+          menuItemToppingIds.push(
+            orderItem.orderItemToppings[i].menuItemToppingId,
+          );
+        }
+        //TODO: Lấy thông tin menuItem, menuItemTopping bao gồm price và name
+        const [menuItem, menuItemToppings] = await Promise.all([
+          this.menuItemRepository.findOne(
+            {
+              id: orderItem.menuItemId,
+            },
+            { select: ['price', 'name'] },
+          ),
+          this.menuItemToppingRepository.findByIds(menuItemToppingIds, {
+            select: ['customPrice', 'id'],
+            relations: ['toppingItem'],
+          }),
+        ]);
+
+        const menuItemToppingsTransform: IIdNameAndPriceData[] = menuItemToppings.map(
+          (menuItemTopping): IIdNameAndPriceData => {
+            const { customPrice, toppingItem, id } = menuItemTopping;
+            return {
+              id: id,
+              price: customPrice,
+              name: toppingItem.name,
+            };
+          },
+        );
+        return {
+          status: HttpStatus.OK,
+          message: 'Restaurant address fetched successfully',
+          data: {
+            menuItem: menuItem,
+            menuItemToppings: menuItemToppingsTransform,
+          },
+        };
+      } else {
+        //? Nếu ko có topping
+        //TODO: Lấy thông tin menuItem bao gồm price và name
+        const menuItem = await this.menuItemRepository.findOne(
+          {
+            id: orderItem.menuItemId,
+          },
+          { select: ['price', 'name'] },
+        );
+        return {
+          status: HttpStatus.OK,
+          message: 'Restaurant address fetched successfully',
+          data: {
+            menuItem: menuItem,
+            menuItemToppings: null,
+          },
+        };
+      }
+    } catch (error) {
+      this.logger.error(error);
+      return {
+        status: HttpStatus.INTERNAL_SERVER_ERROR,
+        message: error.message,
+        data: null,
+      };
+    }
   }
 }

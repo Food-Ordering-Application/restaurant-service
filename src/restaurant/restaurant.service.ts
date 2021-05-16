@@ -13,9 +13,8 @@ import {
   RestaurantForCustomerDto,
   CreateRestaurantDto,
   RestaurantForMerchantDto,
-  GetMenuItemInfoDto,
+  GetRestaurantAddressInfoDto,
 } from './dto';
-import { GetRestaurantAddressInfoDto } from './dto/get-restaurant-address-info.dto';
 import { Category, Restaurant, OpenHour } from './entities';
 import {
   RestaurantCreatedEventPayload,
@@ -27,9 +26,7 @@ import {
   IRestaurantResponse,
   IRestaurantsResponse,
   ICreateRestaurantResponse,
-  IIdNameAndPriceData,
   IGetRestaurantAddressResponse,
-  IGetMenuItemResponse,
 } from './interfaces';
 
 @Injectable()
@@ -249,60 +246,6 @@ export class RestaurantService {
         data: {
           address: restaurant.address,
           geom: restaurant.geom,
-        },
-      };
-    } catch (error) {
-      this.logger.error(error);
-      return {
-        status: HttpStatus.INTERNAL_SERVER_ERROR,
-        message: error.message,
-        data: null,
-      };
-    }
-  }
-
-  async getMenuItemInfo(
-    getMenuItemInfoDto: GetMenuItemInfoDto,
-  ): Promise<IGetMenuItemResponse> {
-    const { orderItem } = getMenuItemInfoDto;
-    try {
-      const menuItemToppingIds = [];
-      for (let i = 0; i < orderItem.orderItemToppings.length; i++) {
-        menuItemToppingIds.push(
-          orderItem.orderItemToppings[i].menuItemToppingId,
-        );
-      }
-      //TODO: Lấy thông tin menuItem, menuItemTopping bao gồm price và name
-      const [menuItem, menuItemToppings] = await Promise.all([
-        this.menuItemRepository.findOne(
-          {
-            id: orderItem.menuItemId,
-          },
-          { select: ['price', 'name'] },
-        ),
-        this.menuItemToppingRepository.findByIds(menuItemToppingIds, {
-          select: ['customPrice', 'id'],
-          relations: ['toppingItem'],
-        }),
-      ]);
-
-      const menuItemToppingsTransform: IIdNameAndPriceData[] = menuItemToppings.map(
-        (menuItemTopping): IIdNameAndPriceData => {
-          const { customPrice, toppingItem, id } = menuItemTopping;
-          return {
-            id: id,
-            price: customPrice,
-            name: toppingItem.name,
-          };
-        },
-      );
-
-      return {
-        status: HttpStatus.OK,
-        message: 'Restaurant address fetched successfully',
-        data: {
-          menuItem: menuItem,
-          menuItemToppings: menuItemToppingsTransform,
         },
       };
     } catch (error) {

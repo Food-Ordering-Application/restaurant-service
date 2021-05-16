@@ -8,3 +8,4 @@ export { FetchMenuGroupsAndItemsDto } from './fetch-menu-groups-and-items.dto';
 export { MenuWithMenuGroupsAndItemsDto } from './menu-with-menu-groups-and-items/menu-with-menu-groups-and-items.dto';
 export { MenuForOrderDto } from './menu-for-order/menu-for-order.dto';
 export { GetToppingInfoOfAMenuDto } from './get-topping-info-of-a-menu.dto';
+export { GetMenuItemInfoDto } from './get-menuitem-info.dto';

@@ -16,20 +16,20 @@ export class MenuItemTopping {
   @JoinColumn()
   menu: Menu;
 
-  @Column()
+  @Column({ nullable: true })
   menuId: string;
 
   @ManyToOne(() => MenuItem, (menuItem) => menuItem.menuItemToppings)
   @JoinColumn()
   menuItem: MenuItem;
 
-  @Column()
+  @Column({ nullable: true })
   menuItemId: string;
 
   @ManyToOne(() => ToppingItem, (toppingItem) => toppingItem.menuItemToppings)
   toppingItem: ToppingItem;
 
-  @Column()
+  @Column({ nullable: true })
   toppingItemId: string;
 
   @Column({ nullable: true })

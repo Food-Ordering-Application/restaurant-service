@@ -19,7 +19,7 @@ export class MenuGroup {
   @JoinColumn()
   menu: Menu;
 
-  @Column()
+  @Column({ nullable: true })
   menuId: string;
 
   @OneToMany(() => MenuItem, (menuItem) => menuItem.menuGroup)

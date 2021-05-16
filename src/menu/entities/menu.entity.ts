@@ -23,7 +23,7 @@ export class Menu {
   @JoinColumn()
   restaurant: Restaurant;
 
-  @Column()
+  @Column({ nullable: true })
   restaurantId: string;
 
   @OneToMany(() => MenuGroup, (menuGroup) => menuGroup.menu)

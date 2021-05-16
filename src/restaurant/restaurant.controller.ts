@@ -6,7 +6,6 @@ import {
   GetRestaurantInformationDto,
   FetchRestaurantsOfMerchantDto,
   FetchRestaurantDetailOfMerchantDto,
-  GetMenuItemInfoDto,
 } from './dto';
 import {
   IRestaurantResponse,
@@ -15,7 +14,6 @@ import {
   IFetchRestaurantsOfMerchantResponse,
   IFetchRestaurantDetailOfMerchantResponse,
   IGetRestaurantAddressResponse,
-  IGetMenuItemResponse,
 } from './interfaces';
 import { RestaurantService } from './restaurant.service';
 import { RestaurantProfileUpdatedEventPayload } from './events/restaurant-profile-updated.event';
@@ -83,13 +81,5 @@ export class RestaurantController {
     return this.restaurantService.getRestaurantAddressInfo(
       getRestaurantAddressInfoDto,
     );
-  }
-
-  @MessagePattern('getMenuItemInfo')
-  getMenuItemInfo(
-    @Payload()
-    getMenuItemInfoDto: GetMenuItemInfoDto,
-  ): Promise<IGetMenuItemResponse> {
-    return this.restaurantService.getMenuItemInfo(getMenuItemInfoDto);
   }
 }

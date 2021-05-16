@@ -10,3 +10,6 @@ export { ICreateMenuResponse } from './create-menu-response.interface';
 export { IFetchMenuOfRestaurantResponse } from './fetch-menu-of-restaurant.interface';
 export { IUpdateMenuResponse } from './update-menu-response.interface';
 export { IFetchMenuGroupsAndItemsResponse } from './fetch-menu-groups-and-items-response.interface';
+export { IIdNameAndPriceData } from './menuitem-name-and-price-data.interface';
+export { IMenuItemData } from './menuitem-data.interface';
+export { IGetMenuItemResponse } from './get-menuitem-response.interface';

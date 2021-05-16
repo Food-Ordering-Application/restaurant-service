@@ -20,14 +20,14 @@ export class MenuItem {
   @JoinColumn()
   menu: Menu;
 
-  @Column()
+  @Column({ nullable: true })
   menuId: string;
 
   @ManyToOne(() => MenuGroup, (menuGroup) => menuGroup.menuItems)
   @JoinColumn()
   menuGroup: MenuGroup;
 
-  @Column()
+  @Column({ nullable: true })
   menuGroupId: string;
 
   @OneToMany(

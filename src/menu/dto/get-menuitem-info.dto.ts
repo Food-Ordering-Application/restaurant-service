@@ -1,4 +1,4 @@
-import { IOrderItemData } from '../interfaces';
+import { IOrderItemData } from '../../restaurant/interfaces';
 
 export class GetMenuItemInfoDto {
   orderItem: IOrderItemData;

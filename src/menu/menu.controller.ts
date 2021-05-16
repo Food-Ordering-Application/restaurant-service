@@ -6,6 +6,7 @@ import {
   FetchMenuGroupsAndItemsDto,
   FetchMenuOfRestaurantDto,
   GetMenuInformationDto,
+  GetMenuItemInfoDto,
   GetMenuItemToppingDto,
   GetToppingInfoOfAMenuDto,
   UpdateMenuDto,
@@ -18,6 +19,7 @@ import {
   IUpdateMenuResponse,
 } from './interfaces';
 import { MenuService } from './menu.service';
+import { IGetMenuItemResponse } from './interfaces/get-menuitem-response.interface';
 
 @Controller()
 export class MenuController {
@@ -76,5 +78,13 @@ export class MenuController {
     @Payload() getToppingInfoOfAMenuDto: GetToppingInfoOfAMenuDto,
   ): Promise<IMenuItemToppingResponse> {
     return this.menuService.getToppingInfoOfAMenu(getToppingInfoOfAMenuDto);
+  }
+
+  @MessagePattern('getMenuItemInfo')
+  getMenuItemInfo(
+    @Payload()
+    getMenuItemInfoDto: GetMenuItemInfoDto,
+  ): Promise<IGetMenuItemResponse> {
+    return this.menuService.getMenuItemInfo(getMenuItemInfoDto);
   }
 }

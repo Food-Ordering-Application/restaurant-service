@@ -20,7 +20,7 @@ export class ToppingItem {
   @JoinColumn()
   menu: Menu;
 
-  @Column()
+  @Column({ nullable: true })
   menuId: string;
 
   @ManyToOne(() => ToppingGroup, (toppingGroup) => toppingGroup.toppingItems)
