@@ -1,5 +1,6 @@
 export interface IIdNameAndPriceData {
-  id: string;
+  menuItemId: string;
+  toppingItemId: string;
   name: string;
   price: number;
 }

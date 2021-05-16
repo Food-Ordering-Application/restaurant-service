@@ -352,9 +352,7 @@ export class MenuService {
         console.log('Have topping');
         const menuItemToppingIds = [];
         for (let i = 0; i < orderItem.orderItemToppings.length; i++) {
-          menuItemToppingIds.push(
-            orderItem.orderItemToppings[i].menuItemToppingId,
-          );
+          menuItemToppingIds.push(orderItem.orderItemToppings[i].toppingItemId);
         }
         console.log('menuItemToppingIds', menuItemToppingIds);
         //TODO: Lấy thông tin menuItem, menuItemTopping bao gồm price và name
@@ -365,19 +363,37 @@ export class MenuService {
             },
             { select: ['price', 'name'] },
           ),
-          this.menuItemToppingRepository.findByIds(menuItemToppingIds, {
-            select: ['customPrice', 'id'],
-            relations: ['toppingItem'],
-          }),
+          this.menuItemToppingRepository
+            .createQueryBuilder('menuITop')
+            .select([
+              'menuITop.customPrice',
+              'menuITop.menuItemId',
+              'menuITop.toppingItemId',
+            ])
+            .leftJoinAndSelect('menuITop.toppingItem', 'topI')
+            .where('menuITop.menuItemId = :menuItemId', {
+              menuItemId: orderItem.menuItemId,
+            })
+            .andWhere('menuITop.toppingItemId IN (:...ids)', {
+              ids: menuItemToppingIds,
+            })
+            .getMany(),
         ]);
         console.log('menuItem', menuItem);
         console.log('menuItemToppings', menuItemToppings);
 
         const menuItemToppingsTransform: IIdNameAndPriceData[] = menuItemToppings.map(
           (menuItemTopping): IIdNameAndPriceData => {
-            const { customPrice, toppingItem, id } = menuItemTopping;
+            const {
+              customPrice,
+              toppingItem,
+              menuItemId,
+              toppingItemId,
+            } = menuItemTopping;
+            console.log(menuItemId, toppingItemId);
             return {
-              id: id,
+              menuItemId: menuItemId,
+              toppingItemId: toppingItemId,
               price: customPrice,
               name: toppingItem.name,
             };

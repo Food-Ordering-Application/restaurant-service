@@ -1,4 +1,4 @@
 export interface IOrderItemToppingData {
-  menuItemToppingId?: string;
+  toppingItemId?: string;
   quantity?: number;
 }
