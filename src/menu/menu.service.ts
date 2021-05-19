@@ -348,7 +348,10 @@ export class MenuService {
     try {
       console.log('OrderItem', orderItem);
       //? Nếu orderItem gửi lên có topping
-      if (orderItem.orderItemToppings) {
+      if (
+        orderItem.orderItemToppings &&
+        orderItem.orderItemToppings.length !== 0
+      ) {
         console.log('Have topping');
         const menuItemToppingIds = [];
         for (let i = 0; i < orderItem.orderItemToppings.length; i++) {
@@ -411,12 +414,14 @@ export class MenuService {
       } else {
         //? Nếu ko có topping
         //TODO: Lấy thông tin menuItem bao gồm price và name
+        console.log('No topping');
         const menuItem = await this.menuItemRepository.findOne(
           {
             id: orderItem.menuItemId,
           },
           { select: ['price', 'name'] },
         );
+        console.log('Success no topping');
         return {
           status: HttpStatus.OK,
           message: 'Restaurant address fetched successfully',
