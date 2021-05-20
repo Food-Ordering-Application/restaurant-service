@@ -83,6 +83,9 @@ export class Restaurant {
   @OneToOne(() => Menu, (menu) => menu.restaurant)
   menu: Menu;
 
+  @Column({ default: null })
+  merchantIdInPayPal: string;
+
   @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   created_at: Date;
 
