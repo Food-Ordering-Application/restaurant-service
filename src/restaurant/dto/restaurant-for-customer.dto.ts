@@ -8,6 +8,7 @@ export class RestaurantForCustomerDto {
   coverImageUrl: string;
   numRate: number;
   rating: number;
+  merchantIdInPayPal: string;
   categories: CategoryType[];
   static EntityToDTO(restaurant: Restaurant): RestaurantForCustomerDto {
     const {
@@ -18,6 +19,7 @@ export class RestaurantForCustomerDto {
       numRate,
       rating,
       categories,
+      merchantIdInPayPal,
     } = restaurant;
     return {
       id,
@@ -27,6 +29,7 @@ export class RestaurantForCustomerDto {
       rating,
       address,
       categories: categories.map(({ type }) => type as CategoryType),
+      merchantIdInPayPal,
     };
   }
 }

@@ -19,6 +19,7 @@ export class RestaurantDetailForCustomerDto {
   };
   openHours?: OpenHourDto[];
   categories?: CategoryType[];
+  merchantIdInPayPal: string;
   static EntityToDTO(restaurant: Restaurant): RestaurantDetailForCustomerDto {
     const {
       id,
@@ -34,6 +35,7 @@ export class RestaurantDetailForCustomerDto {
       geom,
       openHours,
       categories,
+      merchantIdInPayPal,
     } = restaurant;
     return {
       id,
@@ -58,6 +60,7 @@ export class RestaurantDetailForCustomerDto {
       ...(categories && {
         categories: categories.map(({ type }) => type as CategoryType),
       }),
+      merchantIdInPayPal,
     };
   }
 }

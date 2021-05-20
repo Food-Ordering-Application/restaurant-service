@@ -159,6 +159,7 @@ export class RestaurantService {
         'res.coverImageUrl',
         'res.rating',
         'res.numRate',
+        'res.merchantIdInPayPal',
       ])
       .leftJoinAndSelect('res.categories', 'categories')
       .where('res.area = :area', {
