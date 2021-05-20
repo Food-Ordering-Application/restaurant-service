@@ -54,10 +54,12 @@ export class RestaurantService {
       isVerified?: boolean;
       isActive?: boolean;
       isBanned?: boolean;
+      merchantIdInPayPal?: string;
     } = {
       isVerified: null,
       isActive: null,
       isBanned: null,
+      merchantIdInPayPal: null,
     };
     Object.keys(data).forEach((key) =>
       typeof templateObject[key] == 'undefined' ? delete data[key] : {},
