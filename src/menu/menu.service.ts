@@ -118,6 +118,7 @@ export class MenuService {
           'topI.description',
           'topI.price',
           'topI.maxQuantity',
+          'topI.state',
           'menuITop.customPrice',
         ])
         .getMany();
