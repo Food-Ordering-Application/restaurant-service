@@ -7,6 +7,7 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { State } from '../enums';
 import { MenuGroup } from './menu-group.entity';
 import { MenuItemTopping } from './menu-item-topping.entity';
 import { Menu } from './menu.entity';
@@ -54,8 +55,8 @@ export class MenuItem {
   @Column({ default: true })
   isActive: boolean;
 
-  @Column({ default: false })
-  isOutOfStock: boolean;
+  @Column({ enum: State, default: State.IN_STOCK })
+  state: State;
 
   @DeleteDateColumn()
   deletedAt: Date;
