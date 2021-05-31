@@ -346,18 +346,18 @@ export class MenuService {
   ): Promise<IGetMenuItemResponse> {
     const { orderItem } = getMenuItemInfoDto;
     try {
-      console.log('OrderItem', orderItem);
+      // console.log('OrderItem', orderItem);
       //? Nếu orderItem gửi lên có topping
       if (
         orderItem.orderItemToppings &&
         orderItem.orderItemToppings.length !== 0
       ) {
-        console.log('Have topping');
+        // console.log('Have topping');
         const menuItemToppingIds = [];
         for (let i = 0; i < orderItem.orderItemToppings.length; i++) {
           menuItemToppingIds.push(orderItem.orderItemToppings[i].toppingItemId);
         }
-        console.log('menuItemToppingIds', menuItemToppingIds);
+        // console.log('menuItemToppingIds', menuItemToppingIds);
         //TODO: Lấy thông tin menuItem, menuItemTopping bao gồm price và name
         const [menuItem, menuItemToppings] = await Promise.all([
           this.menuItemRepository.findOne(
@@ -382,8 +382,8 @@ export class MenuService {
             })
             .getMany(),
         ]);
-        console.log('menuItem', menuItem);
-        console.log('menuItemToppings', menuItemToppings);
+        // console.log('menuItem', menuItem);
+        // console.log('menuItemToppings', menuItemToppings);
 
         const menuItemToppingsTransform: IIdNameAndPriceData[] = menuItemToppings.map(
           (menuItemTopping): IIdNameAndPriceData => {
@@ -393,7 +393,7 @@ export class MenuService {
               menuItemId,
               toppingItemId,
             } = menuItemTopping;
-            console.log(menuItemId, toppingItemId);
+            // console.log(menuItemId, toppingItemId);
             return {
               menuItemId: menuItemId,
               toppingItemId: toppingItemId,
@@ -402,10 +402,10 @@ export class MenuService {
             };
           },
         );
-        console.log('menuItemToppingsTransform', menuItemToppingsTransform);
+        // console.log('menuItemToppingsTransform', menuItemToppingsTransform);
         return {
           status: HttpStatus.OK,
-          message: 'Restaurant address fetched successfully',
+          message: 'Fetch menu item info successfully',
           data: {
             menuItem: menuItem,
             menuItemToppings: menuItemToppingsTransform,
@@ -414,14 +414,14 @@ export class MenuService {
       } else {
         //? Nếu ko có topping
         //TODO: Lấy thông tin menuItem bao gồm price và name
-        console.log('No topping');
+        // console.log('No topping');
         const menuItem = await this.menuItemRepository.findOne(
           {
             id: orderItem.menuItemId,
           },
           { select: ['price', 'name'] },
         );
-        console.log('Success no topping');
+        // console.log('Success no topping');
         return {
           status: HttpStatus.OK,
           message: 'Restaurant address fetched successfully',

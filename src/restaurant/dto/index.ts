@@ -9,3 +9,4 @@ export { FetchRestaurantDetailOfMerchantDto } from './fetch-restaurant-detail-of
 export { RestaurantDetailForCustomerDto } from './restaurant-detail-for-customer.dto';
 export { RestaurantForCustomerDto } from './restaurant-for-customer.dto';
 export { GetRestaurantAddressInfoDto } from './get-restaurant-address-info.dto';
+export { GetRestaurantInformationToCreateDeliveryDto } from './get-restaurant-information-to-create-delivery.dto';

@@ -6,6 +6,7 @@ import {
   GetRestaurantInformationDto,
   FetchRestaurantsOfMerchantDto,
   FetchRestaurantDetailOfMerchantDto,
+  GetRestaurantInformationToCreateDeliveryDto,
 } from './dto';
 import {
   IRestaurantResponse,
@@ -14,6 +15,7 @@ import {
   IFetchRestaurantsOfMerchantResponse,
   IFetchRestaurantDetailOfMerchantResponse,
   IGetRestaurantAddressResponse,
+  IGetInformationForDeliveryResponse,
 } from './interfaces';
 import { RestaurantService } from './restaurant.service';
 import { RestaurantProfileUpdatedEventPayload } from './events/restaurant-profile-updated.event';
@@ -53,7 +55,6 @@ export class RestaurantController {
   getSomeRestaurant(
     @Payload() getSomeRestaurantDto: GetSomeRestaurantDto,
   ): Promise<IRestaurantsResponse> {
-    console.log('haha');
     return this.restaurantService.getSomeRestaurant(getSomeRestaurantDto);
   }
 
@@ -80,6 +81,16 @@ export class RestaurantController {
   ): Promise<IGetRestaurantAddressResponse> {
     return this.restaurantService.getRestaurantAddressInfo(
       getRestaurantAddressInfoDto,
+    );
+  }
+
+  @MessagePattern('getRestaurantInformationToCreateDelivery')
+  getRestaurantInformationToCreateDelivery(
+    @Payload()
+    getRestaurantInformationToCreateDeliveryDto: GetRestaurantInformationToCreateDeliveryDto,
+  ): Promise<IGetInformationForDeliveryResponse> {
+    return this.restaurantService.getRestaurantInformationToCreateDelivery(
+      getRestaurantInformationToCreateDeliveryDto,
     );
   }
 }

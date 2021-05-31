@@ -14,6 +14,7 @@ import {
   CreateRestaurantDto,
   RestaurantForMerchantDto,
   GetRestaurantAddressInfoDto,
+  GetRestaurantInformationToCreateDeliveryDto,
 } from './dto';
 import { Category, Restaurant, OpenHour } from './entities';
 import {
@@ -27,6 +28,7 @@ import {
   IRestaurantsResponse,
   ICreateRestaurantResponse,
   IGetRestaurantAddressResponse,
+  IGetInformationForDeliveryResponse,
 } from './interfaces';
 
 @Injectable()
@@ -253,6 +255,56 @@ export class RestaurantService {
       };
     } catch (error) {
       this.logger.error(error);
+      return {
+        status: HttpStatus.INTERNAL_SERVER_ERROR,
+        message: error.message,
+        data: null,
+      };
+    }
+  }
+
+  async getRestaurantInformationToCreateDelivery(
+    getRestaurantInformationToCreateDeliveryDto: GetRestaurantInformationToCreateDeliveryDto,
+  ): Promise<IGetInformationForDeliveryResponse> {
+    try {
+      const { restaurantId } = getRestaurantInformationToCreateDeliveryDto;
+
+      const restaurant = await this.restaurantRepository
+        .createQueryBuilder('restaurant')
+        .where('restaurant.id = :restaurantId', {
+          restaurantId: restaurantId,
+        })
+        .select([
+          'restaurant.name',
+          'restaurant.phone',
+          'restaurant.address',
+          'restaurant.geom',
+        ])
+        .getOne();
+
+      if (!restaurant) {
+        return {
+          status: HttpStatus.NOT_FOUND,
+          message: 'Restaurant not found',
+          data: null,
+        };
+      }
+
+      const { name, phone, geom, address } = restaurant;
+
+      return {
+        status: HttpStatus.OK,
+        message: 'Fetch restaurant information successfully',
+        data: {
+          address: address,
+          geom: geom,
+          name: name,
+          phoneNumber: phone,
+        },
+      };
+    } catch (error) {
+      this.logger.error(error);
+
       return {
         status: HttpStatus.INTERNAL_SERVER_ERROR,
         message: error.message,
