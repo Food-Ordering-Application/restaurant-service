@@ -207,7 +207,7 @@ export class MenuService {
       didRestaurantHaveMenuPromise,
     ]);
 
-    if (doesRestaurantExist) {
+    if (!doesRestaurantExist) {
       return {
         status: HttpStatus.BAD_REQUEST,
         message: 'Restaurant not found',
