@@ -1,3 +1,5 @@
+import { State } from 'src/menu/enums';
+
 export class UpdateMenuItemDto {
   merchantId: string;
   restaurantId: string;
@@ -13,5 +15,6 @@ export class UpdatedMenuItemDataDto {
   price: number;
   imageUrl: string;
   isActive: boolean;
+  state: State;
   index: number;
 }

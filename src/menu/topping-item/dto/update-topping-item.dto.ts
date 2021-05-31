@@ -1,3 +1,4 @@
+import { State } from './../../enums';
 export class UpdateToppingItemDto {
   merchantId: string;
   restaurantId: string;
@@ -12,6 +13,7 @@ export class UpdatedToppingItemDataDto {
   description: string;
   price: number;
   maxQuantity: number;
+  state: State;
   isActive: boolean;
   index: number;
 }

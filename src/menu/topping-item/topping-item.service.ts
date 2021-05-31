@@ -148,6 +148,7 @@ export class ToppingItemService {
       price: null,
       maxQuantity: null,
       index: null,
+      state: null,
       isActive: null,
     };
     Object.keys(data).forEach((key) =>

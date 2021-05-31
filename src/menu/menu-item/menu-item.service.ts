@@ -139,6 +139,7 @@ export class MenuItemService {
       imageUrl: null,
       index: null,
       isActive: null,
+      state: null,
     };
     Object.keys(data).forEach((key) =>
       typeof templateObject[key] == 'undefined' ? delete data[key] : {},
