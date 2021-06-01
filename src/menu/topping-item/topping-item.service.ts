@@ -111,14 +111,14 @@ export class ToppingItemService {
     const {
       data,
       menuId,
-      restaurantId,
-      merchantId,
+      // restaurantId,
+      // merchantId,
       toppingItemId,
     } = updateToppingItemDto;
 
     const fetchCountToppingItem = await this.toppingItemRepository.count({
       id: toppingItemId,
-      menuId: menuId,
+      // menuId: menuId,
     });
     if (fetchCountToppingItem === 0) {
       return {
@@ -148,10 +148,11 @@ export class ToppingItemService {
       price: null,
       maxQuantity: null,
       index: null,
+      state: null,
       isActive: null,
     };
     Object.keys(data).forEach((key) =>
-      typeof templateObject[key] == 'undefined' ? delete data[key] : {},
+      typeof templateObject[key] == undefined ? delete data[key] : {},
     );
 
     // save to database

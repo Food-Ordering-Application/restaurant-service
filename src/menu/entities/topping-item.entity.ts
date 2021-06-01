@@ -8,6 +8,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Menu } from '.';
+import { State } from '../enums';
 import { MenuItemTopping } from './menu-item-topping.entity';
 import { ToppingGroup } from './topping-group.entity';
 
@@ -53,6 +54,9 @@ export class ToppingItem {
 
   @Column({ default: true })
   isActive: boolean;
+
+  @Column({ enum: State, default: State.IN_STOCK })
+  state: State;
 
   @DeleteDateColumn()
   deletedAt: Date;

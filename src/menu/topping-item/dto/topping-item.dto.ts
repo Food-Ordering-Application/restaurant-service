@@ -1,3 +1,4 @@
+import { State } from 'src/menu/enums';
 import { ToppingItem } from '../../entities/topping-item.entity';
 export class ToppingItemDto {
   id: string;
@@ -8,6 +9,7 @@ export class ToppingItemDto {
   price: number;
   maxQuantity: number;
   isActive: boolean;
+  state: State;
   index: number;
   static EntityToDto(menu: ToppingItem): ToppingItemDto {
     const {
@@ -19,6 +21,7 @@ export class ToppingItemDto {
       price,
       maxQuantity,
       isActive,
+      state,
       index,
     } = menu;
     return {
@@ -30,6 +33,7 @@ export class ToppingItemDto {
       price,
       maxQuantity,
       isActive,
+      state,
       index,
     };
   }

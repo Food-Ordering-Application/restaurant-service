@@ -1,3 +1,4 @@
+import { State } from 'src/menu/enums';
 import { MenuItem } from '../../entities/menu-item.entity';
 export class MenuItemDto {
   id: string;
@@ -7,6 +8,7 @@ export class MenuItemDto {
   description: string;
   price: number;
   imageUrl: string;
+  state: State;
   isActive: boolean;
   index: number;
   static EntityToDto(menu: MenuItem): MenuItemDto {
@@ -19,6 +21,7 @@ export class MenuItemDto {
       price,
       imageUrl,
       isActive,
+      state,
       index,
     } = menu;
     return {
@@ -30,6 +33,7 @@ export class MenuItemDto {
       price,
       imageUrl,
       isActive,
+      state,
       index,
     };
   }

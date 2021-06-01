@@ -101,14 +101,14 @@ export class MenuItemService {
     const {
       data,
       menuId,
-      restaurantId,
-      merchantId,
+      // restaurantId,
+      // merchantId,
       menuItemId,
     } = updateMenuItemDto;
 
     const fetchCountMenuItem = await this.menuItemRepository.count({
       id: menuItemId,
-      menuId: menuId,
+      // menuId: menuId,
     });
     if (fetchCountMenuItem === 0) {
       return {
@@ -139,18 +139,25 @@ export class MenuItemService {
       imageUrl: null,
       index: null,
       isActive: null,
+      state: null,
     };
     Object.keys(data).forEach((key) =>
-      typeof templateObject[key] == 'undefined' ? delete data[key] : {},
+      typeof templateObject[key] == undefined ? delete data[key] : {},
     );
 
     // save to database
-    await this.menuItemRepository.update({ id: menuItemId }, data);
-
-    return {
-      status: HttpStatus.OK,
-      message: 'Menu item updated successfully',
-    };
+    try {
+      await this.menuItemRepository.update({ id: menuItemId }, data);
+      return {
+        status: HttpStatus.OK,
+        message: 'Menu item updated successfully',
+      };
+    } catch (e) {
+      return {
+        status: HttpStatus.INTERNAL_SERVER_ERROR,
+        message: e.message,
+      };
+    }
   }
 
   async delete(
