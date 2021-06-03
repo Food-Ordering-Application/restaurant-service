@@ -37,7 +37,7 @@ define(Restaurant, (faker: typeof Faker, context: Context) => {
   const random = Math.floor(Math.random() * latitudes.length);
   const geom = {
     type: 'Point',
-    coordinates: [latitudes[random], longtitudes[random]],
+    coordinates: [longtitudes[random], latitudes[random]],
   };
 
   const restaurant = new Restaurant();
