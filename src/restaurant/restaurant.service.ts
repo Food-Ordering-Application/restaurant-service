@@ -114,7 +114,7 @@ export class RestaurantService {
       city,
       geom: {
         type: 'Point',
-        coordinates: [geo.latitude, geo.longitude],
+        coordinates: [geo.longitude, geo.latitude],
       },
       openHours,
     });
@@ -152,7 +152,7 @@ export class RestaurantService {
   async getSomeRestaurant(
     getSomeRestaurantDto: GetSomeRestaurantDto,
   ): Promise<IRestaurantsResponse> {
-    const { area, page, size, category, search } = getSomeRestaurantDto;
+    const { area, page, size, search, categories } = getSomeRestaurantDto;
     const pageSize = 0;
     let queryBuilder: SelectQueryBuilder<Restaurant> = this.restaurantRepository
       .createQueryBuilder('res')
@@ -166,10 +166,7 @@ export class RestaurantService {
         'res.merchantIdInPayPal',
       ])
       .leftJoinAndSelect('res.categories', 'categories')
-      .where('res.area = :area', {
-        area: area,
-      })
-      .andWhere('res.isActive = :active', {
+      .where('res.isActive = :active', {
         active: true,
       })
       .andWhere('res.isBanned = :not_banned', {
@@ -178,10 +175,20 @@ export class RestaurantService {
       .andWhere('res.isVerified = :verified', {
         verified: true,
       });
-    if (category) {
-      queryBuilder = queryBuilder.andWhere('categories.type = :categoryType', {
-        categoryType: category,
+
+    if (area) {
+      queryBuilder = queryBuilder.andWhere('res.area = :area', {
+        area: area,
       });
+    }
+
+    if (categories && Array.isArray(categories) && categories.length > 0) {
+      queryBuilder = queryBuilder.andWhere(
+        'categories.type IN(...:categories)',
+        {
+          categories: categories,
+        },
+      );
     }
 
     if (search) {

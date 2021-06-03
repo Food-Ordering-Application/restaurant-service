@@ -52,8 +52,8 @@ export class RestaurantForMerchantDto {
       area,
       phone,
       geo: {
-        latitude: geom.coordinates[0],
-        longitude: geom.coordinates[1],
+        latitude: geom.coordinates[1],
+        longitude: geom.coordinates[0],
       },
       ...(openHours && {
         openHours: openHours.map((openHour) =>
