@@ -152,7 +152,7 @@ export class RestaurantService {
   async getSomeRestaurant(
     getSomeRestaurantDto: GetSomeRestaurantDto,
   ): Promise<IRestaurantsResponse> {
-    const { area, page, size, search, categories } = getSomeRestaurantDto;
+    const { area, page, size = 10, category, search } = getSomeRestaurantDto;
     const pageSize = 0;
     let queryBuilder: SelectQueryBuilder<Restaurant> = this.restaurantRepository
       .createQueryBuilder('res')
@@ -166,7 +166,10 @@ export class RestaurantService {
         'res.merchantIdInPayPal',
       ])
       .leftJoinAndSelect('res.categories', 'categories')
-      .where('res.isActive = :active', {
+      .where('res.area = :area', {
+        area: area,
+      })
+      .andWhere('res.isActive = :active', {
         active: true,
       })
       .andWhere('res.isBanned = :not_banned', {
@@ -175,20 +178,10 @@ export class RestaurantService {
       .andWhere('res.isVerified = :verified', {
         verified: true,
       });
-
-    if (area) {
-      queryBuilder = queryBuilder.andWhere('res.area = :area', {
-        area: area,
+    if (category) {
+      queryBuilder = queryBuilder.andWhere('categories.type = :categoryType', {
+        categoryType: category,
       });
-    }
-
-    if (categories && Array.isArray(categories) && categories.length > 0) {
-      queryBuilder = queryBuilder.andWhere(
-        'categories.type IN(...:categories)',
-        {
-          categories: categories,
-        },
-      );
     }
 
     if (search) {
@@ -201,7 +194,7 @@ export class RestaurantService {
       .orderBy('res.rating', 'DESC')
       .addOrderBy('res.numRate', 'DESC')
       .skip((page - 1) * size)
-      .take(pageSize)
+      .take(size)
       .getMany();
 
     return {
