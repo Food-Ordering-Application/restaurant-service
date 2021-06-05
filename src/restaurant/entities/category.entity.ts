@@ -11,7 +11,7 @@ import { Restaurant } from './restaurant.entity';
 @Entity('category_v2')
 export class Category {
   @PrimaryGeneratedColumn('increment')
-  id: string;
+  id: number;
 
   @Column()
   name: string;
@@ -24,5 +24,5 @@ export class Category {
   displayOrder: number;
 
   @ManyToMany(() => Restaurant, (restaurant) => restaurant.categories)
-  restaurant: Restaurant;
+  restaurants: Restaurant[];
 }

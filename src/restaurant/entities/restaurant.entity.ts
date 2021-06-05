@@ -5,11 +5,13 @@ import {
   Entity,
   JoinTable,
   ManyToMany,
+  ManyToOne,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Category, OpenHour } from '.';
+import { Area, City } from '../../geo/entities';
 
 @Entity()
 export class Restaurant {
@@ -43,12 +45,6 @@ export class Restaurant {
   @Column({ nullable: false })
   address: string;
 
-  @Column({ nullable: false, default: 'TPHCM' })
-  city: string;
-
-  @Column({ nullable: false, default: 'TPHCM' })
-  area: string;
-
   @Column({
     nullable: false,
     type: 'geometry',
@@ -66,15 +62,37 @@ export class Restaurant {
   @Column({ default: false })
   isBanned: boolean;
 
+  @ManyToOne(() => City, (city) => city.restaurants)
+  city: City;
+
+  @Column()
+  cityId: number;
+
+  @ManyToOne(() => Area, (area) => area.restaurants)
+  area: Area;
+
+  @Column()
+  areaId: number;
+
   @OneToMany(() => OpenHour, (openHours) => openHours.restaurant, {
     cascade: ['update', 'insert'],
   })
   openHours: OpenHour[];
 
-  @ManyToMany(() => Category, (category) => category.restaurant, {
+  @ManyToMany(() => Category, (category) => category.restaurants, {
     cascade: ['update', 'insert'],
   })
-  @JoinTable()
+  @JoinTable({
+    name: 'restaurant_categories_category',
+    joinColumn: {
+      name: 'restaurantId',
+      referencedColumnName: 'id',
+    },
+    inverseJoinColumn: {
+      name: 'categoryId',
+      referencedColumnName: 'id',
+    },
+  })
   categories: Category[];
 
   @OneToOne(() => Menu, (menu) => menu.restaurant)
