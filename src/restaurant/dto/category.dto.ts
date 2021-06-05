@@ -1,7 +1,7 @@
 import { Category } from './../entities/';
 
 export class CategoryDto {
-  id: string;
+  id: number;
   name: string;
   iconUrl: string;
   displayOrder: number;
