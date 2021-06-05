@@ -13,6 +13,9 @@ export class Area {
   @ManyToOne(() => City, (city) => city.districts)
   city: City;
 
+  @Column()
+  cityId: number;
+
   @OneToMany(() => Restaurant, (restaurant) => restaurant.area)
   restaurants: Restaurant[];
 }

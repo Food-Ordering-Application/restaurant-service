@@ -1,3 +1,4 @@
+import { GeoService } from './../geo/geo.service';
 import { HttpStatus, Inject, Injectable, Logger } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -46,6 +47,8 @@ export class RestaurantService {
     private openHourRepository: Repository<OpenHour>,
     @InjectRepository(Category)
     private categoryRepository: Repository<Category>,
+
+    private geoService: GeoService,
   ) {}
 
   async handleRestaurantProfileUpdated(
@@ -76,8 +79,8 @@ export class RestaurantService {
       name,
       phone,
       address,
-      area,
-      city,
+      areaId,
+      cityId,
       geo,
       coverImageUrl,
       verifiedImageUrl,
@@ -93,15 +96,29 @@ export class RestaurantService {
         data: null,
       };
     }
-
-    const categories: Category[] = await this.categoryRepository.findByIds(
-      categoryIds,
+    const categoriesPromise = this.categoryRepository.findByIds(categoryIds);
+    const checkCityAndAreaPromise = this.geoService.validCityAndArea(
+      cityId,
+      areaId,
     );
+
+    const [categories, validCityAndArea] = await Promise.all([
+      categoriesPromise,
+      checkCityAndAreaPromise,
+    ]);
 
     if (categories.length != categoryIds.length) {
       return {
         status: HttpStatus.BAD_REQUEST,
         message: 'One of category Ids does not exists',
+        data: null,
+      };
+    }
+
+    if (!validCityAndArea) {
+      return {
+        status: HttpStatus.BAD_REQUEST,
+        message: 'City and area id is not valid',
         data: null,
       };
     }
@@ -123,12 +140,12 @@ export class RestaurantService {
       name,
       phone,
       address,
-      area,
+      areaId,
       categories,
       coverImageUrl,
       verifiedImageUrl,
       videoUrl,
-      city,
+      cityId,
       geom: {
         type: 'Point',
         coordinates: [geo.longitude, geo.latitude],
@@ -143,13 +160,13 @@ export class RestaurantService {
       data: {
         name,
         phone,
-        area,
+        cityId,
+        areaId,
         address,
         coverImageUrl,
         isActive,
         isBanned,
         isVerified,
-        city,
       },
     };
 
@@ -169,9 +186,18 @@ export class RestaurantService {
   async getSomeRestaurant(
     getSomeRestaurantDto: GetSomeRestaurantDto,
   ): Promise<IRestaurantsResponse> {
-    const { area, page, size = 10, search, categoryIds } = getSomeRestaurantDto;
+    const {
+      page,
+      size = 10,
+      cityId,
+      search,
+      areaIds,
+      categoryIds,
+    } = getSomeRestaurantDto;
     const hasCategoryFilter =
       categoryIds && Array.isArray(categoryIds) && categoryIds.length;
+
+    const hasAreaFilter = areaIds && Array.isArray(areaIds) && areaIds.length;
 
     let queryBuilder: SelectQueryBuilder<Restaurant> = this.restaurantRepository
       .createQueryBuilder('res')
@@ -195,8 +221,8 @@ export class RestaurantService {
       : queryBuilder.leftJoinAndSelect('res.categories', 'categories');
 
     queryBuilder = queryBuilder
-      .where('res.area = :area', {
-        area: area,
+      .where('res.cityId = :cityId', {
+        cityId: cityId,
       })
       .andWhere('res.isActive = :active', {
         active: true,
@@ -208,6 +234,12 @@ export class RestaurantService {
         verified: true,
       });
 
+    if (hasAreaFilter) {
+      queryBuilder = queryBuilder.andWhere('res.areaId IN (:...areaIds)', {
+        areaIds: areaIds,
+      });
+    }
+
     if (search) {
       queryBuilder = queryBuilder.andWhere('res.name iLIKE :restaurantName', {
         restaurantName: `%${search.toLowerCase()}%`,
@@ -215,8 +247,8 @@ export class RestaurantService {
     }
 
     const restaurants = await queryBuilder
-      .orderBy('res.rating', 'DESC')
-      .addOrderBy('res.numRate', 'DESC')
+      .orderBy('res.numRate', 'DESC')
+      .addOrderBy('res.rating', 'DESC')
       .skip((page - 1) * size)
       .take(size)
       .getMany();
@@ -384,7 +416,7 @@ export class RestaurantService {
       {
         id: restaurantId,
       },
-      { relations: ['categories', 'openHours'] },
+      { relations: ['categories', 'openHours', 'city', 'area'] },
     );
 
     return {
