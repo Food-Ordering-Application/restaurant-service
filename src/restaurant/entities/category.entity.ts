@@ -1,21 +1,28 @@
 import {
   Column,
   Entity,
+  Generated,
   ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { CategoryType } from '../enums/category-type.enum';
 import { Restaurant } from './restaurant.entity';
 
-@Entity()
+@Entity('category_v2')
 export class Category {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn('increment')
   id: string;
 
-  @Column({ enum: CategoryType })
-  type: string;
+  @Column()
+  name: string;
 
-  @ManyToOne(() => Restaurant, (restaurant) => restaurant.categories)
+  @Column()
+  iconUrl: string;
+
+  @Column()
+  @Generated('increment')
+  displayOrder: number;
+
+  @ManyToMany(() => Restaurant, (restaurant) => restaurant.categories)
   restaurant: Restaurant;
 }

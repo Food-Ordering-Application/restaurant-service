@@ -1,0 +1,433 @@
+{
+  "categories": [
+    {
+      "code": "food",
+      "name": "Đồ ăn",
+      "display_order": 1,
+      "tab_icon": [
+        {
+          "width": 180,
+          "value": "https://images.foody.vn/dcat/s180x180/foody-128x128_mainmenuicon-foods-636283959755084729.png",
+          "height": 180
+        },
+        {
+          "width": 270,
+          "value": "https://images.foody.vn/dcat/s270x270/foody-128x128_mainmenuicon-foods-636283959755084729.png",
+          "height": 270
+        }
+      ],
+      "url_rewrite_name": "food",
+      "parent_category_id": 1,
+      "id": 1000000,
+      "categories": [],
+      "icon": [
+        {
+          "width": 180,
+          "value": "https://images.foody.vn/dcat/s180x180/image-dcat-b9833eb4-ea4f-4084-9bca-cbae5d703ce0.png",
+          "height": 180
+        },
+        {
+          "width": 270,
+          "value": "https://images.foody.vn/dcat/s270x270/image-dcat-b9833eb4-ea4f-4084-9bca-cbae5d703ce0.png",
+          "height": 270
+        }
+      ]
+    },
+    {
+      "code": "drink",
+      "name": "Đồ uống",
+      "display_order": 3,
+      "tab_icon": [
+        {
+          "width": 180,
+          "value": "https://images.foody.vn/dcat/s180x180/foody-128x128_mainmenuicon-drink-636283959939303052.png",
+          "height": 180
+        },
+        {
+          "width": 270,
+          "value": "https://images.foody.vn/dcat/s270x270/foody-128x128_mainmenuicon-drink-636283959939303052.png",
+          "height": 270
+        }
+      ],
+      "url_rewrite_name": "drink",
+      "parent_category_id": 1,
+      "id": 1000001,
+      "categories": [],
+      "icon": [
+        {
+          "width": 180,
+          "value": "https://images.foody.vn/dcat/s180x180/image-dcat-0bb497b7-056b-4c1f-aeb3-d044a6a50e8c.png",
+          "height": 180
+        },
+        {
+          "width": 270,
+          "value": "https://images.foody.vn/dcat/s270x270/image-dcat-0bb497b7-056b-4c1f-aeb3-d044a6a50e8c.png",
+          "height": 270
+        }
+      ]
+    },
+    {
+      "code": "vegetarian",
+      "name": "Đồ chay",
+      "display_order": 4,
+      "tab_icon": [
+        {
+          "width": 180,
+          "value": "https://images.foody.vn/dcat/s180x180/foody-128-vegetable-636631843602565271.png",
+          "height": 180
+        },
+        {
+          "width": 270,
+          "value": "https://images.foody.vn/dcat/s270x270/foody-128-vegetable-636631843602565271.png",
+          "height": 270
+        }
+      ],
+      "url_rewrite_name": "vegetarian",
+      "parent_category_id": 1,
+      "id": 1000002,
+      "categories": [],
+      "icon": [
+        {
+          "width": 180,
+          "value": "https://images.foody.vn/dcat/s180x180/image-dcat-6150866b-c7ba-48e8-9bf9-2d542db05448.png",
+          "height": 180
+        },
+        {
+          "width": 270,
+          "value": "https://images.foody.vn/dcat/s270x270/image-dcat-6150866b-c7ba-48e8-9bf9-2d542db05448.png",
+          "height": 270
+        }
+      ]
+    },
+    {
+      "code": "cake-pastry",
+      "name": "Bánh kem",
+      "display_order": 5,
+      "tab_icon": [
+        {
+          "width": 180,
+          "value": "https://images.foody.vn/dcat/s180x180/foody-128-birthdaycake-636670156042763092.png",
+          "height": 180
+        },
+        {
+          "width": 270,
+          "value": "https://images.foody.vn/dcat/s270x270/foody-128-birthdaycake-636670156042763092.png",
+          "height": 270
+        }
+      ],
+      "url_rewrite_name": "cake-pastry",
+      "parent_category_id": 1,
+      "id": 1000003,
+      "categories": [],
+      "icon": [
+        {
+          "width": 180,
+          "value": "https://images.foody.vn/dcat/s180x180/image-dcat-8883d968-30e5-4fa7-8c86-f3804efc1be9.png",
+          "height": 180
+        },
+        {
+          "width": 270,
+          "value": "https://images.foody.vn/dcat/s270x270/image-dcat-8883d968-30e5-4fa7-8c86-f3804efc1be9.png",
+          "height": 270
+        }
+      ]
+    },
+    {
+      "code": "desserts",
+      "name": "Tráng miệng",
+      "display_order": 6,
+      "tab_icon": [
+        {
+          "width": 180,
+          "value": "https://images.foody.vn/dcat/s180x180/foody-22016233_10156651988754689_89179361_n-636419580119233712.png",
+          "height": 180
+        },
+        {
+          "width": 270,
+          "value": "https://images.foody.vn/dcat/s270x270/foody-22016233_10156651988754689_89179361_n-636419580119233712.png",
+          "height": 270
+        }
+      ],
+      "url_rewrite_name": "desserts",
+      "parent_category_id": 1,
+      "id": 1000004,
+      "categories": [],
+      "icon": [
+        {
+          "width": 180,
+          "value": "https://images.foody.vn/dcat/s180x180/image-dcat-c814c52b-b123-4858-8bd8-2a45006a4621.png",
+          "height": 180
+        },
+        {
+          "width": 270,
+          "value": "https://images.foody.vn/dcat/s270x270/image-dcat-c814c52b-b123-4858-8bd8-2a45006a4621.png",
+          "height": 270
+        }
+      ]
+    },
+    {
+      "code": "home-made",
+      "name": "Homemade",
+      "display_order": 7,
+      "tab_icon": [
+        {
+          "width": 180,
+          "value": "https://images.foody.vn/dcat/s180x180/foody-22014863_10156651988764689_12719170_n-636419580253721442.png",
+          "height": 180
+        },
+        {
+          "width": 270,
+          "value": "https://images.foody.vn/dcat/s270x270/foody-22014863_10156651988764689_12719170_n-636419580253721442.png",
+          "height": 270
+        }
+      ],
+      "url_rewrite_name": "home-made",
+      "parent_category_id": 1,
+      "id": 1000005,
+      "categories": [],
+      "icon": [
+        {
+          "width": 180,
+          "value": "https://images.foody.vn/dcat/s180x180/image-dcat-6bc14e39-46b5-4226-8e8e-a52dca105031.png",
+          "height": 180
+        },
+        {
+          "width": 270,
+          "value": "https://images.foody.vn/dcat/s270x270/image-dcat-6bc14e39-46b5-4226-8e8e-a52dca105031.png",
+          "height": 270
+        }
+      ]
+    },
+    {
+      "code": "streetfood",
+      "name": "Vỉa hè",
+      "display_order": 8,
+      "tab_icon": [
+        {
+          "width": 180,
+          "value": "https://images.foody.vn/dcat/s180x180/foody-22054230_10156652510379689_1774230285_n-636419741281681355.png",
+          "height": 180
+        },
+        {
+          "width": 270,
+          "value": "https://images.foody.vn/dcat/s270x270/foody-22054230_10156652510379689_1774230285_n-636419741281681355.png",
+          "height": 270
+        }
+      ],
+      "url_rewrite_name": "streetfood",
+      "parent_category_id": 1,
+      "id": 1000006,
+      "categories": [],
+      "icon": [
+        {
+          "width": 180,
+          "value": "https://images.foody.vn/dcat/s180x180/image-dcat-85ee9c2f-a4f7-4e4e-b87d-e24a68e942ff.png",
+          "height": 180
+        },
+        {
+          "width": 270,
+          "value": "https://images.foody.vn/dcat/s270x270/image-dcat-85ee9c2f-a4f7-4e4e-b87d-e24a68e942ff.png",
+          "height": 270
+        }
+      ]
+    },
+    {
+      "code": "pizza-pasta-burger",
+      "name": "Pizza/Burger",
+      "display_order": 9,
+      "tab_icon": [
+        {
+          "width": 180,
+          "value": "https://images.foody.vn/dcat/s180x180/foody-128-pizza%25255b1%25255d-636631206768116884.png",
+          "height": 180
+        },
+        {
+          "width": 270,
+          "value": "https://images.foody.vn/dcat/s270x270/foody-128-pizza%25255b1%25255d-636631206768116884.png",
+          "height": 270
+        }
+      ],
+      "url_rewrite_name": "pizza-pasta-burger",
+      "parent_category_id": 1,
+      "id": 1000007,
+      "categories": [],
+      "icon": [
+        {
+          "width": 180,
+          "value": "https://images.foody.vn/dcat/s180x180/image-dcat-fd9f2973-58dc-4ec3-bad5-67c80d3a5432.png",
+          "height": 180
+        },
+        {
+          "width": 270,
+          "value": "https://images.foody.vn/dcat/s270x270/image-dcat-fd9f2973-58dc-4ec3-bad5-67c80d3a5432.png",
+          "height": 270
+        }
+      ]
+    },
+    {
+      "code": "chicken",
+      "name": "Món gà",
+      "display_order": 10,
+      "tab_icon": [
+        {
+          "width": 180,
+          "value": "https://images.foody.vn/dcat/s180x180/foody-128-chicken%25255b1%25255d-636631206208425869.png",
+          "height": 180
+        },
+        {
+          "width": 270,
+          "value": "https://images.foody.vn/dcat/s270x270/foody-128-chicken%25255b1%25255d-636631206208425869.png",
+          "height": 270
+        }
+      ],
+      "url_rewrite_name": "chicken",
+      "parent_category_id": 1,
+      "id": 1000008,
+      "categories": [],
+      "icon": [
+        {
+          "width": 180,
+          "value": "https://images.foody.vn/dcat/s180x180/image-dcat-e3128d1e-078f-4874-a725-79aedb438370.png",
+          "height": 180
+        },
+        {
+          "width": 270,
+          "value": "https://images.foody.vn/dcat/s270x270/image-dcat-e3128d1e-078f-4874-a725-79aedb438370.png",
+          "height": 270
+        }
+      ]
+    },
+    {
+      "code": "hotpot",
+      "name": "Món lẩu",
+      "display_order": 11,
+      "tab_icon": [
+        {
+          "width": 180,
+          "value": "https://images.foody.vn/dcat/s180x180/foody-128-hotpot%25255b1%25255d-636631205342753069.png",
+          "height": 180
+        },
+        {
+          "width": 270,
+          "value": "https://images.foody.vn/dcat/s270x270/foody-128-hotpot%25255b1%25255d-636631205342753069.png",
+          "height": 270
+        }
+      ],
+      "url_rewrite_name": "hotpot",
+      "parent_category_id": 1,
+      "id": 1000009,
+      "categories": [],
+      "icon": [
+        {
+          "width": 180,
+          "value": "https://images.foody.vn/dcat/s180x180/image-dcat-72633019-6b41-41d2-8103-d9c52d6567fb.png",
+          "height": 180
+        },
+        {
+          "width": 270,
+          "value": "https://images.foody.vn/dcat/s270x270/image-dcat-72633019-6b41-41d2-8103-d9c52d6567fb.png",
+          "height": 270
+        }
+      ]
+    },
+    {
+      "code": "sushi",
+      "name": "Sushi",
+      "display_order": 12,
+      "tab_icon": [
+        {
+          "width": 180,
+          "value": "https://images.foody.vn/dcat/s180x180/foody-128-sushi%25255b1%25255d-636631207174485711.png",
+          "height": 180
+        },
+        {
+          "width": 270,
+          "value": "https://images.foody.vn/dcat/s270x270/foody-128-sushi%25255b1%25255d-636631207174485711.png",
+          "height": 270
+        }
+      ],
+      "url_rewrite_name": "sushi",
+      "parent_category_id": 1,
+      "id": 1000010,
+      "categories": [],
+      "icon": [
+        {
+          "width": 180,
+          "value": "https://images.foody.vn/dcat/s180x180/image-dcat-087f16f3-b615-4928-a489-5941bdaf9a32.png",
+          "height": 180
+        },
+        {
+          "width": 270,
+          "value": "https://images.foody.vn/dcat/s270x270/image-dcat-087f16f3-b615-4928-a489-5941bdaf9a32.png",
+          "height": 270
+        }
+      ]
+    },
+    {
+      "code": "soup-based",
+      "name": "Mì phở",
+      "display_order": 13,
+      "tab_icon": [
+        {
+          "width": 180,
+          "value": "https://images.foody.vn/dcat/s180x180/foody-128-noodles%25255b1%25255d-636631206572755034.png",
+          "height": 180
+        },
+        {
+          "width": 270,
+          "value": "https://images.foody.vn/dcat/s270x270/foody-128-noodles%25255b1%25255d-636631206572755034.png",
+          "height": 270
+        }
+      ],
+      "url_rewrite_name": "soup-based",
+      "parent_category_id": 1,
+      "id": 1000011,
+      "categories": [],
+      "icon": [
+        {
+          "width": 180,
+          "value": "https://images.foody.vn/dcat/s180x180/image-dcat-47152737-566d-473c-afe4-ca40b85a476c.png",
+          "height": 180
+        },
+        {
+          "width": 270,
+          "value": "https://images.foody.vn/dcat/s270x270/image-dcat-47152737-566d-473c-afe4-ca40b85a476c.png",
+          "height": 270
+        }
+      ]
+    },
+    {
+      "code": "rice",
+      "name": "Cơm hộp",
+      "display_order": 14,
+      "tab_icon": [
+        {
+          "width": 180,
+          "value": "https://images.foody.vn/dcat/s180x180/foody-128-bento%2525255b1%2525255d-636631204863197393.png",
+          "height": 180
+        },
+        {
+          "width": 270,
+          "value": "https://images.foody.vn/dcat/s270x270/foody-128-bento%2525255b1%2525255d-636631204863197393.png",
+          "height": 270
+        }
+      ],
+      "url_rewrite_name": "rice",
+      "parent_category_id": 1,
+      "id": 1000012,
+      "categories": [],
+      "icon": [
+        {
+          "width": 180,
+          "value": "https://images.foody.vn/dcat/s180x180/image-dcat-7514259e-9f2e-473e-b329-543c6ec4b430.png",
+          "height": 180
+        },
+        {
+          "width": 270,
+          "value": "https://images.foody.vn/dcat/s270x270/image-dcat-7514259e-9f2e-473e-b329-543c6ec4b430.png",
+          "height": 270
+        }
+      ]
+    }
+  ]
+}

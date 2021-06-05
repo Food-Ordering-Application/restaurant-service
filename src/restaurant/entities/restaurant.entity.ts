@@ -1,5 +1,4 @@
 import { Menu } from '../../menu/entities/menu.entity';
-import { ToppingGroup } from '../../menu/entities/topping-group.entity';
 import {
   Column,
   CreateDateColumn,
@@ -10,8 +9,7 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Category } from './category.entity';
-import { OpenHour } from './openhours.entity';
+import { Category, OpenHour } from '.';
 
 @Entity()
 export class Restaurant {
@@ -73,9 +71,8 @@ export class Restaurant {
   })
   openHours: OpenHour[];
 
-  @OneToMany(() => Category, (category) => category.restaurant, {
+  @ManyToMany(() => Category, (category) => category.restaurant, {
     cascade: ['update', 'insert'],
-    eager: true,
   })
   @JoinTable()
   categories: Category[];
