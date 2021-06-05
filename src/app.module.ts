@@ -6,6 +6,7 @@ import { AppService } from './app.service';
 import { DatabaseModule } from './database/database.module';
 import { RestaurantModule } from './restaurant/restaurant.module';
 import { MenuModule } from './menu/menu.module';
+import { GeoModule } from './geo/geo.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { MenuModule } from './menu/menu.module';
     DatabaseModule,
     RestaurantModule,
     MenuModule,
+    GeoModule,
   ],
   controllers: [AppController],
   providers: [AppService],
