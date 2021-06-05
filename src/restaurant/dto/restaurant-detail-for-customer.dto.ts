@@ -11,12 +11,12 @@ export class RestaurantDetailForCustomerDto {
   numRate: number;
   rating: number;
   address: string;
-  city: string;
-  area: string;
   geo: {
     latitude: number;
     longitude: number;
   };
+  city?: string;
+  area?: string;
   openHours?: OpenHourDto[];
   categories?: CategoryDto[];
   merchantIdInPayPal: string;
@@ -45,13 +45,17 @@ export class RestaurantDetailForCustomerDto {
       numRate,
       rating,
       address,
-      city,
-      area,
       phone,
       geo: {
         latitude: geom.coordinates[1],
         longitude: geom.coordinates[0],
       },
+      ...(city && {
+        city: city.name,
+      }),
+      ...(area && {
+        area: area.name,
+      }),
       ...(openHours && {
         openHours: openHours.map(OpenHourDto.EntityToDto),
       }),
