@@ -20,5 +20,5 @@ export class RestaurantDataDto {
     toMinute: number;
     day: DaysOfWeek;
   }[];
-  categories: CategoryType[];
+  categoryIds: number[];
 }

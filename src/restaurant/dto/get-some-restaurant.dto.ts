@@ -3,5 +3,5 @@ export class GetSomeRestaurantDto {
   size: number;
   area: string;
   search?: string;
-  category?: string;
+  categoryIds?: number[];
 }
