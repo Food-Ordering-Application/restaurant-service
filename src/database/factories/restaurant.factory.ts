@@ -10,7 +10,7 @@ interface Context {
 }
 
 define(Restaurant, (faker: typeof Faker, context: Context) => {
-  const { restaurantId, categories } = context;
+  const { restaurantId } = context;
   let id;
   if (!restaurantId) {
     id = faker.random.uuid();
@@ -58,7 +58,7 @@ define(Restaurant, (faker: typeof Faker, context: Context) => {
   restaurant.isVerified = isVerified;
 
   const newCategory = new Category();
-  newCategory.type = _.sample(Object.values(CategoryType)) as CategoryType;
+  newCategory.name = _.sample(Object.values(CategoryType)) as CategoryType;
 
   restaurant.categories = [newCategory];
   return restaurant;

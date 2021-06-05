@@ -82,13 +82,30 @@ export class RestaurantService {
       coverImageUrl,
       verifiedImageUrl,
       videoUrl = '',
-      categories: categoriesData,
+      categoryIds,
       openHours: openHoursData,
     } = createRestaurantDto;
 
-    const categories: Category[] = categoriesData.map((category) =>
-      this.categoryRepository.create({ type: category }),
+    if (!categoryIds.length) {
+      return {
+        status: HttpStatus.BAD_REQUEST,
+        message: 'Restaurant must belong to at least 1 category',
+        data: null,
+      };
+    }
+
+    const categories: Category[] = await this.categoryRepository.findByIds(
+      categoryIds,
     );
+
+    if (categories.length != categoryIds.length) {
+      return {
+        status: HttpStatus.BAD_REQUEST,
+        message: 'One of category Ids does not exists',
+        data: null,
+      };
+    }
+
     const openHours: OpenHour[] = openHoursData.map(
       ({ fromHour, fromMinute, toHour, toMinute, day }) => {
         return this.openHourRepository.create({
@@ -152,8 +169,10 @@ export class RestaurantService {
   async getSomeRestaurant(
     getSomeRestaurantDto: GetSomeRestaurantDto,
   ): Promise<IRestaurantsResponse> {
-    const { area, page, size = 10, category, search } = getSomeRestaurantDto;
-    const pageSize = 0;
+    const { area, page, size = 10, search, categoryIds } = getSomeRestaurantDto;
+    const hasCategoryFilter =
+      categoryIds && Array.isArray(categoryIds) && categoryIds.length;
+
     let queryBuilder: SelectQueryBuilder<Restaurant> = this.restaurantRepository
       .createQueryBuilder('res')
       .select([
@@ -164,8 +183,18 @@ export class RestaurantService {
         'res.rating',
         'res.numRate',
         'res.merchantIdInPayPal',
-      ])
-      .leftJoinAndSelect('res.categories', 'categories')
+      ]);
+
+    queryBuilder = hasCategoryFilter
+      ? queryBuilder.leftJoinAndSelect(
+          'res.categories',
+          'categories',
+          'categories.id IN (:...categoryIds)',
+          { categoryIds },
+        )
+      : queryBuilder.leftJoinAndSelect('res.categories', 'categories');
+
+    queryBuilder = queryBuilder
       .where('res.area = :area', {
         area: area,
       })
@@ -178,11 +207,6 @@ export class RestaurantService {
       .andWhere('res.isVerified = :verified', {
         verified: true,
       });
-    if (category) {
-      queryBuilder = queryBuilder.andWhere('categories.type = :categoryType', {
-        categoryType: category,
-      });
-    }
 
     if (search) {
       queryBuilder = queryBuilder.andWhere('res.name iLIKE :restaurantName', {
