@@ -1,4 +1,4 @@
-import { OpenHourDto } from '.';
+import { OpenHourDto, CategoryDto } from '.';
 import { Restaurant } from '../entities';
 import { CategoryType } from '../enums';
 
@@ -18,7 +18,7 @@ export class RestaurantDetailForCustomerDto {
     longitude: number;
   };
   openHours?: OpenHourDto[];
-  categories?: CategoryType[];
+  categories?: CategoryDto[];
   merchantIdInPayPal: string;
   static EntityToDTO(restaurant: Restaurant): RestaurantDetailForCustomerDto {
     const {
@@ -53,12 +53,10 @@ export class RestaurantDetailForCustomerDto {
         longitude: geom.coordinates[0],
       },
       ...(openHours && {
-        openHours: openHours.map((openHour) =>
-          OpenHourDto.EntityToDto(openHour),
-        ),
+        openHours: openHours.map(OpenHourDto.EntityToDto),
       }),
       ...(categories && {
-        categories: categories.map(({ type }) => type as CategoryType),
+        categories: categories.map(CategoryDto.EntityToDto),
       }),
       merchantIdInPayPal,
     };

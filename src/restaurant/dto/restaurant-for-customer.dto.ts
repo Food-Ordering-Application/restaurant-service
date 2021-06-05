@@ -1,3 +1,4 @@
+import { CategoryDto } from '.';
 import { Restaurant } from '../entities';
 import { CategoryType } from '../enums';
 
@@ -9,7 +10,7 @@ export class RestaurantForCustomerDto {
   numRate: number;
   rating: number;
   merchantIdInPayPal: string;
-  categories: CategoryType[];
+  categories: CategoryDto[];
   static EntityToDTO(restaurant: Restaurant): RestaurantForCustomerDto {
     const {
       id,
@@ -28,7 +29,7 @@ export class RestaurantForCustomerDto {
       numRate,
       rating,
       address,
-      categories: categories.map(({ type }) => type as CategoryType),
+      categories: categories.map(CategoryDto.EntityToDto),
       merchantIdInPayPal,
     };
   }

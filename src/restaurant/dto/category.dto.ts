@@ -2,9 +2,11 @@ import { Category } from './../entities/';
 
 export class CategoryDto {
   id: string;
-  type: string;
+  name: string;
+  iconUrl: string;
+  displayOrder: number;
   static EntityToDto(category: Category): CategoryDto {
-    const { id, type } = category;
-    return { id, type };
+    const { id, name, iconUrl, displayOrder } = category;
+    return { id, name, iconUrl, displayOrder };
   }
 }
