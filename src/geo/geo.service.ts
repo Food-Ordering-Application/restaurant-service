@@ -2,13 +2,24 @@ import { Injectable } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { Area, City } from './entities';
 
 @Injectable()
 export class GeoService {
-  // constructor(
-  //   @InjectRepository(Restaurant)
-  //   private restaurantRepository: Repository<Restaurant>,
-  // ) {}
+  constructor(
+    @InjectRepository(Area)
+    private areaRepository: Repository<Area>,
+    @InjectRepository(City)
+    private cityRepository: Repository<City>,
+  ) {}
+
+  async validCityAndArea(cityId: number, areaId: number): Promise<boolean> {
+    const count = await this.areaRepository.count({
+      id: areaId,
+      cityId: cityId,
+    });
+    return count !== 0;
+  }
   // async getRestaurantAddressInfo(
   //   getRestaurantAddressInfoDto: GetRestaurantAddressInfoDto,
   // ): Promise<IGetRestaurantAddressResponse> {

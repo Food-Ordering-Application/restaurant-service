@@ -1,3 +1,4 @@
+import { GeoModule } from './../geo/geo.module';
 import { Category } from './entities/category.entity';
 import { OpenHour } from './entities/openhours.entity';
 import { Module } from '@nestjs/common';
@@ -36,6 +37,7 @@ import { MenuItem, MenuItemTopping } from '../menu/entities';
         }),
       },
     ]),
+    GeoModule,
   ],
   controllers: [RestaurantController],
   providers: [RestaurantService],
