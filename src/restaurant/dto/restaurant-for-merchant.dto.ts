@@ -10,12 +10,12 @@ export class RestaurantForMerchantDto {
   videoUrl: string;
   verifiedImageUrl: string;
   address: string;
-  city: string;
-  area: string;
   geo: {
     latitude: number;
     longitude: number;
   };
+  city?: string;
+  area?: string;
   openHours?: OpenHourDto[];
   categories?: CategoryDto[];
   isActive: boolean;
@@ -48,13 +48,17 @@ export class RestaurantForMerchantDto {
       videoUrl,
       verifiedImageUrl,
       address,
-      city,
-      area,
       phone,
       geo: {
         latitude: geom.coordinates[1],
         longitude: geom.coordinates[0],
       },
+      ...(city && {
+        city: city.name,
+      }),
+      ...(area && {
+        area: area.name,
+      }),
       ...(openHours && {
         openHours: openHours.map((openHour) =>
           OpenHourDto.EntityToDto(openHour),
