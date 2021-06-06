@@ -4,6 +4,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  Index,
   JoinTable,
   ManyToMany,
   ManyToOne,
@@ -52,6 +53,7 @@ export class Restaurant {
     spatialFeatureType: 'Point',
     srid: 4326,
   })
+  @Index({ spatial: true })
   geom: { type: string; coordinates: number[] };
 
   @Column({ default: true })

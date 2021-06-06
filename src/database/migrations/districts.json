@@ -1,0 +1,4888 @@
+[
+  {
+    "id": "66",
+    "name": "Cờ Đỏ",
+    "latitude": "10.0938",
+    "longitude": "105.4292",
+    "isDefault": false
+  },
+  {
+    "id": "67",
+    "name": "Phong Điền",
+    "latitude": "9.9975",
+    "longitude": "105.6673",
+    "isDefault": false
+  },
+  {
+    "id": "68",
+    "name": "Thới Lai",
+    "latitude": "10.0652",
+    "longitude": "105.5586",
+    "isDefault": false
+  },
+  {
+    "id": "69",
+    "name": "Vĩnh Thạnh",
+    "latitude": "10.2226",
+    "longitude": "105.3984",
+    "isDefault": false
+  },
+  {
+    "id": "70",
+    "name": "Bình Thủy",
+    "latitude": "10.0743",
+    "longitude": "105.7397",
+    "isDefault": false
+  },
+  {
+    "id": "71",
+    "name": "Cái Răng",
+    "latitude": "10.0009",
+    "longitude": "105.7510",
+    "isDefault": false
+  },
+  {
+    "id": "72",
+    "name": "Ninh Kiều",
+    "latitude": 10.11667,
+    "longitude": 105.5,
+    "isDefault": true
+  },
+  {
+    "id": "73",
+    "name": "Ô Môn",
+    "latitude": "10.1097",
+    "longitude": "105.6232",
+    "isDefault": false
+  },
+  {
+    "id": "74",
+    "name": "Thốt Nốt",
+    "latitude": "10.2721",
+    "longitude": "105.5338",
+    "isDefault": false
+  },
+  {
+    "id": "76",
+    "name": "Hòa Vang",
+    "latitude": "15.9876",
+    "longitude": "108.1389",
+    "isDefault": false
+  },
+  {
+    "id": "77",
+    "name": "Hoàng Sa",
+    "latitude": 16.08333,
+    "longitude": 108.08333,
+    "isDefault": true
+  },
+  {
+    "id": "78",
+    "name": "Cẩm Lệ",
+    "latitude": "16.0177",
+    "longitude": "108.2038",
+    "isDefault": false
+  },
+  {
+    "id": "79",
+    "name": "Hải Châu",
+    "latitude": 16.08333,
+    "longitude": 108.08333,
+    "isDefault": true
+  },
+  {
+    "id": "80",
+    "name": "Liên Chiểu",
+    "latitude": "16.0727",
+    "longitude": "108.1581",
+    "isDefault": false
+  },
+  {
+    "id": "81",
+    "name": "Ngũ Hành Sơn",
+    "latitude": "16.0162",
+    "longitude": "108.2534",
+    "isDefault": false
+  },
+  {
+    "id": "82",
+    "name": "Sơn Trà",
+    "latitude": "16.0607",
+    "longitude": "108.2326",
+    "isDefault": false
+  },
+  {
+    "id": "83",
+    "name": "Thanh Khê",
+    "latitude": "16.0706",
+    "longitude": "108.1910",
+    "isDefault": false
+  },
+  {
+    "id": "85",
+    "name": "Ba Vì",
+    "latitude": 21,
+    "longitude": 105.75,
+    "isDefault": true
+  },
+  {
+    "id": "86",
+    "name": "Chương Mỹ",
+    "latitude": 21,
+    "longitude": 105.75,
+    "isDefault": true
+  },
+  {
+    "id": "87",
+    "name": "Đan Phượng",
+    "latitude": 21,
+    "longitude": 105.75,
+    "isDefault": true
+  },
+  {
+    "id": "88",
+    "name": "Đông Anh",
+    "latitude": "21.1396",
+    "longitude": "105.8493",
+    "isDefault": false
+  },
+  {
+    "id": "89",
+    "name": "Gia Lâm",
+    "latitude": "20.3277",
+    "longitude": "106.0121",
+    "isDefault": false
+  },
+  {
+    "id": "90",
+    "name": "Hoài Đức",
+    "latitude": 21,
+    "longitude": 105.75,
+    "isDefault": true
+  },
+  {
+    "id": "91",
+    "name": "Mê Linh",
+    "latitude": "21.1831",
+    "longitude": "105.7204",
+    "isDefault": false
+  },
+  {
+    "id": "92",
+    "name": "Mỹ Đức",
+    "latitude": 21,
+    "longitude": 105.75,
+    "isDefault": true
+  },
+  {
+    "id": "93",
+    "name": "Phú Xuyên",
+    "latitude": "20.7455",
+    "longitude": "105.9136",
+    "isDefault": false
+  },
+  {
+    "id": "94",
+    "name": "Phúc Thọ",
+    "latitude": "21.1034",
+    "longitude": "105.5455",
+    "isDefault": false
+  },
+  {
+    "id": "95",
+    "name": "Quốc Oai",
+    "latitude": "20.9902",
+    "longitude": "105.6409",
+    "isDefault": false
+  },
+  {
+    "id": "96",
+    "name": "Sóc Sơn",
+    "latitude": "21.2578",
+    "longitude": "105.8489",
+    "isDefault": false
+  },
+  {
+    "id": "97",
+    "name": "Thạch Thất",
+    "latitude": 21,
+    "longitude": 105.75,
+    "isDefault": true
+  },
+  {
+    "id": "98",
+    "name": "Thanh Oai",
+    "latitude": 21,
+    "longitude": 105.75,
+    "isDefault": true
+  },
+  {
+    "id": "99",
+    "name": "Thanh Trì",
+    "latitude": 21,
+    "longitude": 105.75,
+    "isDefault": true
+  },
+  {
+    "id": "100",
+    "name": "Thường Tín",
+    "latitude": "20.8687",
+    "longitude": "105.8612",
+    "isDefault": false
+  },
+  {
+    "id": "101",
+    "name": "Từ Liêm",
+    "latitude": 21,
+    "longitude": 105.75,
+    "isDefault": true
+  },
+  {
+    "id": "102",
+    "name": "ứng Hòa",
+    "latitude": 21,
+    "longitude": 105.75,
+    "isDefault": true
+  },
+  {
+    "id": "103",
+    "name": "Ba Đình",
+    "latitude": "21.0341",
+    "longitude": "105.8145",
+    "isDefault": false
+  },
+  {
+    "id": "104",
+    "name": "Cầu Giấy",
+    "latitude": "21.0323",
+    "longitude": "105.8007",
+    "isDefault": false
+  },
+  {
+    "id": "105",
+    "name": "Đống Đa",
+    "latitude": "21.0201",
+    "longitude": "105.8310",
+    "isDefault": false
+  },
+  {
+    "id": "106",
+    "name": "Hà Đông",
+    "latitude": "20.9714",
+    "longitude": "105.7788",
+    "isDefault": false
+  },
+  {
+    "id": "107",
+    "name": "Hai Bà Trưng",
+    "latitude": "21.0134",
+    "longitude": "105.8477",
+    "isDefault": false
+  },
+  {
+    "id": "108",
+    "name": "Hoàn Kiếm",
+    "latitude": "21.0286",
+    "longitude": "105.8506",
+    "isDefault": false
+  },
+  {
+    "id": "109",
+    "name": "Hoàng Mai",
+    "latitude": 21,
+    "longitude": 105.75,
+    "isDefault": true
+  },
+  {
+    "id": "110",
+    "name": "Long Biên",
+    "latitude": 21,
+    "longitude": 105.75,
+    "isDefault": true
+  },
+  {
+    "id": "111",
+    "name": "Tây Hồ",
+    "latitude": "21.0689",
+    "longitude": "105.8105",
+    "isDefault": false
+  },
+  {
+    "id": "112",
+    "name": "Thanh Xuân",
+    "latitude": "20.9947",
+    "longitude": "105.7998",
+    "isDefault": false
+  },
+  {
+    "id": "113",
+    "name": "Sơn Tây",
+    "latitude": "21.1382",
+    "longitude": "105.5050",
+    "isDefault": false
+  },
+  {
+    "id": "115",
+    "name": "An Dương",
+    "latitude": "20.8638",
+    "longitude": "106.6133",
+    "isDefault": false
+  },
+  {
+    "id": "116",
+    "name": "An Lão",
+    "latitude": "20.8229",
+    "longitude": "106.5558",
+    "isDefault": false
+  },
+  {
+    "id": "117",
+    "name": "Bạch Long Vĩ",
+    "latitude": 20.8,
+    "longitude": 106.66667,
+    "isDefault": true
+  },
+  {
+    "id": "118",
+    "name": "Cát Hải",
+    "latitude": 20.8,
+    "longitude": 106.66667,
+    "isDefault": true
+  },
+  {
+    "id": "119",
+    "name": "Kiến Thụy",
+    "latitude": 20.8,
+    "longitude": 106.66667,
+    "isDefault": true
+  },
+  {
+    "id": "120",
+    "name": "Thủy Nguyên",
+    "latitude": 20.8,
+    "longitude": 106.66667,
+    "isDefault": true
+  },
+  {
+    "id": "121",
+    "name": "Tiên Lãng",
+    "latitude": "20.7246",
+    "longitude": "106.5539",
+    "isDefault": false
+  },
+  {
+    "id": "122",
+    "name": "Vĩnh Bảo",
+    "latitude": "20.6908",
+    "longitude": "106.4806",
+    "isDefault": false
+  },
+  {
+    "id": "123",
+    "name": "Đồ Sơn",
+    "latitude": 20.8,
+    "longitude": 106.66667,
+    "isDefault": true
+  },
+  {
+    "id": "124",
+    "name": "Dương Kinh",
+    "latitude": 20.8,
+    "longitude": 106.66667,
+    "isDefault": true
+  },
+  {
+    "id": "125",
+    "name": "Hải An",
+    "latitude": 20.8,
+    "longitude": 106.66667,
+    "isDefault": true
+  },
+  {
+    "id": "126",
+    "name": "Hồng Bàng",
+    "latitude": 20.8,
+    "longitude": 106.66667,
+    "isDefault": true
+  },
+  {
+    "id": "127",
+    "name": "Kiến An",
+    "latitude": 20.8,
+    "longitude": 106.66667,
+    "isDefault": true
+  },
+  {
+    "id": "128",
+    "name": "Lê Chân",
+    "latitude": 20.8,
+    "longitude": 106.66667,
+    "isDefault": true
+  },
+  {
+    "id": "129",
+    "name": "Ngô Quyền",
+    "latitude": 20.8,
+    "longitude": 106.66667,
+    "isDefault": true
+  },
+  {
+    "id": "131",
+    "name": "Bình Chánh",
+    "latitude": 10.82327,
+    "longitude": 106.62978,
+    "isDefault": true
+  },
+  {
+    "id": "132",
+    "name": "Cần Giờ",
+    "latitude": "10.4111",
+    "longitude": "106.9547",
+    "isDefault": false
+  },
+  {
+    "id": "133",
+    "name": "Củ Chi",
+    "latitude": "10.9733",
+    "longitude": "106.4932",
+    "isDefault": false
+  },
+  {
+    "id": "134",
+    "name": "Hóc Môn",
+    "latitude": "10.8891",
+    "longitude": "106.5953",
+    "isDefault": false
+  },
+  {
+    "id": "135",
+    "name": "Nhà Bè",
+    "latitude": "10.6967",
+    "longitude": "106.7403",
+    "isDefault": false
+  },
+  {
+    "id": "136",
+    "name": "Quận 1",
+    "latitude": "10.7807",
+    "longitude": "106.6994",
+    "isDefault": false
+  },
+  {
+    "id": "137",
+    "name": "Quận 10",
+    "latitude": 10.82327,
+    "longitude": 106.62978,
+    "isDefault": true
+  },
+  {
+    "id": "138",
+    "name": "Quận 11",
+    "latitude": 10.82327,
+    "longitude": 106.62978,
+    "isDefault": true
+  },
+  {
+    "id": "139",
+    "name": "Quận 12",
+    "latitude": 10.82327,
+    "longitude": 106.62978,
+    "isDefault": true
+  },
+  {
+    "id": "140",
+    "name": "Quận 2",
+    "latitude": "10.7916",
+    "longitude": "106.7495",
+    "isDefault": false
+  },
+  {
+    "id": "141",
+    "name": "Quận 3",
+    "latitude": "10.7749",
+    "longitude": "106.6863",
+    "isDefault": false
+  },
+  {
+    "id": "142",
+    "name": "Quận 4",
+    "latitude": "10.7668",
+    "longitude": "106.7057",
+    "isDefault": false
+  },
+  {
+    "id": "143",
+    "name": "Quận 5",
+    "latitude": "10.7557",
+    "longitude": "106.6675",
+    "isDefault": false
+  },
+  {
+    "id": "144",
+    "name": "Quận 6",
+    "latitude": "10.7468",
+    "longitude": "106.6490",
+    "isDefault": false
+  },
+  {
+    "id": "145",
+    "name": "Quận 7",
+    "latitude": "10.7118",
+    "longitude": "106.7364",
+    "isDefault": false
+  },
+  {
+    "id": "146",
+    "name": "Quận 8",
+    "latitude": 10.82327,
+    "longitude": 106.62978,
+    "isDefault": true
+  },
+  {
+    "id": "147",
+    "name": "Quận 9",
+    "latitude": "10.8397",
+    "longitude": "106.7709",
+    "isDefault": false
+  },
+  {
+    "id": "148",
+    "name": "Bình Tân",
+    "latitude": 10.82327,
+    "longitude": 106.62978,
+    "isDefault": true
+  },
+  {
+    "id": "149",
+    "name": "Bình Thạnh",
+    "latitude": "10.8033",
+    "longitude": "106.6967",
+    "isDefault": false
+  },
+  {
+    "id": "150",
+    "name": "Gò Vấp",
+    "latitude": 10.82327,
+    "longitude": 106.62978,
+    "isDefault": true
+  },
+  {
+    "id": "151",
+    "name": "Phú Nhuận",
+    "latitude": "10.7948",
+    "longitude": "106.6763",
+    "isDefault": false
+  },
+  {
+    "id": "152",
+    "name": "Tân Bình",
+    "latitude": 10.82327,
+    "longitude": 106.62978,
+    "isDefault": true
+  },
+  {
+    "id": "153",
+    "name": "Tân Phú",
+    "latitude": "10.7838",
+    "longitude": "106.6370",
+    "isDefault": false
+  },
+  {
+    "id": "154",
+    "name": "Thủ Đức",
+    "latitude": "10.8486",
+    "longitude": "106.7721",
+    "isDefault": false
+  },
+  {
+    "id": "155",
+    "name": "An Phú",
+    "latitude": "10.8159",
+    "longitude": "105.0904",
+    "isDefault": false
+  },
+  {
+    "id": "156",
+    "name": "Châu Phú",
+    "latitude": 10.5,
+    "longitude": 105.16667,
+    "isDefault": true
+  },
+  {
+    "id": "157",
+    "name": "Châu Thành",
+    "latitude": "10.3012",
+    "longitude": "106.3570",
+    "isDefault": false
+  },
+  {
+    "id": "158",
+    "name": "Chợ Mới",
+    "latitude": "10.5512",
+    "longitude": "105.4044",
+    "isDefault": false
+  },
+  {
+    "id": "159",
+    "name": "Phú Tân",
+    "latitude": 10.5,
+    "longitude": 105.16667,
+    "isDefault": true
+  },
+  {
+    "id": "160",
+    "name": "Thoại Sơn",
+    "latitude": 10.5,
+    "longitude": 105.16667,
+    "isDefault": true
+  },
+  {
+    "id": "161",
+    "name": "Tịnh Biên",
+    "latitude": 10.5,
+    "longitude": 105.16667,
+    "isDefault": true
+  },
+  {
+    "id": "162",
+    "name": "Tri Tôn",
+    "latitude": "10.4202",
+    "longitude": "105.0007",
+    "isDefault": false
+  },
+  {
+    "id": "163",
+    "name": "Long Xuyên",
+    "latitude": "10.3686",
+    "longitude": "105.4234",
+    "isDefault": false
+  },
+  {
+    "id": "164",
+    "name": "Châu Đốc",
+    "latitude": "10.7000",
+    "longitude": "105.1167",
+    "isDefault": false
+  },
+  {
+    "id": "165",
+    "name": "Tân Châu",
+    "latitude": "10.7983",
+    "longitude": "105.2389",
+    "isDefault": false
+  },
+  {
+    "id": "166",
+    "name": "Châu Đức",
+    "latitude": 10.58333,
+    "longitude": 107.25,
+    "isDefault": true
+  },
+  {
+    "id": "167",
+    "name": "Côn Đảo",
+    "latitude": "8.6417",
+    "longitude": "106.6917",
+    "isDefault": false
+  },
+  {
+    "id": "168",
+    "name": "Đất Đỏ",
+    "latitude": "10.4909",
+    "longitude": "107.2701",
+    "isDefault": false
+  },
+  {
+    "id": "169",
+    "name": "Long Điền",
+    "latitude": "10.4856",
+    "longitude": "107.2123",
+    "isDefault": false
+  },
+  {
+    "id": "170",
+    "name": "Tân Thành",
+    "latitude": 10.58333,
+    "longitude": 107.25,
+    "isDefault": true
+  },
+  {
+    "id": "171",
+    "name": "Xuyên Mộc",
+    "latitude": 10.58333,
+    "longitude": 107.25,
+    "isDefault": true
+  },
+  {
+    "id": "172",
+    "name": "Vũng Tàu",
+    "latitude": "10.4042",
+    "longitude": "107.1417",
+    "isDefault": false
+  },
+  {
+    "id": "173",
+    "name": "Bà Rịa",
+    "latitude": 10.58333,
+    "longitude": 107.25,
+    "isDefault": true
+  },
+  {
+    "id": "174",
+    "name": "Hiệp Hòa",
+    "latitude": 21.33333,
+    "longitude": 106.43333,
+    "isDefault": true
+  },
+  {
+    "id": "175",
+    "name": "Lạng Giang",
+    "latitude": 21.33333,
+    "longitude": 106.43333,
+    "isDefault": true
+  },
+  {
+    "id": "176",
+    "name": "Lục Nam",
+    "latitude": 21.33333,
+    "longitude": 106.43333,
+    "isDefault": true
+  },
+  {
+    "id": "177",
+    "name": "Lục Ngạn",
+    "latitude": 21.33333,
+    "longitude": 106.43333,
+    "isDefault": true
+  },
+  {
+    "id": "178",
+    "name": "Sơn Động",
+    "latitude": 21.33333,
+    "longitude": 106.43333,
+    "isDefault": true
+  },
+  {
+    "id": "179",
+    "name": "Tân Yên",
+    "latitude": "22.0655",
+    "longitude": "105.0345",
+    "isDefault": false
+  },
+  {
+    "id": "180",
+    "name": "Việt Yên",
+    "latitude": 21.33333,
+    "longitude": 106.43333,
+    "isDefault": true
+  },
+  {
+    "id": "181",
+    "name": "Yên Dũng",
+    "latitude": 21.33333,
+    "longitude": 106.43333,
+    "isDefault": true
+  },
+  {
+    "id": "182",
+    "name": "Yên Thế",
+    "latitude": "22.1107",
+    "longitude": "104.7675",
+    "isDefault": false
+  },
+  {
+    "id": "183",
+    "name": "Bắc Giang",
+    "latitude": "21.2731",
+    "longitude": "106.1947",
+    "isDefault": false
+  },
+  {
+    "id": "184",
+    "name": "Ba Bể",
+    "latitude": 22.25,
+    "longitude": 105.83333,
+    "isDefault": true
+  },
+  {
+    "id": "185",
+    "name": "Bạch Thông",
+    "latitude": 22.25,
+    "longitude": 105.83333,
+    "isDefault": true
+  },
+  {
+    "id": "186",
+    "name": "Chợ Đồn",
+    "latitude": 22.25,
+    "longitude": 105.83333,
+    "isDefault": true
+  },
+  {
+    "id": "187",
+    "name": "Chợ Mới",
+    "latitude": 22.25,
+    "longitude": 105.83333,
+    "isDefault": true
+  },
+  {
+    "id": "188",
+    "name": "Na Rì",
+    "latitude": 22.25,
+    "longitude": 105.83333,
+    "isDefault": true
+  },
+  {
+    "id": "189",
+    "name": "Ngân Sơn",
+    "latitude": 22.25,
+    "longitude": 105.83333,
+    "isDefault": true
+  },
+  {
+    "id": "190",
+    "name": "Pác Nặm",
+    "latitude": 22.25,
+    "longitude": 105.83333,
+    "isDefault": true
+  },
+  {
+    "id": "191",
+    "name": "Bắc Kạn",
+    "latitude": "22.1333",
+    "longitude": "105.8333",
+    "isDefault": false
+  },
+  {
+    "id": "192",
+    "name": "Đông Hải",
+    "latitude": 9.3,
+    "longitude": 105.5,
+    "isDefault": true
+  },
+  {
+    "id": "193",
+    "name": "Giá Rai",
+    "latitude": "9.2379",
+    "longitude": "105.4552",
+    "isDefault": false
+  },
+  {
+    "id": "194",
+    "name": "Hòa Bình",
+    "latitude": "20.8172",
+    "longitude": "105.3375",
+    "isDefault": false
+  },
+  {
+    "id": "195",
+    "name": "Hồng Dân",
+    "latitude": 9.3,
+    "longitude": 105.5,
+    "isDefault": true
+  },
+  {
+    "id": "196",
+    "name": "Phước Long",
+    "latitude": "9.4375",
+    "longitude": "105.4622",
+    "isDefault": false
+  },
+  {
+    "id": "197",
+    "name": "Vĩnh Lợi",
+    "latitude": 9.3,
+    "longitude": 105.5,
+    "isDefault": true
+  },
+  {
+    "id": "198",
+    "name": "Bạc Liêu",
+    "latitude": "9.2833",
+    "longitude": "105.7167",
+    "isDefault": false
+  },
+  {
+    "id": "199",
+    "name": "Gia Bình",
+    "latitude": "21.0594",
+    "longitude": "106.1747",
+    "isDefault": false
+  },
+  {
+    "id": "200",
+    "name": "Lương Tài",
+    "latitude": 21.1,
+    "longitude": 106.1,
+    "isDefault": true
+  },
+  {
+    "id": "201",
+    "name": "Quế Võ",
+    "latitude": "20.5806",
+    "longitude": "105.8727",
+    "isDefault": false
+  },
+  {
+    "id": "202",
+    "name": "Thuận Thành",
+    "latitude": 21.1,
+    "longitude": 106.1,
+    "isDefault": true
+  },
+  {
+    "id": "203",
+    "name": "Tiên Du",
+    "latitude": 21.1,
+    "longitude": 106.1,
+    "isDefault": true
+  },
+  {
+    "id": "204",
+    "name": "Yên Phong",
+    "latitude": 21.1,
+    "longitude": 106.1,
+    "isDefault": true
+  },
+  {
+    "id": "205",
+    "name": "Bắc Ninh",
+    "latitude": "21.1861",
+    "longitude": "106.0763",
+    "isDefault": false
+  },
+  {
+    "id": "206",
+    "name": "Từ Sơn",
+    "latitude": 21.1,
+    "longitude": 106.1,
+    "isDefault": true
+  },
+  {
+    "id": "207",
+    "name": "Ba Tri",
+    "latitude": "10.0443",
+    "longitude": "106.5902",
+    "isDefault": false
+  },
+  {
+    "id": "208",
+    "name": "Bình Đại",
+    "latitude": "10.1896",
+    "longitude": "106.6915",
+    "isDefault": false
+  },
+  {
+    "id": "209",
+    "name": "Châu Thành",
+    "latitude": 10.16667,
+    "longitude": 106.5,
+    "isDefault": true
+  },
+  {
+    "id": "210",
+    "name": "Chợ Lách",
+    "latitude": "10.2603",
+    "longitude": "106.1189",
+    "isDefault": false
+  },
+  {
+    "id": "211",
+    "name": "Giồng Trôm",
+    "latitude": "10.1502",
+    "longitude": "106.5061",
+    "isDefault": false
+  },
+  {
+    "id": "212",
+    "name": "Mỏ Cày Bắc",
+    "latitude": "10.1331",
+    "longitude": "106.3352",
+    "isDefault": false
+  },
+  {
+    "id": "213",
+    "name": "Mỏ Cày Nam",
+    "latitude": 10.16667,
+    "longitude": 106.5,
+    "isDefault": true
+  },
+  {
+    "id": "214",
+    "name": "Thạnh Phú",
+    "latitude": "9.9483",
+    "longitude": "106.5163",
+    "isDefault": false
+  },
+  {
+    "id": "215",
+    "name": "Bến Tre",
+    "latitude": "10.2333",
+    "longitude": "106.3833",
+    "isDefault": false
+  },
+  {
+    "id": "216",
+    "name": "An Lão",
+    "latitude": 14.16667,
+    "longitude": 109,
+    "isDefault": true
+  },
+  {
+    "id": "217",
+    "name": "An Nhơn",
+    "latitude": "13.8858",
+    "longitude": "109.1082",
+    "isDefault": false
+  },
+  {
+    "id": "218",
+    "name": "Hoài  Ân",
+    "latitude": 14.16667,
+    "longitude": 109,
+    "isDefault": true
+  },
+  {
+    "id": "219",
+    "name": "Hoài Nhơn",
+    "latitude": 14.16667,
+    "longitude": 109,
+    "isDefault": true
+  },
+  {
+    "id": "220",
+    "name": "Phù Mỹ",
+    "latitude": "14.1718",
+    "longitude": "109.0489",
+    "isDefault": false
+  },
+  {
+    "id": "221",
+    "name": "Phù cát",
+    "latitude": 14.16667,
+    "longitude": 109,
+    "isDefault": true
+  },
+  {
+    "id": "222",
+    "name": "Tây Sơn",
+    "latitude": 14.16667,
+    "longitude": 109,
+    "isDefault": true
+  },
+  {
+    "id": "223",
+    "name": "Tuy Phước",
+    "latitude": "13.8274",
+    "longitude": "109.1665",
+    "isDefault": false
+  },
+  {
+    "id": "224",
+    "name": "Vân Canh",
+    "latitude": "13.6195",
+    "longitude": "108.9981",
+    "isDefault": false
+  },
+  {
+    "id": "225",
+    "name": "Vĩnh Thạnh",
+    "latitude": 14.16667,
+    "longitude": 109,
+    "isDefault": true
+  },
+  {
+    "id": "226",
+    "name": "Quy Nhơn",
+    "latitude": "13.7765",
+    "longitude": "109.2237",
+    "isDefault": false
+  },
+  {
+    "id": "227",
+    "name": "Bến Cát",
+    "latitude": 11.16667,
+    "longitude": 106.66667,
+    "isDefault": true
+  },
+  {
+    "id": "228",
+    "name": "Dầu Tiếng",
+    "latitude": "11.2741",
+    "longitude": "106.3588",
+    "isDefault": false
+  },
+  {
+    "id": "229",
+    "name": "Dĩ An",
+    "latitude": "10.9068",
+    "longitude": "106.7694",
+    "isDefault": false
+  },
+  {
+    "id": "230",
+    "name": "Phú Giáo",
+    "latitude": 11.16667,
+    "longitude": 106.66667,
+    "isDefault": true
+  },
+  {
+    "id": "231",
+    "name": "Tân Uyên",
+    "latitude": "11.0609",
+    "longitude": "106.7990",
+    "isDefault": false
+  },
+  {
+    "id": "232",
+    "name": "Thuận An",
+    "latitude": 11.16667,
+    "longitude": 106.66667,
+    "isDefault": true
+  },
+  {
+    "id": "233",
+    "name": "Thủ Dầu Một",
+    "latitude": "11.0042",
+    "longitude": "106.6583",
+    "isDefault": false
+  },
+  {
+    "id": "234",
+    "name": "Bù Đăng",
+    "latitude": 11.75,
+    "longitude": 106.91667,
+    "isDefault": true
+  },
+  {
+    "id": "235",
+    "name": "Bù Đốp",
+    "latitude": "11.9549",
+    "longitude": "106.8002",
+    "isDefault": false
+  },
+  {
+    "id": "236",
+    "name": "Bù Gia Mập",
+    "latitude": 11.75,
+    "longitude": 106.91667,
+    "isDefault": true
+  },
+  {
+    "id": "237",
+    "name": "Chơn Thành",
+    "latitude": "11.4282",
+    "longitude": "106.6354",
+    "isDefault": false
+  },
+  {
+    "id": "238",
+    "name": "Đồng Phú",
+    "latitude": 11.75,
+    "longitude": 106.91667,
+    "isDefault": true
+  },
+  {
+    "id": "239",
+    "name": "Hớn Quản",
+    "latitude": 11.75,
+    "longitude": 106.91667,
+    "isDefault": true
+  },
+  {
+    "id": "240",
+    "name": "Lộc Ninh",
+    "latitude": "11.8448",
+    "longitude": "106.5907",
+    "isDefault": false
+  },
+  {
+    "id": "241",
+    "name": "Bình Long",
+    "latitude": "11.6504",
+    "longitude": "106.6000",
+    "isDefault": false
+  },
+  {
+    "id": "242",
+    "name": "Đồng Xoài",
+    "latitude": "11.5349",
+    "longitude": "106.8832",
+    "isDefault": false
+  },
+  {
+    "id": "243",
+    "name": "Phước Long",
+    "latitude": 11.75,
+    "longitude": 106.91667,
+    "isDefault": true
+  },
+  {
+    "id": "244",
+    "name": " Đức Linh",
+    "latitude": 11.08333,
+    "longitude": 108.08333,
+    "isDefault": true
+  },
+  {
+    "id": "245",
+    "name": "Bắc Bình",
+    "latitude": 11.08333,
+    "longitude": 108.08333,
+    "isDefault": true
+  },
+  {
+    "id": "246",
+    "name": "Hàm Tân",
+    "latitude": 11.08333,
+    "longitude": 108.08333,
+    "isDefault": true
+  },
+  {
+    "id": "247",
+    "name": "Hàm Thuận Bắc",
+    "latitude": 11.08333,
+    "longitude": 108.08333,
+    "isDefault": true
+  },
+  {
+    "id": "248",
+    "name": "Hàm Thuận Nam",
+    "latitude": "10.8500",
+    "longitude": "107.8786",
+    "isDefault": false
+  },
+  {
+    "id": "249",
+    "name": "Phú Qúi",
+    "latitude": 11.08333,
+    "longitude": 108.08333,
+    "isDefault": true
+  },
+  {
+    "id": "250",
+    "name": "Tánh Linh",
+    "latitude": "11.0842",
+    "longitude": "107.6809",
+    "isDefault": false
+  },
+  {
+    "id": "251",
+    "name": "Tuy Phong",
+    "latitude": 11.08333,
+    "longitude": 108.08333,
+    "isDefault": true
+  },
+  {
+    "id": "252",
+    "name": "Phan Thiết",
+    "latitude": "10.9375",
+    "longitude": "108.1583",
+    "isDefault": false
+  },
+  {
+    "id": "253",
+    "name": "La Gi",
+    "latitude": 11.08333,
+    "longitude": 108.08333,
+    "isDefault": true
+  },
+  {
+    "id": "254",
+    "name": "Cái Nước",
+    "latitude": "8.9423",
+    "longitude": "105.0141",
+    "isDefault": false
+  },
+  {
+    "id": "255",
+    "name": "Đầm Dơi",
+    "latitude": "8.9921",
+    "longitude": "105.1960",
+    "isDefault": false
+  },
+  {
+    "id": "256",
+    "name": "Năm Căn",
+    "latitude": "8.7590",
+    "longitude": "104.9929",
+    "isDefault": false
+  },
+  {
+    "id": "257",
+    "name": "Ngọc Hiển",
+    "latitude": "8.6572",
+    "longitude": "105.0602",
+    "isDefault": false
+  },
+  {
+    "id": "258",
+    "name": "Phú Tân",
+    "latitude": 9.08333,
+    "longitude": 105.08333,
+    "isDefault": true
+  },
+  {
+    "id": "259",
+    "name": "Thới Bình",
+    "latitude": "9.3558",
+    "longitude": "105.0993",
+    "isDefault": false
+  },
+  {
+    "id": "260",
+    "name": "Trần Văn Thời",
+    "latitude": "9.0771",
+    "longitude": "104.9791",
+    "isDefault": false
+  },
+  {
+    "id": "261",
+    "name": "U Minh",
+    "latitude": "9.4129",
+    "longitude": "104.9735",
+    "isDefault": false
+  },
+  {
+    "id": "262",
+    "name": "Cà Mau",
+    "latitude": "9.1833",
+    "longitude": "105.1500",
+    "isDefault": false
+  },
+  {
+    "id": "263",
+    "name": "Bảo Lạc",
+    "latitude": "22.9492",
+    "longitude": "105.6805",
+    "isDefault": false
+  },
+  {
+    "id": "264",
+    "name": "Bảo Lâm",
+    "latitude": 22.75,
+    "longitude": 106.08333,
+    "isDefault": true
+  },
+  {
+    "id": "265",
+    "name": "Hạ Lang",
+    "latitude": 22.75,
+    "longitude": 106.08333,
+    "isDefault": true
+  },
+  {
+    "id": "266",
+    "name": "Hà Quảng",
+    "latitude": 22.75,
+    "longitude": 106.08333,
+    "isDefault": true
+  },
+  {
+    "id": "267",
+    "name": "Hòa An",
+    "latitude": 22.75,
+    "longitude": 106.08333,
+    "isDefault": true
+  },
+  {
+    "id": "268",
+    "name": "Nguyên Bình",
+    "latitude": "22.6500",
+    "longitude": "105.9598",
+    "isDefault": false
+  },
+  {
+    "id": "269",
+    "name": "Phục Hòa",
+    "latitude": 22.75,
+    "longitude": 106.08333,
+    "isDefault": true
+  },
+  {
+    "id": "270",
+    "name": "Quảng Uyên",
+    "latitude": "22.6950",
+    "longitude": "106.4424",
+    "isDefault": false
+  },
+  {
+    "id": "271",
+    "name": "Thạch An",
+    "latitude": 22.75,
+    "longitude": 106.08333,
+    "isDefault": true
+  },
+  {
+    "id": "272",
+    "name": "Thông Nông",
+    "latitude": "22.7841",
+    "longitude": "105.9832",
+    "isDefault": false
+  },
+  {
+    "id": "273",
+    "name": "Trà Lĩnh",
+    "latitude": 22.75,
+    "longitude": 106.08333,
+    "isDefault": true
+  },
+  {
+    "id": "274",
+    "name": "Trùng Khánh",
+    "latitude": "22.8351",
+    "longitude": "106.5250",
+    "isDefault": false
+  },
+  {
+    "id": "275",
+    "name": "Cao Bằng",
+    "latitude": "22.6731",
+    "longitude": "106.2500",
+    "isDefault": false
+  },
+  {
+    "id": "276",
+    "name": "Buôn Đôn",
+    "latitude": 12.75,
+    "longitude": 108.25,
+    "isDefault": true
+  },
+  {
+    "id": "277",
+    "name": "Cư Kuin",
+    "latitude": 12.75,
+    "longitude": 108.25,
+    "isDefault": true
+  },
+  {
+    "id": "278",
+    "name": "Cư MGar",
+    "latitude": 12.75,
+    "longitude": 108.25,
+    "isDefault": true
+  },
+  {
+    "id": "279",
+    "name": "Ea Kar",
+    "latitude": "12.8082",
+    "longitude": "108.4490",
+    "isDefault": false
+  },
+  {
+    "id": "280",
+    "name": "Ea Súp",
+    "latitude": "13.0662",
+    "longitude": "107.8855",
+    "isDefault": false
+  },
+  {
+    "id": "281",
+    "name": "EaHLeo",
+    "latitude": 12.75,
+    "longitude": 108.25,
+    "isDefault": true
+  },
+  {
+    "id": "282",
+    "name": "Krông Ana",
+    "latitude": 12.75,
+    "longitude": 108.25,
+    "isDefault": true
+  },
+  {
+    "id": "283",
+    "name": "Krông Bông",
+    "latitude": 12.75,
+    "longitude": 108.25,
+    "isDefault": true
+  },
+  {
+    "id": "284",
+    "name": "Krông Búk",
+    "latitude": 12.75,
+    "longitude": 108.25,
+    "isDefault": true
+  },
+  {
+    "id": "285",
+    "name": "Krông Năng",
+    "latitude": "12.9517",
+    "longitude": "108.3443",
+    "isDefault": false
+  },
+  {
+    "id": "286",
+    "name": "Krông Pắc",
+    "latitude": 12.75,
+    "longitude": 108.25,
+    "isDefault": true
+  },
+  {
+    "id": "287",
+    "name": "Lắk",
+    "latitude": "12.4109",
+    "longitude": "108.1768",
+    "isDefault": false
+  },
+  {
+    "id": "288",
+    "name": "MDrắk",
+    "latitude": 12.75,
+    "longitude": 108.25,
+    "isDefault": true
+  },
+  {
+    "id": "289",
+    "name": "Buôn Ma Thuột",
+    "latitude": "12.6667",
+    "longitude": "108.0500",
+    "isDefault": false
+  },
+  {
+    "id": "290",
+    "name": "Buôn Hồ",
+    "latitude": 12.75,
+    "longitude": 108.25,
+    "isDefault": true
+  },
+  {
+    "id": "291",
+    "name": "Cư Jút",
+    "latitude": 12.27991,
+    "longitude": 107.8,
+    "isDefault": true
+  },
+  {
+    "id": "292",
+    "name": "Đắk GLong",
+    "latitude": 12.27991,
+    "longitude": 107.8,
+    "isDefault": true
+  },
+  {
+    "id": "293",
+    "name": "Đắk Mil",
+    "latitude": "12.4496",
+    "longitude": "107.6224",
+    "isDefault": false
+  },
+  {
+    "id": "294",
+    "name": "Đắk RLấp",
+    "latitude": 12.27991,
+    "longitude": 107.8,
+    "isDefault": true
+  },
+  {
+    "id": "295",
+    "name": "Đắk Song",
+    "latitude": "12.2552",
+    "longitude": "107.6092",
+    "isDefault": false
+  },
+  {
+    "id": "296",
+    "name": "KRông Nô",
+    "latitude": 12.27991,
+    "longitude": 107.8,
+    "isDefault": true
+  },
+  {
+    "id": "297",
+    "name": "Tuy Đức",
+    "latitude": 12.27991,
+    "longitude": 107.8,
+    "isDefault": true
+  },
+  {
+    "id": "298",
+    "name": "Gia Nghĩa",
+    "latitude": "12.0042",
+    "longitude": "107.6907",
+    "isDefault": false
+  },
+  {
+    "id": "299",
+    "name": "Điện Biên",
+    "latitude": "21.3833",
+    "longitude": "103.0169",
+    "isDefault": false
+  },
+  {
+    "id": "300",
+    "name": "Điện Biên Đông",
+    "latitude": 21.40349,
+    "longitude": 103.05842,
+    "isDefault": true
+  },
+  {
+    "id": "301",
+    "name": "Mường Chà",
+    "latitude": "21.7617",
+    "longitude": "103.0978",
+    "isDefault": false
+  },
+  {
+    "id": "302",
+    "name": "Mương Nhé",
+    "latitude": 21.40349,
+    "longitude": 103.05842,
+    "isDefault": true
+  },
+  {
+    "id": "303",
+    "name": "Mường ảng",
+    "latitude": 21.40349,
+    "longitude": 103.05842,
+    "isDefault": true
+  },
+  {
+    "id": "304",
+    "name": "Tủa Chùa",
+    "latitude": "21.8577",
+    "longitude": "103.3426",
+    "isDefault": false
+  },
+  {
+    "id": "305",
+    "name": "Tuần Giáo",
+    "latitude": "21.5899",
+    "longitude": "103.4218",
+    "isDefault": false
+  },
+  {
+    "id": "306",
+    "name": "Điện Biên phủ",
+    "latitude": 21.40349,
+    "longitude": 103.05842,
+    "isDefault": true
+  },
+  {
+    "id": "307",
+    "name": "Mường Lay",
+    "latitude": 21.40349,
+    "longitude": 103.05842,
+    "isDefault": true
+  },
+  {
+    "id": "308",
+    "name": "Cẩm Mỹ",
+    "latitude": 11,
+    "longitude": 107.16667,
+    "isDefault": true
+  },
+  {
+    "id": "309",
+    "name": "Định Quán",
+    "latitude": 11,
+    "longitude": 107.16667,
+    "isDefault": true
+  },
+  {
+    "id": "310",
+    "name": "Long Thành",
+    "latitude": "10.7891",
+    "longitude": "106.9503",
+    "isDefault": false
+  },
+  {
+    "id": "311",
+    "name": "Nhơn Trạch",
+    "latitude": "10.7229",
+    "longitude": "106.8834",
+    "isDefault": false
+  },
+  {
+    "id": "312",
+    "name": "Tân Phú",
+    "latitude": 11,
+    "longitude": 107.16667,
+    "isDefault": true
+  },
+  {
+    "id": "313",
+    "name": "Thống Nhất",
+    "latitude": "10.9505",
+    "longitude": "107.1457",
+    "isDefault": false
+  },
+  {
+    "id": "314",
+    "name": "Trảng Bom",
+    "latitude": "10.9536",
+    "longitude": "107.0059",
+    "isDefault": false
+  },
+  {
+    "id": "315",
+    "name": "Vĩnh Cửu",
+    "latitude": 11,
+    "longitude": 107.16667,
+    "isDefault": true
+  },
+  {
+    "id": "316",
+    "name": "Xuân Lộc",
+    "latitude": 11,
+    "longitude": 107.16667,
+    "isDefault": true
+  },
+  {
+    "id": "317",
+    "name": "Biên Hòa",
+    "latitude": "10.9575",
+    "longitude": "106.8426",
+    "isDefault": false
+  },
+  {
+    "id": "318",
+    "name": "Long Khánh",
+    "latitude": "10.9265",
+    "longitude": "107.2478",
+    "isDefault": false
+  },
+  {
+    "id": "319",
+    "name": "Cao Lãnh",
+    "latitude": "10.4603",
+    "longitude": "105.6331",
+    "isDefault": false
+  },
+  {
+    "id": "320",
+    "name": "Châu Thành",
+    "latitude": 10.58333,
+    "longitude": 105.63333,
+    "isDefault": true
+  },
+  {
+    "id": "321",
+    "name": "Hồng Ngự",
+    "latitude": 10.58333,
+    "longitude": 105.63333,
+    "isDefault": true
+  },
+  {
+    "id": "322",
+    "name": "Lai Vung",
+    "latitude": "10.2870",
+    "longitude": "105.6617",
+    "isDefault": false
+  },
+  {
+    "id": "323",
+    "name": "Lấp Vò",
+    "latitude": "10.3616",
+    "longitude": "105.5192",
+    "isDefault": false
+  },
+  {
+    "id": "324",
+    "name": "Tam Nông",
+    "latitude": 10.58333,
+    "longitude": 105.63333,
+    "isDefault": true
+  },
+  {
+    "id": "325",
+    "name": "Tân Hồng",
+    "latitude": 10.58333,
+    "longitude": 105.63333,
+    "isDefault": true
+  },
+  {
+    "id": "326",
+    "name": "Thanh Bình",
+    "latitude": "10.5619",
+    "longitude": "105.4841",
+    "isDefault": false
+  },
+  {
+    "id": "327",
+    "name": "Tháp Mười",
+    "latitude": 10.58333,
+    "longitude": 105.63333,
+    "isDefault": true
+  },
+  {
+    "id": "328",
+    "name": "Cao Lãnh",
+    "latitude": 10.58333,
+    "longitude": 105.63333,
+    "isDefault": true
+  },
+  {
+    "id": "329",
+    "name": "Hồng Ngự",
+    "latitude": 10.58333,
+    "longitude": 105.63333,
+    "isDefault": true
+  },
+  {
+    "id": "330",
+    "name": "Sa Đéc",
+    "latitude": "10.3105",
+    "longitude": "105.7397",
+    "isDefault": false
+  },
+  {
+    "id": "331",
+    "name": "Chư Păh",
+    "latitude": 13.75,
+    "longitude": 108.25,
+    "isDefault": true
+  },
+  {
+    "id": "332",
+    "name": "Chư Pưh",
+    "latitude": 13.75,
+    "longitude": 108.25,
+    "isDefault": true
+  },
+  {
+    "id": "333",
+    "name": "Chư Sê",
+    "latitude": "13.6915",
+    "longitude": "108.0802",
+    "isDefault": false
+  },
+  {
+    "id": "334",
+    "name": "ChưPRông",
+    "latitude": 13.75,
+    "longitude": 108.25,
+    "isDefault": true
+  },
+  {
+    "id": "335",
+    "name": "Đăk Đoa",
+    "latitude": "13.9950",
+    "longitude": "108.1121",
+    "isDefault": false
+  },
+  {
+    "id": "336",
+    "name": "Đăk Pơ",
+    "latitude": 13.75,
+    "longitude": 108.25,
+    "isDefault": true
+  },
+  {
+    "id": "337",
+    "name": "Đức Cơ",
+    "latitude": 13.75,
+    "longitude": 108.25,
+    "isDefault": true
+  },
+  {
+    "id": "338",
+    "name": "Ia Grai",
+    "latitude": 13.75,
+    "longitude": 108.25,
+    "isDefault": true
+  },
+  {
+    "id": "339",
+    "name": "Ia Pa",
+    "latitude": "13.5336",
+    "longitude": "108.4553",
+    "isDefault": false
+  },
+  {
+    "id": "340",
+    "name": "KBang",
+    "latitude": 13.75,
+    "longitude": 108.25,
+    "isDefault": true
+  },
+  {
+    "id": "341",
+    "name": "KBang",
+    "latitude": 13.75,
+    "longitude": 108.25,
+    "isDefault": true
+  },
+  {
+    "id": "342",
+    "name": "Kông Chro",
+    "latitude": "13.7753",
+    "longitude": "108.5256",
+    "isDefault": false
+  },
+  {
+    "id": "343",
+    "name": "Krông Pa",
+    "latitude": 13.75,
+    "longitude": 108.25,
+    "isDefault": true
+  },
+  {
+    "id": "344",
+    "name": "Mang Yang",
+    "latitude": 13.75,
+    "longitude": 108.25,
+    "isDefault": true
+  },
+  {
+    "id": "345",
+    "name": "Phú Thiện",
+    "latitude": 13.75,
+    "longitude": 108.25,
+    "isDefault": true
+  },
+  {
+    "id": "346",
+    "name": "Plei Ku",
+    "latitude": 13.75,
+    "longitude": 108.25,
+    "isDefault": true
+  },
+  {
+    "id": "347",
+    "name": "AYun Pa",
+    "latitude": 13.75,
+    "longitude": 108.25,
+    "isDefault": true
+  },
+  {
+    "id": "348",
+    "name": "An Khê",
+    "latitude": 13.75,
+    "longitude": 108.25,
+    "isDefault": true
+  },
+  {
+    "id": "349",
+    "name": "Bắc Mê",
+    "latitude": 22.75,
+    "longitude": 105,
+    "isDefault": true
+  },
+  {
+    "id": "350",
+    "name": "Bắc Quang",
+    "latitude": 22.75,
+    "longitude": 105,
+    "isDefault": true
+  },
+  {
+    "id": "351",
+    "name": "Đồng Văn",
+    "latitude": "23.2784",
+    "longitude": "105.3629",
+    "isDefault": false
+  },
+  {
+    "id": "352",
+    "name": "Hoàng Su Phì",
+    "latitude": 22.75,
+    "longitude": 105,
+    "isDefault": true
+  },
+  {
+    "id": "353",
+    "name": "Mèo Vạc",
+    "latitude": "23.1641",
+    "longitude": "105.4099",
+    "isDefault": false
+  },
+  {
+    "id": "354",
+    "name": "Quản Bạ",
+    "latitude": 22.75,
+    "longitude": 105,
+    "isDefault": true
+  },
+  {
+    "id": "355",
+    "name": "Quang Bình",
+    "latitude": 22.75,
+    "longitude": 105,
+    "isDefault": true
+  },
+  {
+    "id": "356",
+    "name": "Vị Xuyên",
+    "latitude": "22.6676",
+    "longitude": "104.9819",
+    "isDefault": false
+  },
+  {
+    "id": "357",
+    "name": "Xín Mần",
+    "latitude": 22.75,
+    "longitude": 105,
+    "isDefault": true
+  },
+  {
+    "id": "358",
+    "name": "Yên Minh",
+    "latitude": "23.1179",
+    "longitude": "105.1416",
+    "isDefault": false
+  },
+  {
+    "id": "359",
+    "name": "Hà Giang",
+    "latitude": "22.8233",
+    "longitude": "104.9836",
+    "isDefault": false
+  },
+  {
+    "id": "360",
+    "name": "Bình Lục",
+    "latitude": 20.53333,
+    "longitude": 105.96667,
+    "isDefault": true
+  },
+  {
+    "id": "361",
+    "name": "Duy Tiên",
+    "latitude": 20.53333,
+    "longitude": 105.96667,
+    "isDefault": true
+  },
+  {
+    "id": "362",
+    "name": "Kim Bảng",
+    "latitude": 20.53333,
+    "longitude": 105.96667,
+    "isDefault": true
+  },
+  {
+    "id": "363",
+    "name": "Lý Nhân",
+    "latitude": 20.53333,
+    "longitude": 105.96667,
+    "isDefault": true
+  },
+  {
+    "id": "364",
+    "name": "Thanh Liêm",
+    "latitude": 20.53333,
+    "longitude": 105.96667,
+    "isDefault": true
+  },
+  {
+    "id": "365",
+    "name": "Phủ Lý",
+    "latitude": "20.5453",
+    "longitude": "105.9122",
+    "isDefault": false
+  },
+  {
+    "id": "366",
+    "name": "Cẩm Xuyên",
+    "latitude": "18.2503",
+    "longitude": "106.0013",
+    "isDefault": false
+  },
+  {
+    "id": "367",
+    "name": "Can Lộc",
+    "latitude": 18.33333,
+    "longitude": 105.75,
+    "isDefault": true
+  },
+  {
+    "id": "368",
+    "name": "Đức Thọ",
+    "latitude": "18.5396",
+    "longitude": "105.5830",
+    "isDefault": false
+  },
+  {
+    "id": "369",
+    "name": "Hương Khê",
+    "latitude": "18.1767",
+    "longitude": "105.7002",
+    "isDefault": false
+  },
+  {
+    "id": "370",
+    "name": "Hương Sơn",
+    "latitude": "21.4601",
+    "longitude": "105.9781",
+    "isDefault": false
+  },
+  {
+    "id": "371",
+    "name": "Kỳ Anh",
+    "latitude": "18.0624",
+    "longitude": "106.2983",
+    "isDefault": false
+  },
+  {
+    "id": "372",
+    "name": "Lộc Hà",
+    "latitude": 18.33333,
+    "longitude": 105.75,
+    "isDefault": true
+  },
+  {
+    "id": "373",
+    "name": "Nghi Xuân",
+    "latitude": "18.6621",
+    "longitude": "105.7557",
+    "isDefault": false
+  },
+  {
+    "id": "374",
+    "name": "Thạch Hà",
+    "latitude": "18.3679",
+    "longitude": "105.8612",
+    "isDefault": false
+  },
+  {
+    "id": "375",
+    "name": "Vũ Quang",
+    "latitude": "18.3838",
+    "longitude": "105.5059",
+    "isDefault": false
+  },
+  {
+    "id": "376",
+    "name": "Hà Tĩnh",
+    "latitude": "18.3428",
+    "longitude": "105.9058",
+    "isDefault": false
+  },
+  {
+    "id": "377",
+    "name": "Hồng Lĩnh",
+    "latitude": 18.33333,
+    "longitude": 105.75,
+    "isDefault": true
+  },
+  {
+    "id": "378",
+    "name": "Bình Giang",
+    "latitude": "21.9609",
+    "longitude": "106.3645",
+    "isDefault": false
+  },
+  {
+    "id": "379",
+    "name": "Cẩm Giàng",
+    "latitude": 20.91667,
+    "longitude": 106.33333,
+    "isDefault": true
+  },
+  {
+    "id": "380",
+    "name": "Gia Lộc",
+    "latitude": "20.8678",
+    "longitude": "106.3000",
+    "isDefault": false
+  },
+  {
+    "id": "381",
+    "name": "Kim Thành",
+    "latitude": 20.91667,
+    "longitude": 106.33333,
+    "isDefault": true
+  },
+  {
+    "id": "382",
+    "name": "Kinh Môn",
+    "latitude": "20.9896",
+    "longitude": "106.5551",
+    "isDefault": false
+  },
+  {
+    "id": "383",
+    "name": "Nam Sách",
+    "latitude": "20.9921",
+    "longitude": "106.3361",
+    "isDefault": false
+  },
+  {
+    "id": "384",
+    "name": "Ninh Giang",
+    "latitude": "20.7308",
+    "longitude": "106.3979",
+    "isDefault": false
+  },
+  {
+    "id": "385",
+    "name": "Thanh Hà",
+    "latitude": "20.8982",
+    "longitude": "106.4261",
+    "isDefault": false
+  },
+  {
+    "id": "386",
+    "name": "Thanh Miện",
+    "latitude": "20.7871",
+    "longitude": "106.2462",
+    "isDefault": false
+  },
+  {
+    "id": "387",
+    "name": "Tứ Kỳ",
+    "latitude": "20.8191",
+    "longitude": "106.4066",
+    "isDefault": false
+  },
+  {
+    "id": "388",
+    "name": "Hải Dương",
+    "latitude": "20.9411",
+    "longitude": "106.3331",
+    "isDefault": false
+  },
+  {
+    "id": "389",
+    "name": "Chí Linh",
+    "latitude": 20.91667,
+    "longitude": 106.33333,
+    "isDefault": true
+  },
+  {
+    "id": "390",
+    "name": "Châu Thành",
+    "latitude": 9.77605,
+    "longitude": 105.46412,
+    "isDefault": true
+  },
+  {
+    "id": "391",
+    "name": "Châu Thành A",
+    "latitude": 9.77605,
+    "longitude": 105.46412,
+    "isDefault": true
+  },
+  {
+    "id": "392",
+    "name": "Long Mỹ",
+    "latitude": "9.6814",
+    "longitude": "105.5723",
+    "isDefault": false
+  },
+  {
+    "id": "393",
+    "name": "Phụng Hiệp",
+    "latitude": "9.7797",
+    "longitude": "105.7338",
+    "isDefault": false
+  },
+  {
+    "id": "394",
+    "name": "Vị Thủy",
+    "latitude": 9.77605,
+    "longitude": 105.46412,
+    "isDefault": true
+  },
+  {
+    "id": "395",
+    "name": "Vị Thanh",
+    "latitude": "9.7833",
+    "longitude": "105.4708",
+    "isDefault": false
+  },
+  {
+    "id": "396",
+    "name": "Ngã Bảy",
+    "latitude": "9.8137",
+    "longitude": "105.8210",
+    "isDefault": false
+  },
+  {
+    "id": "397",
+    "name": "Cao Phong",
+    "latitude": "20.7045",
+    "longitude": "105.3206",
+    "isDefault": false
+  },
+  {
+    "id": "398",
+    "name": "Đà Bắc",
+    "latitude": "20.8771",
+    "longitude": "105.2542",
+    "isDefault": false
+  },
+  {
+    "id": "399",
+    "name": "Kim Bôi",
+    "latitude": 20.66667,
+    "longitude": 105.33333,
+    "isDefault": true
+  },
+  {
+    "id": "400",
+    "name": "Kỳ Sơn",
+    "latitude": "20.8867",
+    "longitude": "105.3524",
+    "isDefault": false
+  },
+  {
+    "id": "401",
+    "name": "Lạc Sơn",
+    "latitude": 20.66667,
+    "longitude": 105.33333,
+    "isDefault": true
+  },
+  {
+    "id": "402",
+    "name": "Lạc Thủy",
+    "latitude": 20.66667,
+    "longitude": 105.33333,
+    "isDefault": true
+  },
+  {
+    "id": "403",
+    "name": "Lương Sơn",
+    "latitude": "20.8715",
+    "longitude": "105.5257",
+    "isDefault": false
+  },
+  {
+    "id": "404",
+    "name": "Mai Châu",
+    "latitude": "20.6615",
+    "longitude": "105.0824",
+    "isDefault": false
+  },
+  {
+    "id": "405",
+    "name": "Tân Lạc",
+    "latitude": 20.66667,
+    "longitude": 105.33333,
+    "isDefault": true
+  },
+  {
+    "id": "406",
+    "name": "Yên Thủy",
+    "latitude": 20.66667,
+    "longitude": 105.33333,
+    "isDefault": true
+  },
+  {
+    "id": "407",
+    "name": "Hòa Bình",
+    "latitude": 20.66667,
+    "longitude": 105.33333,
+    "isDefault": true
+  },
+  {
+    "id": "408",
+    "name": "Ân Thi",
+    "latitude": "20.8184",
+    "longitude": "106.0912",
+    "isDefault": false
+  },
+  {
+    "id": "409",
+    "name": "Khoái Châu",
+    "latitude": "20.8391",
+    "longitude": "105.9776",
+    "isDefault": false
+  },
+  {
+    "id": "410",
+    "name": "Kim Động",
+    "latitude": 20.81667,
+    "longitude": 106.05,
+    "isDefault": true
+  },
+  {
+    "id": "411",
+    "name": "Mỹ Hào",
+    "latitude": 20.81667,
+    "longitude": 106.05,
+    "isDefault": true
+  },
+  {
+    "id": "412",
+    "name": "Phù Cừ",
+    "latitude": 20.81667,
+    "longitude": 106.05,
+    "isDefault": true
+  },
+  {
+    "id": "413",
+    "name": "Tiên Lữ",
+    "latitude": 20.81667,
+    "longitude": 106.05,
+    "isDefault": true
+  },
+  {
+    "id": "414",
+    "name": "Văn Giang",
+    "latitude": "20.9430",
+    "longitude": "105.9312",
+    "isDefault": false
+  },
+  {
+    "id": "415",
+    "name": "Văn Lâm",
+    "latitude": 20.81667,
+    "longitude": 106.05,
+    "isDefault": true
+  },
+  {
+    "id": "416",
+    "name": "Yên Mỹ",
+    "latitude": "20.8856",
+    "longitude": "106.0356",
+    "isDefault": false
+  },
+  {
+    "id": "417",
+    "name": "Hưng Yên",
+    "latitude": "20.6464",
+    "longitude": "106.0511",
+    "isDefault": false
+  },
+  {
+    "id": "418",
+    "name": "Cam Lâm",
+    "latitude": "12.0540",
+    "longitude": "109.1600",
+    "isDefault": false
+  },
+  {
+    "id": "419",
+    "name": "Diên Khánh",
+    "latitude": "12.2549",
+    "longitude": "109.0933",
+    "isDefault": false
+  },
+  {
+    "id": "420",
+    "name": "Khánh Sơn",
+    "latitude": 12.33333,
+    "longitude": 109,
+    "isDefault": true
+  },
+  {
+    "id": "421",
+    "name": "Khánh Vĩnh",
+    "latitude": "12.2835",
+    "longitude": "108.9047",
+    "isDefault": false
+  },
+  {
+    "id": "422",
+    "name": "Ninh Hòa",
+    "latitude": "12.4919",
+    "longitude": "109.1250",
+    "isDefault": false
+  },
+  {
+    "id": "423",
+    "name": "Trường Sa",
+    "latitude": 12.33333,
+    "longitude": 109,
+    "isDefault": true
+  },
+  {
+    "id": "424",
+    "name": "Vạn Ninh",
+    "latitude": 12.33333,
+    "longitude": 109,
+    "isDefault": true
+  },
+  {
+    "id": "425",
+    "name": "Nha Trang",
+    "latitude": "12.2500",
+    "longitude": "109.1833",
+    "isDefault": false
+  },
+  {
+    "id": "426",
+    "name": "Cam Ranh",
+    "latitude": "11.9020",
+    "longitude": "109.2207",
+    "isDefault": false
+  },
+  {
+    "id": "427",
+    "name": "An Biên",
+    "latitude": "9.8153",
+    "longitude": "105.0637",
+    "isDefault": false
+  },
+  {
+    "id": "428",
+    "name": "An Minh",
+    "latitude": 10.01711,
+    "longitude": 105.09739,
+    "isDefault": true
+  },
+  {
+    "id": "429",
+    "name": "Châu Thành",
+    "latitude": 10.01711,
+    "longitude": 105.09739,
+    "isDefault": true
+  },
+  {
+    "id": "430",
+    "name": "Giang Thành",
+    "latitude": 10.01711,
+    "longitude": 105.09739,
+    "isDefault": true
+  },
+  {
+    "id": "431",
+    "name": "Giồng Riềng",
+    "latitude": "9.9097",
+    "longitude": "105.3143",
+    "isDefault": false
+  },
+  {
+    "id": "432",
+    "name": "Gò Quao",
+    "latitude": "9.7332",
+    "longitude": "105.2739",
+    "isDefault": false
+  },
+  {
+    "id": "433",
+    "name": "Hòn Đất",
+    "latitude": "10.1846",
+    "longitude": "104.9296",
+    "isDefault": false
+  },
+  {
+    "id": "434",
+    "name": "Kiên Hải",
+    "latitude": 10.01711,
+    "longitude": 105.09739,
+    "isDefault": true
+  },
+  {
+    "id": "435",
+    "name": "Kiên Lương",
+    "latitude": "10.2862",
+    "longitude": "104.6462",
+    "isDefault": false
+  },
+  {
+    "id": "436",
+    "name": "Phú Quốc",
+    "latitude": "10.2289",
+    "longitude": "103.9572",
+    "isDefault": false
+  },
+  {
+    "id": "437",
+    "name": "Tân Hiệp",
+    "latitude": "10.4490",
+    "longitude": "106.3439",
+    "isDefault": false
+  },
+  {
+    "id": "438",
+    "name": "U Minh Thượng",
+    "latitude": 10.01711,
+    "longitude": 105.09739,
+    "isDefault": true
+  },
+  {
+    "id": "439",
+    "name": "Vĩnh Thuận",
+    "latitude": "9.5080",
+    "longitude": "105.2575",
+    "isDefault": false
+  },
+  {
+    "id": "440",
+    "name": "Rạch Giá",
+    "latitude": "10.0125",
+    "longitude": "105.0808",
+    "isDefault": false
+  },
+  {
+    "id": "441",
+    "name": "Hà Tiên",
+    "latitude": "10.3833",
+    "longitude": "104.4833",
+    "isDefault": false
+  },
+  {
+    "id": "442",
+    "name": "Đắk Glei",
+    "latitude": "15.0864",
+    "longitude": "107.7358",
+    "isDefault": false
+  },
+  {
+    "id": "443",
+    "name": "Đắk Hà",
+    "latitude": "14.5135",
+    "longitude": "107.9210",
+    "isDefault": false
+  },
+  {
+    "id": "444",
+    "name": "Đắk Tô",
+    "latitude": "14.6609",
+    "longitude": "107.8389",
+    "isDefault": false
+  },
+  {
+    "id": "445",
+    "name": "Kon Plông",
+    "latitude": "14.6006",
+    "longitude": "108.2909",
+    "isDefault": false
+  },
+  {
+    "id": "446",
+    "name": "Kon Rẫy",
+    "latitude": 14.75,
+    "longitude": 107.91667,
+    "isDefault": true
+  },
+  {
+    "id": "447",
+    "name": "Ngọc Hồi",
+    "latitude": 14.75,
+    "longitude": 107.91667,
+    "isDefault": true
+  },
+  {
+    "id": "448",
+    "name": "Sa Thầy",
+    "latitude": "14.4138",
+    "longitude": "107.7934",
+    "isDefault": false
+  },
+  {
+    "id": "449",
+    "name": "Tu Mơ Rông",
+    "latitude": 14.75,
+    "longitude": 107.91667,
+    "isDefault": true
+  },
+  {
+    "id": "450",
+    "name": "Kon Tum",
+    "latitude": "14.3417",
+    "longitude": "107.9792",
+    "isDefault": false
+  },
+  {
+    "id": "451",
+    "name": "Mường Tè",
+    "latitude": "22.3807",
+    "longitude": "102.8201",
+    "isDefault": false
+  },
+  {
+    "id": "452",
+    "name": "Phong Thổ",
+    "latitude": "22.5443",
+    "longitude": "103.2978",
+    "isDefault": false
+  },
+  {
+    "id": "453",
+    "name": "Sìn Hồ",
+    "latitude": "22.3665",
+    "longitude": "103.2344",
+    "isDefault": false
+  },
+  {
+    "id": "454",
+    "name": "Tam Đường",
+    "latitude": "22.3181",
+    "longitude": "103.6262",
+    "isDefault": false
+  },
+  {
+    "id": "455",
+    "name": "Tân Uyên",
+    "latitude": 22.28333,
+    "longitude": 103.25,
+    "isDefault": true
+  },
+  {
+    "id": "456",
+    "name": "Than Uyên",
+    "latitude": "21.9591",
+    "longitude": "103.8800",
+    "isDefault": false
+  },
+  {
+    "id": "457",
+    "name": "Lai Châu",
+    "latitude": "22.3991",
+    "longitude": "103.4393",
+    "isDefault": false
+  },
+  {
+    "id": "458",
+    "name": "Bảo Lâm",
+    "latitude": 11.66667,
+    "longitude": 108.08333,
+    "isDefault": true
+  },
+  {
+    "id": "459",
+    "name": "Cát Tiên",
+    "latitude": 11.66667,
+    "longitude": 108.08333,
+    "isDefault": true
+  },
+  {
+    "id": "460",
+    "name": "Đạ Huoai",
+    "latitude": 11.66667,
+    "longitude": 108.08333,
+    "isDefault": true
+  },
+  {
+    "id": "461",
+    "name": "Đạ Tẻh",
+    "latitude": "11.5115",
+    "longitude": "107.4909",
+    "isDefault": false
+  },
+  {
+    "id": "462",
+    "name": "Đam Rông",
+    "latitude": 11.66667,
+    "longitude": 108.08333,
+    "isDefault": true
+  },
+  {
+    "id": "463",
+    "name": "Di Linh",
+    "latitude": "11.5815",
+    "longitude": "108.0764",
+    "isDefault": false
+  },
+  {
+    "id": "464",
+    "name": "Đơn Dương",
+    "latitude": 11.66667,
+    "longitude": 108.08333,
+    "isDefault": true
+  },
+  {
+    "id": "465",
+    "name": "Đức Trọng",
+    "latitude": 11.66667,
+    "longitude": 108.08333,
+    "isDefault": true
+  },
+  {
+    "id": "466",
+    "name": "Lạc Dương",
+    "latitude": "12.0041",
+    "longitude": "108.4191",
+    "isDefault": false
+  },
+  {
+    "id": "467",
+    "name": "Lâm Hà",
+    "latitude": 11.66667,
+    "longitude": 108.08333,
+    "isDefault": true
+  },
+  {
+    "id": "468",
+    "name": "Bảo Lộc",
+    "latitude": "11.5480",
+    "longitude": "107.8077",
+    "isDefault": false
+  },
+  {
+    "id": "469",
+    "name": "Đà Lạt",
+    "latitude": "11.9359",
+    "longitude": "108.4429",
+    "isDefault": false
+  },
+  {
+    "id": "470",
+    "name": "Bắc Sơn",
+    "latitude": "21.9000",
+    "longitude": "106.3208",
+    "isDefault": false
+  },
+  {
+    "id": "471",
+    "name": "Bình Gia",
+    "latitude": 21.83333,
+    "longitude": 106.58333,
+    "isDefault": true
+  },
+  {
+    "id": "472",
+    "name": "Cao Lộc",
+    "latitude": "21.8665",
+    "longitude": "106.7683",
+    "isDefault": false
+  },
+  {
+    "id": "473",
+    "name": "Chi Lăng",
+    "latitude": 21.83333,
+    "longitude": 106.58333,
+    "isDefault": true
+  },
+  {
+    "id": "474",
+    "name": "Đình Lập",
+    "latitude": "21.5463",
+    "longitude": "107.0981",
+    "isDefault": false
+  },
+  {
+    "id": "475",
+    "name": "Hữu Lũng",
+    "latitude": "21.5056",
+    "longitude": "106.3446",
+    "isDefault": false
+  },
+  {
+    "id": "476",
+    "name": "Lộc Bình",
+    "latitude": "21.7587",
+    "longitude": "106.9233",
+    "isDefault": false
+  },
+  {
+    "id": "477",
+    "name": "Tràng Định",
+    "latitude": 21.83333,
+    "longitude": 106.58333,
+    "isDefault": true
+  },
+  {
+    "id": "478",
+    "name": "Văn Lãng",
+    "latitude": 21.83333,
+    "longitude": 106.58333,
+    "isDefault": true
+  },
+  {
+    "id": "479",
+    "name": "Văn Quan",
+    "latitude": "21.8652",
+    "longitude": "106.5393",
+    "isDefault": false
+  },
+  {
+    "id": "480",
+    "name": "Lạng Sơn",
+    "latitude": "21.8478",
+    "longitude": "106.7578",
+    "isDefault": false
+  },
+  {
+    "id": "481",
+    "name": "Bắc Hà",
+    "latitude": "22.5391",
+    "longitude": "104.2931",
+    "isDefault": false
+  },
+  {
+    "id": "482",
+    "name": "Bảo Thắng",
+    "latitude": "21.3551",
+    "longitude": "105.9834",
+    "isDefault": false
+  },
+  {
+    "id": "483",
+    "name": "Bảo Yên",
+    "latitude": 22.3,
+    "longitude": 104.16667,
+    "isDefault": true
+  },
+  {
+    "id": "484",
+    "name": "Bát Xát",
+    "latitude": "22.5431",
+    "longitude": "103.8899",
+    "isDefault": false
+  },
+  {
+    "id": "485",
+    "name": "Mường Khương",
+    "latitude": "22.7614",
+    "longitude": "104.1216",
+    "isDefault": false
+  },
+  {
+    "id": "486",
+    "name": "Sa Pa",
+    "latitude": "22.3396",
+    "longitude": "103.8456",
+    "isDefault": false
+  },
+  {
+    "id": "487",
+    "name": "Si Ma Cai",
+    "latitude": "22.6951",
+    "longitude": "104.2786",
+    "isDefault": false
+  },
+  {
+    "id": "488",
+    "name": "Văn Bàn",
+    "latitude": 22.3,
+    "longitude": 104.16667,
+    "isDefault": true
+  },
+  {
+    "id": "489",
+    "name": "Lào Cai",
+    "latitude": "22.4194",
+    "longitude": "103.9950",
+    "isDefault": false
+  },
+  {
+    "id": "490",
+    "name": "Bến Lức",
+    "latitude": "10.6364",
+    "longitude": "106.4910",
+    "isDefault": false
+  },
+  {
+    "id": "491",
+    "name": "Cần Đước",
+    "latitude": "10.5097",
+    "longitude": "106.6031",
+    "isDefault": false
+  },
+  {
+    "id": "492",
+    "name": "Cần Giuộc",
+    "latitude": "10.6086",
+    "longitude": "106.6713",
+    "isDefault": false
+  },
+  {
+    "id": "493",
+    "name": "Châu Thành",
+    "latitude": 10.7,
+    "longitude": 106.16667,
+    "isDefault": true
+  },
+  {
+    "id": "494",
+    "name": "Đức Hòa",
+    "latitude": 10.7,
+    "longitude": 106.16667,
+    "isDefault": true
+  },
+  {
+    "id": "495",
+    "name": "Đức Huệ",
+    "latitude": 10.7,
+    "longitude": 106.16667,
+    "isDefault": true
+  },
+  {
+    "id": "496",
+    "name": "Mộc Hóa",
+    "latitude": 10.7,
+    "longitude": 106.16667,
+    "isDefault": true
+  },
+  {
+    "id": "497",
+    "name": "Tân Hưng",
+    "latitude": "10.8348",
+    "longitude": "105.6614",
+    "isDefault": false
+  },
+  {
+    "id": "498",
+    "name": "Tân Thạnh",
+    "latitude": "10.6067",
+    "longitude": "106.0471",
+    "isDefault": false
+  },
+  {
+    "id": "499",
+    "name": "Tân Trụ",
+    "latitude": "10.5127",
+    "longitude": "106.5076",
+    "isDefault": false
+  },
+  {
+    "id": "500",
+    "name": "Thạnh Hóa",
+    "latitude": "10.6574",
+    "longitude": "106.1808",
+    "isDefault": false
+  },
+  {
+    "id": "501",
+    "name": "Thủ Thừa",
+    "latitude": "10.6023",
+    "longitude": "106.4021",
+    "isDefault": false
+  },
+  {
+    "id": "502",
+    "name": "Vĩnh Hưng",
+    "latitude": "10.8907",
+    "longitude": "105.7849",
+    "isDefault": false
+  },
+  {
+    "id": "503",
+    "name": "Tân An",
+    "latitude": "10.5322",
+    "longitude": "106.4042",
+    "isDefault": false
+  },
+  {
+    "id": "504",
+    "name": "Giao Thủy",
+    "latitude": 20.25,
+    "longitude": 106.25,
+    "isDefault": true
+  },
+  {
+    "id": "505",
+    "name": "Hải Hậu",
+    "latitude": 20.25,
+    "longitude": 106.25,
+    "isDefault": true
+  },
+  {
+    "id": "506",
+    "name": "Mỹ Lộc",
+    "latitude": "20.4411",
+    "longitude": "106.1024",
+    "isDefault": false
+  },
+  {
+    "id": "507",
+    "name": "Nam Trực",
+    "latitude": 20.25,
+    "longitude": 106.25,
+    "isDefault": true
+  },
+  {
+    "id": "508",
+    "name": "Nghĩa Hưng",
+    "latitude": 20.25,
+    "longitude": 106.25,
+    "isDefault": true
+  },
+  {
+    "id": "509",
+    "name": "Trực Ninh",
+    "latitude": 20.25,
+    "longitude": 106.25,
+    "isDefault": true
+  },
+  {
+    "id": "510",
+    "name": "Vụ Bản",
+    "latitude": "20.4642",
+    "longitude": "105.4435",
+    "isDefault": false
+  },
+  {
+    "id": "511",
+    "name": "Xuân Trường",
+    "latitude": "20.2923",
+    "longitude": "106.3327",
+    "isDefault": false
+  },
+  {
+    "id": "512",
+    "name": "ý Yên",
+    "latitude": 20.25,
+    "longitude": 106.25,
+    "isDefault": true
+  },
+  {
+    "id": "513",
+    "name": "Nam Định",
+    "latitude": "20.4200",
+    "longitude": "106.1683",
+    "isDefault": false
+  },
+  {
+    "id": "514",
+    "name": "Anh Sơn",
+    "latitude": "18.9325",
+    "longitude": "105.0760",
+    "isDefault": false
+  },
+  {
+    "id": "515",
+    "name": "Con Cuông",
+    "latitude": "19.0500",
+    "longitude": "104.8812",
+    "isDefault": false
+  },
+  {
+    "id": "516",
+    "name": "Diễn Châu",
+    "latitude": "18.9765",
+    "longitude": "105.6003",
+    "isDefault": false
+  },
+  {
+    "id": "517",
+    "name": "Đô Lương",
+    "latitude": "18.8985",
+    "longitude": "105.3080",
+    "isDefault": false
+  },
+  {
+    "id": "518",
+    "name": "Hưng Nguyên",
+    "latitude": "18.6716",
+    "longitude": "105.6288",
+    "isDefault": false
+  },
+  {
+    "id": "519",
+    "name": "Kỳ Sơn",
+    "latitude": 19.25,
+    "longitude": 104.91667,
+    "isDefault": true
+  },
+  {
+    "id": "520",
+    "name": "Nam Đàn",
+    "latitude": "18.6980",
+    "longitude": "105.4988",
+    "isDefault": false
+  },
+  {
+    "id": "521",
+    "name": "Nghi Lộc",
+    "latitude": 19.25,
+    "longitude": 104.91667,
+    "isDefault": true
+  },
+  {
+    "id": "522",
+    "name": "Nghĩa Đàn",
+    "latitude": 19.25,
+    "longitude": 104.91667,
+    "isDefault": true
+  },
+  {
+    "id": "523",
+    "name": "Quế Phong",
+    "latitude": 19.25,
+    "longitude": 104.91667,
+    "isDefault": true
+  },
+  {
+    "id": "524",
+    "name": "Quỳ Châu",
+    "latitude": "19.5521",
+    "longitude": "105.0939",
+    "isDefault": false
+  },
+  {
+    "id": "525",
+    "name": "Quỳ Hợp",
+    "latitude": "19.3255",
+    "longitude": "105.1825",
+    "isDefault": false
+  },
+  {
+    "id": "526",
+    "name": "Quỳnh Lưu",
+    "latitude": 19.25,
+    "longitude": 104.91667,
+    "isDefault": true
+  },
+  {
+    "id": "527",
+    "name": "Tân Kỳ",
+    "latitude": "19.0476",
+    "longitude": "105.2681",
+    "isDefault": false
+  },
+  {
+    "id": "528",
+    "name": "Thanh Chương",
+    "latitude": "18.7788",
+    "longitude": "105.3336",
+    "isDefault": false
+  },
+  {
+    "id": "529",
+    "name": "Tương Dương",
+    "latitude": 19.25,
+    "longitude": 104.91667,
+    "isDefault": true
+  },
+  {
+    "id": "530",
+    "name": "Yên Thành",
+    "latitude": "18.9986",
+    "longitude": "105.4712",
+    "isDefault": false
+  },
+  {
+    "id": "531",
+    "name": "Vinh",
+    "latitude": "18.6733",
+    "longitude": "105.6922",
+    "isDefault": false
+  },
+  {
+    "id": "532",
+    "name": "Cửa Lò",
+    "latitude": 19.25,
+    "longitude": 104.91667,
+    "isDefault": true
+  },
+  {
+    "id": "533",
+    "name": "Thái Hòa",
+    "latitude": 19.25,
+    "longitude": 104.91667,
+    "isDefault": true
+  },
+  {
+    "id": "534",
+    "name": "Gia Viễn",
+    "latitude": 20.23333,
+    "longitude": 105.9,
+    "isDefault": true
+  },
+  {
+    "id": "535",
+    "name": "Hoa Lư",
+    "latitude": 20.23333,
+    "longitude": 105.9,
+    "isDefault": true
+  },
+  {
+    "id": "536",
+    "name": "Kim Sơn",
+    "latitude": "19.6041",
+    "longitude": "104.9190",
+    "isDefault": false
+  },
+  {
+    "id": "537",
+    "name": "Nho Quan",
+    "latitude": "20.3228",
+    "longitude": "105.7519",
+    "isDefault": false
+  },
+  {
+    "id": "538",
+    "name": "Yên Khánh",
+    "latitude": 20.23333,
+    "longitude": 105.9,
+    "isDefault": true
+  },
+  {
+    "id": "539",
+    "name": "Yên Mô",
+    "latitude": 20.23333,
+    "longitude": 105.9,
+    "isDefault": true
+  },
+  {
+    "id": "540",
+    "name": "Ninh Bình",
+    "latitude": "20.2539",
+    "longitude": "105.9750",
+    "isDefault": false
+  },
+  {
+    "id": "541",
+    "name": "Tam Điệp",
+    "latitude": "20.1487",
+    "longitude": "105.8985",
+    "isDefault": false
+  },
+  {
+    "id": "542",
+    "name": "Huyên Bác ái",
+    "latitude": 11.75,
+    "longitude": 108.83333,
+    "isDefault": true
+  },
+  {
+    "id": "543",
+    "name": "Ninh Hải",
+    "latitude": 11.75,
+    "longitude": 108.83333,
+    "isDefault": true
+  },
+  {
+    "id": "544",
+    "name": "Ninh Phước",
+    "latitude": 11.75,
+    "longitude": 108.83333,
+    "isDefault": true
+  },
+  {
+    "id": "545",
+    "name": "Ninh Sơn",
+    "latitude": 11.75,
+    "longitude": 108.83333,
+    "isDefault": true
+  },
+  {
+    "id": "546",
+    "name": "Thuận Bắc",
+    "latitude": 11.75,
+    "longitude": 108.83333,
+    "isDefault": true
+  },
+  {
+    "id": "547",
+    "name": "Thuận Nam",
+    "latitude": 11.75,
+    "longitude": 108.83333,
+    "isDefault": true
+  },
+  {
+    "id": "548",
+    "name": "Phan Rang-Tháp Chàm",
+    "latitude": "11.5643",
+    "longitude": "108.9886",
+    "isDefault": false
+  },
+  {
+    "id": "549",
+    "name": "Cẩm Khê",
+    "latitude": 21.33333,
+    "longitude": 105.13333,
+    "isDefault": true
+  },
+  {
+    "id": "550",
+    "name": "Đoan Hùng",
+    "latitude": "21.6225",
+    "longitude": "105.1846",
+    "isDefault": false
+  },
+  {
+    "id": "551",
+    "name": "Hạ Hòa",
+    "latitude": "21.5630",
+    "longitude": "105.0051",
+    "isDefault": false
+  },
+  {
+    "id": "552",
+    "name": "Lâm Thao",
+    "latitude": "21.3201",
+    "longitude": "105.2916",
+    "isDefault": false
+  },
+  {
+    "id": "553",
+    "name": "Phù Ninh",
+    "latitude": 21.33333,
+    "longitude": 105.13333,
+    "isDefault": true
+  },
+  {
+    "id": "554",
+    "name": "Tam Nông",
+    "latitude": 21.33333,
+    "longitude": 105.13333,
+    "isDefault": true
+  },
+  {
+    "id": "555",
+    "name": "Tân Sơn",
+    "latitude": "11.7752",
+    "longitude": "108.7848",
+    "isDefault": false
+  },
+  {
+    "id": "556",
+    "name": "Thanh Ba",
+    "latitude": "21.4988",
+    "longitude": "105.1410",
+    "isDefault": false
+  },
+  {
+    "id": "557",
+    "name": "Thanh Sơn",
+    "latitude": "21.1987",
+    "longitude": "105.1789",
+    "isDefault": false
+  },
+  {
+    "id": "558",
+    "name": "Thanh Thủy",
+    "latitude": "21.1755",
+    "longitude": "105.2839",
+    "isDefault": false
+  },
+  {
+    "id": "559",
+    "name": "Yên Lập",
+    "latitude": "21.3470",
+    "longitude": "105.0574",
+    "isDefault": false
+  },
+  {
+    "id": "560",
+    "name": "Việt Trì",
+    "latitude": "21.3228",
+    "longitude": "105.4019",
+    "isDefault": false
+  },
+  {
+    "id": "561",
+    "name": "Phú Thọ",
+    "latitude": "21.3996",
+    "longitude": "105.2222",
+    "isDefault": false
+  },
+  {
+    "id": "562",
+    "name": "Đông Hòa",
+    "latitude": 13.16667,
+    "longitude": 109.08333,
+    "isDefault": true
+  },
+  {
+    "id": "563",
+    "name": "Đồng Xuân",
+    "latitude": "13.3773",
+    "longitude": "109.1081",
+    "isDefault": false
+  },
+  {
+    "id": "564",
+    "name": "Phú Hòa",
+    "latitude": "14.1000",
+    "longitude": "107.9690",
+    "isDefault": false
+  },
+  {
+    "id": "565",
+    "name": "Sơn Hòa",
+    "latitude": 13.16667,
+    "longitude": 109.08333,
+    "isDefault": true
+  },
+  {
+    "id": "566",
+    "name": "Sông Hinh",
+    "latitude": 13.16667,
+    "longitude": 109.08333,
+    "isDefault": true
+  },
+  {
+    "id": "567",
+    "name": "Tây Hòa",
+    "latitude": 13.16667,
+    "longitude": 109.08333,
+    "isDefault": true
+  },
+  {
+    "id": "568",
+    "name": "Tuy An",
+    "latitude": 13.16667,
+    "longitude": 109.08333,
+    "isDefault": true
+  },
+  {
+    "id": "569",
+    "name": "Tuy Hòa",
+    "latitude": "13.0875",
+    "longitude": "109.3106",
+    "isDefault": false
+  },
+  {
+    "id": "570",
+    "name": "Sông Cầu",
+    "latitude": "13.4556",
+    "longitude": "109.2235",
+    "isDefault": false
+  },
+  {
+    "id": "571",
+    "name": "Bố Trạch",
+    "latitude": 17.5,
+    "longitude": 106.33333,
+    "isDefault": true
+  },
+  {
+    "id": "572",
+    "name": "Lệ Thủy",
+    "latitude": 17.5,
+    "longitude": 106.33333,
+    "isDefault": true
+  },
+  {
+    "id": "573",
+    "name": "Minh Hoá",
+    "latitude": 17.5,
+    "longitude": 106.33333,
+    "isDefault": true
+  },
+  {
+    "id": "574",
+    "name": "Quảng Ninh",
+    "latitude": 17.5,
+    "longitude": 106.33333,
+    "isDefault": true
+  },
+  {
+    "id": "575",
+    "name": "Quảng Trạch",
+    "latitude": 17.5,
+    "longitude": 106.33333,
+    "isDefault": true
+  },
+  {
+    "id": "576",
+    "name": "Tuyên Hoá",
+    "latitude": 17.5,
+    "longitude": 106.33333,
+    "isDefault": true
+  },
+  {
+    "id": "577",
+    "name": "Đồng Hới",
+    "latitude": "17.4833",
+    "longitude": "106.6000",
+    "isDefault": false
+  },
+  {
+    "id": "578",
+    "name": "Bắc Trà My",
+    "latitude": "15.3397",
+    "longitude": "108.2207",
+    "isDefault": false
+  },
+  {
+    "id": "579",
+    "name": "Đại Lộc",
+    "latitude": "15.8821",
+    "longitude": "108.1209",
+    "isDefault": false
+  },
+  {
+    "id": "580",
+    "name": "Điện Bàn",
+    "latitude": "15.8885",
+    "longitude": "108.2545",
+    "isDefault": false
+  },
+  {
+    "id": "581",
+    "name": "Đông Giang",
+    "latitude": 15.58333,
+    "longitude": 107.91667,
+    "isDefault": true
+  },
+  {
+    "id": "582",
+    "name": "Duy Xuyên",
+    "latitude": "15.8290",
+    "longitude": "108.2596",
+    "isDefault": false
+  },
+  {
+    "id": "583",
+    "name": "Hiệp Đức",
+    "latitude": "15.5822",
+    "longitude": "108.1142",
+    "isDefault": false
+  },
+  {
+    "id": "584",
+    "name": "Nam Giang",
+    "latitude": "20.3332",
+    "longitude": "106.1775",
+    "isDefault": false
+  },
+  {
+    "id": "585",
+    "name": "Nam Trà My",
+    "latitude": 15.58333,
+    "longitude": 107.91667,
+    "isDefault": true
+  },
+  {
+    "id": "586",
+    "name": "Nông Sơn",
+    "latitude": 15.58333,
+    "longitude": 107.91667,
+    "isDefault": true
+  },
+  {
+    "id": "587",
+    "name": "Núi Thành",
+    "latitude": "15.4319",
+    "longitude": "108.6595",
+    "isDefault": false
+  },
+  {
+    "id": "588",
+    "name": "Phú Ninh",
+    "latitude": "15.5547",
+    "longitude": "108.4114",
+    "isDefault": false
+  },
+  {
+    "id": "589",
+    "name": "Phước Sơn",
+    "latitude": 15.58333,
+    "longitude": 107.91667,
+    "isDefault": true
+  },
+  {
+    "id": "590",
+    "name": "Quế Sơn",
+    "latitude": "15.6736",
+    "longitude": "108.2201",
+    "isDefault": false
+  },
+  {
+    "id": "591",
+    "name": "Tây Giang",
+    "latitude": 15.58333,
+    "longitude": 107.91667,
+    "isDefault": true
+  },
+  {
+    "id": "592",
+    "name": "Thăng Bình",
+    "latitude": 15.58333,
+    "longitude": 107.91667,
+    "isDefault": true
+  },
+  {
+    "id": "593",
+    "name": "Tiên Phước",
+    "latitude": "15.4882",
+    "longitude": "108.3074",
+    "isDefault": false
+  },
+  {
+    "id": "594",
+    "name": "Hội An",
+    "latitude": "15.8733",
+    "longitude": "108.3327",
+    "isDefault": false
+  },
+  {
+    "id": "595",
+    "name": "Tam Kỳ",
+    "latitude": "15.5667",
+    "longitude": "108.4833",
+    "isDefault": false
+  },
+  {
+    "id": "596",
+    "name": "Ba Tơ",
+    "latitude": "14.7636",
+    "longitude": "108.7322",
+    "isDefault": false
+  },
+  {
+    "id": "597",
+    "name": "Bình Sơn",
+    "latitude": "15.2978",
+    "longitude": "108.7612",
+    "isDefault": false
+  },
+  {
+    "id": "598",
+    "name": "Đức Phổ",
+    "latitude": "14.8136",
+    "longitude": "108.9593",
+    "isDefault": false
+  },
+  {
+    "id": "599",
+    "name": "Lý sơn",
+    "latitude": 15,
+    "longitude": 108.66667,
+    "isDefault": true
+  },
+  {
+    "id": "600",
+    "name": "Minh Long",
+    "latitude": "14.9322",
+    "longitude": "108.7033",
+    "isDefault": false
+  },
+  {
+    "id": "601",
+    "name": "Mộ Đức",
+    "latitude": "14.9551",
+    "longitude": "108.8859",
+    "isDefault": false
+  },
+  {
+    "id": "602",
+    "name": "Nghĩa Hành",
+    "latitude": "15.0457",
+    "longitude": "108.7772",
+    "isDefault": false
+  },
+  {
+    "id": "603",
+    "name": "Sơn Hà",
+    "latitude": "15.0419",
+    "longitude": "108.4697",
+    "isDefault": false
+  },
+  {
+    "id": "604",
+    "name": "Sơn Tây",
+    "latitude": 15,
+    "longitude": 108.66667,
+    "isDefault": true
+  },
+  {
+    "id": "605",
+    "name": "Sơn Tịnh",
+    "latitude": "15.1586",
+    "longitude": "108.7958",
+    "isDefault": false
+  },
+  {
+    "id": "606",
+    "name": "Tây Trà",
+    "latitude": "15.1695",
+    "longitude": "108.3600",
+    "isDefault": false
+  },
+  {
+    "id": "607",
+    "name": "Trà Bồng",
+    "latitude": "15.2557",
+    "longitude": "108.5172",
+    "isDefault": false
+  },
+  {
+    "id": "608",
+    "name": "Tư Nghĩa",
+    "latitude": "15.0845",
+    "longitude": "108.8260",
+    "isDefault": false
+  },
+  {
+    "id": "609",
+    "name": "Quảng Ngãi",
+    "latitude": "15.1206",
+    "longitude": "108.7922",
+    "isDefault": false
+  },
+  {
+    "id": "610",
+    "name": "Ba Chẽ",
+    "latitude": 21.25,
+    "longitude": 107.33333,
+    "isDefault": true
+  },
+  {
+    "id": "611",
+    "name": "Bình Liêu",
+    "latitude": 21.25,
+    "longitude": 107.33333,
+    "isDefault": true
+  },
+  {
+    "id": "612",
+    "name": "Cô Tô",
+    "latitude": "20.9727",
+    "longitude": "107.7658",
+    "isDefault": false
+  },
+  {
+    "id": "613",
+    "name": "Đầm Hà",
+    "latitude": 21.25,
+    "longitude": 107.33333,
+    "isDefault": true
+  },
+  {
+    "id": "614",
+    "name": "Đông Triều",
+    "latitude": 21.25,
+    "longitude": 107.33333,
+    "isDefault": true
+  },
+  {
+    "id": "615",
+    "name": "Hải Hà",
+    "latitude": 21.25,
+    "longitude": 107.33333,
+    "isDefault": true
+  },
+  {
+    "id": "616",
+    "name": "Hoành Bồ",
+    "latitude": 21.25,
+    "longitude": 107.33333,
+    "isDefault": true
+  },
+  {
+    "id": "617",
+    "name": "Tiên Yên",
+    "latitude": 21.25,
+    "longitude": 107.33333,
+    "isDefault": true
+  },
+  {
+    "id": "618",
+    "name": "Vân Đồn",
+    "latitude": 21.25,
+    "longitude": 107.33333,
+    "isDefault": true
+  },
+  {
+    "id": "619",
+    "name": "Yên Hưng",
+    "latitude": 21.25,
+    "longitude": 107.33333,
+    "isDefault": true
+  },
+  {
+    "id": "620",
+    "name": "Hạ Long",
+    "latitude": "20.9500",
+    "longitude": "107.0833",
+    "isDefault": false
+  },
+  {
+    "id": "621",
+    "name": "Móng Cái",
+    "latitude": "21.5247",
+    "longitude": "107.9661",
+    "isDefault": false
+  },
+  {
+    "id": "622",
+    "name": "Cẩm Phả",
+    "latitude": "21.0071",
+    "longitude": "107.2845",
+    "isDefault": false
+  },
+  {
+    "id": "623",
+    "name": "Uông Bí",
+    "latitude": 21.25,
+    "longitude": 107.33333,
+    "isDefault": true
+  },
+  {
+    "id": "624",
+    "name": "Cam Lộ",
+    "latitude": "16.8080",
+    "longitude": "106.9941",
+    "isDefault": false
+  },
+  {
+    "id": "625",
+    "name": "Cồn Cỏ",
+    "latitude": 16.75,
+    "longitude": 107,
+    "isDefault": true
+  },
+  {
+    "id": "626",
+    "name": "Đa Krông",
+    "latitude": 16.75,
+    "longitude": 107,
+    "isDefault": true
+  },
+  {
+    "id": "627",
+    "name": "Gio Linh",
+    "latitude": "16.9248",
+    "longitude": "107.0844",
+    "isDefault": false
+  },
+  {
+    "id": "628",
+    "name": "Hải Lăng",
+    "latitude": "16.6935",
+    "longitude": "107.2512",
+    "isDefault": false
+  },
+  {
+    "id": "629",
+    "name": "Hướng Hóa",
+    "latitude": 16.75,
+    "longitude": 107,
+    "isDefault": true
+  },
+  {
+    "id": "630",
+    "name": "Triệu Phong",
+    "latitude": 16.75,
+    "longitude": 107,
+    "isDefault": true
+  },
+  {
+    "id": "631",
+    "name": "Vính Linh",
+    "latitude": 16.75,
+    "longitude": 107,
+    "isDefault": true
+  },
+  {
+    "id": "632",
+    "name": "Đông Hà",
+    "latitude": "16.8056",
+    "longitude": "107.0906",
+    "isDefault": false
+  },
+  {
+    "id": "633",
+    "name": "Quảng Trị",
+    "latitude": "16.7504",
+    "longitude": "107.2000",
+    "isDefault": false
+  },
+  {
+    "id": "634",
+    "name": "Châu Thành",
+    "latitude": 9.55,
+    "longitude": 105.91667,
+    "isDefault": true
+  },
+  {
+    "id": "635",
+    "name": "Cù Lao Dung",
+    "latitude": "9.6731",
+    "longitude": "106.1487",
+    "isDefault": false
+  },
+  {
+    "id": "636",
+    "name": "Kế Sách",
+    "latitude": "9.7674",
+    "longitude": "105.9857",
+    "isDefault": false
+  },
+  {
+    "id": "637",
+    "name": "Long Phú",
+    "latitude": "9.6102",
+    "longitude": "106.1188",
+    "isDefault": false
+  },
+  {
+    "id": "638",
+    "name": "Mỹ Tú",
+    "latitude": 9.55,
+    "longitude": 105.91667,
+    "isDefault": true
+  },
+  {
+    "id": "639",
+    "name": "Mỹ Xuyên",
+    "latitude": "9.5601",
+    "longitude": "105.9898",
+    "isDefault": false
+  },
+  {
+    "id": "640",
+    "name": "Ngã Năm",
+    "latitude": 9.55,
+    "longitude": 105.91667,
+    "isDefault": true
+  },
+  {
+    "id": "641",
+    "name": "Thạnh Trị",
+    "latitude": 9.55,
+    "longitude": 105.91667,
+    "isDefault": true
+  },
+  {
+    "id": "642",
+    "name": "Trần Đề",
+    "latitude": 9.55,
+    "longitude": 105.91667,
+    "isDefault": true
+  },
+  {
+    "id": "643",
+    "name": "Vĩnh Châu",
+    "latitude": "9.3244",
+    "longitude": "105.9801",
+    "isDefault": false
+  },
+  {
+    "id": "644",
+    "name": "Sóc Trăng",
+    "latitude": "9.6000",
+    "longitude": "105.9719",
+    "isDefault": false
+  },
+  {
+    "id": "645",
+    "name": "Bắc Yên",
+    "latitude": "21.2463",
+    "longitude": "104.4328",
+    "isDefault": false
+  },
+  {
+    "id": "646",
+    "name": "Mai Sơn",
+    "latitude": 21.16667,
+    "longitude": 104,
+    "isDefault": true
+  },
+  {
+    "id": "647",
+    "name": "Mộc Châu",
+    "latitude": "20.8520",
+    "longitude": "104.6218",
+    "isDefault": false
+  },
+  {
+    "id": "648",
+    "name": "Mường La",
+    "latitude": 21.16667,
+    "longitude": 104,
+    "isDefault": true
+  },
+  {
+    "id": "649",
+    "name": "Phù Yên",
+    "latitude": "21.2633",
+    "longitude": "104.6444",
+    "isDefault": false
+  },
+  {
+    "id": "650",
+    "name": "Quỳnh Nhai",
+    "latitude": 21.16667,
+    "longitude": 104,
+    "isDefault": true
+  },
+  {
+    "id": "651",
+    "name": "Sông Mã",
+    "latitude": "21.0509",
+    "longitude": "103.7499",
+    "isDefault": false
+  },
+  {
+    "id": "652",
+    "name": "Sốp Cộp",
+    "latitude": "20.9388",
+    "longitude": "103.5971",
+    "isDefault": false
+  },
+  {
+    "id": "653",
+    "name": "Thuận Châu",
+    "latitude": "21.4385",
+    "longitude": "103.6900",
+    "isDefault": false
+  },
+  {
+    "id": "654",
+    "name": "Yên Châu",
+    "latitude": "21.0458",
+    "longitude": "104.3010",
+    "isDefault": false
+  },
+  {
+    "id": "655",
+    "name": "Sơn La",
+    "latitude": "21.3270",
+    "longitude": "103.9141",
+    "isDefault": false
+  },
+  {
+    "id": "656",
+    "name": "Bến Cầu",
+    "latitude": "11.1105",
+    "longitude": "106.1792",
+    "isDefault": false
+  },
+  {
+    "id": "657",
+    "name": "Châu Thành",
+    "latitude": 11.33333,
+    "longitude": 106.16667,
+    "isDefault": true
+  },
+  {
+    "id": "658",
+    "name": "Dương Minh Châu",
+    "latitude": "11.3841",
+    "longitude": "106.2308",
+    "isDefault": false
+  },
+  {
+    "id": "659",
+    "name": "Gò Dầu",
+    "latitude": "11.0885",
+    "longitude": "106.2635",
+    "isDefault": false
+  },
+  {
+    "id": "660",
+    "name": "Hòa Thành",
+    "latitude": "11.2870",
+    "longitude": "106.1294",
+    "isDefault": false
+  },
+  {
+    "id": "661",
+    "name": "Tân Biên",
+    "latitude": "11.5444",
+    "longitude": "106.0116",
+    "isDefault": false
+  },
+  {
+    "id": "662",
+    "name": "Tân Châu",
+    "latitude": 11.33333,
+    "longitude": 106.16667,
+    "isDefault": true
+  },
+  {
+    "id": "663",
+    "name": "Trảng Bàng",
+    "latitude": "11.0299",
+    "longitude": "106.3575",
+    "isDefault": false
+  },
+  {
+    "id": "664",
+    "name": "Tây Ninh",
+    "latitude": "11.3131",
+    "longitude": "106.0963",
+    "isDefault": false
+  },
+  {
+    "id": "665",
+    "name": "Đông Hưng",
+    "latitude": "20.5565",
+    "longitude": "106.3553",
+    "isDefault": false
+  },
+  {
+    "id": "666",
+    "name": "Hưng Hà",
+    "latitude": "20.5904",
+    "longitude": "106.2245",
+    "isDefault": false
+  },
+  {
+    "id": "667",
+    "name": "Kiến Xương",
+    "latitude": 20.5,
+    "longitude": 106.36667,
+    "isDefault": true
+  },
+  {
+    "id": "668",
+    "name": "Quỳnh Phụ",
+    "latitude": 20.5,
+    "longitude": 106.36667,
+    "isDefault": true
+  },
+  {
+    "id": "669",
+    "name": "Thái Thụy",
+    "latitude": 20.5,
+    "longitude": 106.36667,
+    "isDefault": true
+  },
+  {
+    "id": "670",
+    "name": "Tiền Hải",
+    "latitude": 20.5,
+    "longitude": 106.36667,
+    "isDefault": true
+  },
+  {
+    "id": "671",
+    "name": "Vũ Thư",
+    "latitude": "20.4367",
+    "longitude": "106.2912",
+    "isDefault": false
+  },
+  {
+    "id": "672",
+    "name": "Thái Bình",
+    "latitude": "20.4461",
+    "longitude": "106.3422",
+    "isDefault": false
+  },
+  {
+    "id": "673",
+    "name": "Đại Từ",
+    "latitude": 21.66667,
+    "longitude": 105.83333,
+    "isDefault": true
+  },
+  {
+    "id": "674",
+    "name": "Định Hóa",
+    "latitude": 21.66667,
+    "longitude": 105.83333,
+    "isDefault": true
+  },
+  {
+    "id": "675",
+    "name": "Đồng Hỷ",
+    "latitude": 21.66667,
+    "longitude": 105.83333,
+    "isDefault": true
+  },
+  {
+    "id": "676",
+    "name": "Phổ Yên",
+    "latitude": 21.66667,
+    "longitude": 105.83333,
+    "isDefault": true
+  },
+  {
+    "id": "677",
+    "name": "Phú Bình",
+    "latitude": 21.66667,
+    "longitude": 105.83333,
+    "isDefault": true
+  },
+  {
+    "id": "678",
+    "name": "Phú Lương",
+    "latitude": 21.66667,
+    "longitude": 105.83333,
+    "isDefault": true
+  },
+  {
+    "id": "679",
+    "name": "Võ Nhai",
+    "latitude": 21.66667,
+    "longitude": 105.83333,
+    "isDefault": true
+  },
+  {
+    "id": "680",
+    "name": "Thái Nguyên",
+    "latitude": "21.6000",
+    "longitude": "105.8500",
+    "isDefault": false
+  },
+  {
+    "id": "681",
+    "name": "Sông Công",
+    "latitude": 21.66667,
+    "longitude": 105.83333,
+    "isDefault": true
+  },
+  {
+    "id": "682",
+    "name": "Bá Thước",
+    "latitude": 20.06667,
+    "longitude": 105.33333,
+    "isDefault": true
+  },
+  {
+    "id": "683",
+    "name": "Cẩm Thủy",
+    "latitude": "20.2087",
+    "longitude": "105.4695",
+    "isDefault": false
+  },
+  {
+    "id": "684",
+    "name": "Đông Sơn",
+    "latitude": 20.06667,
+    "longitude": 105.33333,
+    "isDefault": true
+  },
+  {
+    "id": "685",
+    "name": "Hà Trung",
+    "latitude": 20.06667,
+    "longitude": 105.33333,
+    "isDefault": true
+  },
+  {
+    "id": "686",
+    "name": "Hậu Lộc",
+    "latitude": "19.9144",
+    "longitude": "105.8861",
+    "isDefault": false
+  },
+  {
+    "id": "687",
+    "name": "Hoằng Hóa",
+    "latitude": 20.06667,
+    "longitude": 105.33333,
+    "isDefault": true
+  },
+  {
+    "id": "688",
+    "name": "Lang Chánh",
+    "latitude": "20.1561",
+    "longitude": "105.2422",
+    "isDefault": false
+  },
+  {
+    "id": "689",
+    "name": "Mường Lát",
+    "latitude": "20.5292",
+    "longitude": "104.6014",
+    "isDefault": false
+  },
+  {
+    "id": "690",
+    "name": "Nga Sơn",
+    "latitude": "20.0072",
+    "longitude": "105.9704",
+    "isDefault": false
+  },
+  {
+    "id": "691",
+    "name": "Ngọc Lặc",
+    "latitude": "20.0919",
+    "longitude": "105.3676",
+    "isDefault": false
+  },
+  {
+    "id": "692",
+    "name": "Như Thanh",
+    "latitude": 20.06667,
+    "longitude": 105.33333,
+    "isDefault": true
+  },
+  {
+    "id": "693",
+    "name": "Như Xuân",
+    "latitude": 20.06667,
+    "longitude": 105.33333,
+    "isDefault": true
+  },
+  {
+    "id": "694",
+    "name": "Nông Cống",
+    "latitude": "19.6240",
+    "longitude": "105.6494",
+    "isDefault": false
+  },
+  {
+    "id": "695",
+    "name": "Quan Hóa",
+    "latitude": "20.3848",
+    "longitude": "105.1002",
+    "isDefault": false
+  },
+  {
+    "id": "696",
+    "name": "Quan Sơn",
+    "latitude": "20.2591",
+    "longitude": "104.9452",
+    "isDefault": false
+  },
+  {
+    "id": "697",
+    "name": "Quảng Xương",
+    "latitude": "19.7295",
+    "longitude": "105.7827",
+    "isDefault": false
+  },
+  {
+    "id": "698",
+    "name": "Thạch Thành",
+    "latitude": 20.06667,
+    "longitude": 105.33333,
+    "isDefault": true
+  },
+  {
+    "id": "699",
+    "name": "Thiệu Hóa",
+    "latitude": 20.06667,
+    "longitude": 105.33333,
+    "isDefault": true
+  },
+  {
+    "id": "700",
+    "name": "Thọ Xuân",
+    "latitude": "19.9313",
+    "longitude": "105.5218",
+    "isDefault": false
+  },
+  {
+    "id": "701",
+    "name": "Thường Xuân",
+    "latitude": "19.9029",
+    "longitude": "105.3472",
+    "isDefault": false
+  },
+  {
+    "id": "702",
+    "name": "Tĩnh Gia",
+    "latitude": "19.4464",
+    "longitude": "105.7786",
+    "isDefault": false
+  },
+  {
+    "id": "703",
+    "name": "Triệu Sơn",
+    "latitude": "19.8191",
+    "longitude": "105.6039",
+    "isDefault": false
+  },
+  {
+    "id": "704",
+    "name": "Vĩnh Lộc",
+    "latitude": "20.0544",
+    "longitude": "105.6157",
+    "isDefault": false
+  },
+  {
+    "id": "705",
+    "name": "Yên Định",
+    "latitude": "20.2015",
+    "longitude": "106.2958",
+    "isDefault": false
+  },
+  {
+    "id": "706",
+    "name": "Thanh Hóa",
+    "latitude": "19.8075",
+    "longitude": "105.7764",
+    "isDefault": false
+  },
+  {
+    "id": "707",
+    "name": "Bỉm Sơn",
+    "latitude": 20.06667,
+    "longitude": 105.33333,
+    "isDefault": true
+  },
+  {
+    "id": "708",
+    "name": "Sầm Sơn",
+    "latitude": 20.06667,
+    "longitude": 105.33333,
+    "isDefault": true
+  },
+  {
+    "id": "709",
+    "name": "A Lưới",
+    "latitude": "16.2723",
+    "longitude": "107.2338",
+    "isDefault": false
+  },
+  {
+    "id": "710",
+    "name": "Hương Trà",
+    "latitude": "16.5254",
+    "longitude": "107.4755",
+    "isDefault": false
+  },
+  {
+    "id": "711",
+    "name": "Nam Dông",
+    "latitude": 16.4619,
+    "longitude": 107.59546,
+    "isDefault": true
+  },
+  {
+    "id": "712",
+    "name": "Phong Điền",
+    "latitude": 16.4619,
+    "longitude": 107.59546,
+    "isDefault": true
+  },
+  {
+    "id": "713",
+    "name": "Phú Lộc",
+    "latitude": "9.4284",
+    "longitude": "105.7411",
+    "isDefault": false
+  },
+  {
+    "id": "714",
+    "name": "Phú Vang",
+    "latitude": "16.4391",
+    "longitude": "107.7144",
+    "isDefault": false
+  },
+  {
+    "id": "715",
+    "name": "Quảng Điền",
+    "latitude": 16.4619,
+    "longitude": 107.59546,
+    "isDefault": true
+  },
+  {
+    "id": "716",
+    "name": "Huế",
+    "latitude": "16.4667",
+    "longitude": "107.5833",
+    "isDefault": false
+  },
+  {
+    "id": "717",
+    "name": "Hương Thủy",
+    "latitude": 16.4619,
+    "longitude": 107.59546,
+    "isDefault": true
+  },
+  {
+    "id": "718",
+    "name": "Cái Bè",
+    "latitude": 10.4,
+    "longitude": 106.3,
+    "isDefault": true
+  },
+  {
+    "id": "719",
+    "name": "Cai Lậy",
+    "latitude": 10.4,
+    "longitude": 106.3,
+    "isDefault": true
+  },
+  {
+    "id": "720",
+    "name": "Châu Thành",
+    "latitude": 10.4,
+    "longitude": 106.3,
+    "isDefault": true
+  },
+  {
+    "id": "721",
+    "name": "Chợ Gạo",
+    "latitude": "10.3498",
+    "longitude": "106.4634",
+    "isDefault": false
+  },
+  {
+    "id": "722",
+    "name": "Gò Công Đông",
+    "latitude": 10.4,
+    "longitude": 106.3,
+    "isDefault": true
+  },
+  {
+    "id": "723",
+    "name": "Gò Công Tây",
+    "latitude": 10.4,
+    "longitude": 106.3,
+    "isDefault": true
+  },
+  {
+    "id": "724",
+    "name": "Tân Phú Đông",
+    "latitude": 10.4,
+    "longitude": 106.3,
+    "isDefault": true
+  },
+  {
+    "id": "725",
+    "name": "Tân Phước",
+    "latitude": 10.4,
+    "longitude": 106.3,
+    "isDefault": true
+  },
+  {
+    "id": "726",
+    "name": "Mỹ Tho",
+    "latitude": "10.3500",
+    "longitude": "106.3500",
+    "isDefault": false
+  },
+  {
+    "id": "727",
+    "name": "Gò Công",
+    "latitude": 10.4,
+    "longitude": 106.3,
+    "isDefault": true
+  },
+  {
+    "id": "728",
+    "name": "Càng Long",
+    "latitude": 9.8,
+    "longitude": 106.3,
+    "isDefault": true
+  },
+  {
+    "id": "729",
+    "name": "Cầu Kè",
+    "latitude": "9.8724",
+    "longitude": "106.0550",
+    "isDefault": false
+  },
+  {
+    "id": "730",
+    "name": "Cầu Ngang",
+    "latitude": 9.8,
+    "longitude": 106.3,
+    "isDefault": true
+  },
+  {
+    "id": "731",
+    "name": "Châu Thành",
+    "latitude": 9.8,
+    "longitude": 106.3,
+    "isDefault": true
+  },
+  {
+    "id": "732",
+    "name": "Duyên Hải",
+    "latitude": "9.6350",
+    "longitude": "106.4924",
+    "isDefault": false
+  },
+  {
+    "id": "733",
+    "name": "Tiểu Cần",
+    "latitude": "9.8117",
+    "longitude": "106.1907",
+    "isDefault": false
+  },
+  {
+    "id": "734",
+    "name": "Trà Cú",
+    "latitude": "9.6977",
+    "longitude": "106.2583",
+    "isDefault": false
+  },
+  {
+    "id": "735",
+    "name": "Trà Vinh",
+    "latitude": 9.8,
+    "longitude": 106.3,
+    "isDefault": true
+  },
+  {
+    "id": "736",
+    "name": "Chiêm Hóa",
+    "latitude": "22.1441",
+    "longitude": "105.2728",
+    "isDefault": false
+  },
+  {
+    "id": "737",
+    "name": "Hàm Yên",
+    "latitude": 22.11667,
+    "longitude": 105.25,
+    "isDefault": true
+  },
+  {
+    "id": "738",
+    "name": "Na hang",
+    "latitude": 22.11667,
+    "longitude": 105.25,
+    "isDefault": true
+  },
+  {
+    "id": "739",
+    "name": "Sơn Dương",
+    "latitude": "21.6968",
+    "longitude": "105.3990",
+    "isDefault": false
+  },
+  {
+    "id": "740",
+    "name": "Yên Sơn",
+    "latitude": 22.11667,
+    "longitude": 105.25,
+    "isDefault": true
+  },
+  {
+    "id": "741",
+    "name": "Tuyên Quang",
+    "latitude": "21.8281",
+    "longitude": "105.2156",
+    "isDefault": false
+  },
+  {
+    "id": "742",
+    "name": "Bình Minh",
+    "latitude": "10.0682",
+    "longitude": "105.8222",
+    "isDefault": false
+  },
+  {
+    "id": "743",
+    "name": "Bình Tân",
+    "latitude": 10.1,
+    "longitude": 106,
+    "isDefault": true
+  },
+  {
+    "id": "744",
+    "name": "Long Hồ",
+    "latitude": "10.1928",
+    "longitude": "106.0123",
+    "isDefault": false
+  },
+  {
+    "id": "745",
+    "name": "Mang Thít",
+    "latitude": 10.1,
+    "longitude": 106,
+    "isDefault": true
+  },
+  {
+    "id": "746",
+    "name": "Tam Bình",
+    "latitude": "10.0481",
+    "longitude": "106.0002",
+    "isDefault": false
+  },
+  {
+    "id": "747",
+    "name": "Trà Ôn",
+    "latitude": "9.9626",
+    "longitude": "105.9217",
+    "isDefault": false
+  },
+  {
+    "id": "748",
+    "name": "Vũng Liêm",
+    "latitude": "10.0958",
+    "longitude": "106.1855",
+    "isDefault": false
+  },
+  {
+    "id": "749",
+    "name": "Vĩnh Long",
+    "latitude": "10.2550",
+    "longitude": "105.9753",
+    "isDefault": false
+  },
+  {
+    "id": "750",
+    "name": "Bình Xuyên",
+    "latitude": 21.33333,
+    "longitude": 105.56667,
+    "isDefault": true
+  },
+  {
+    "id": "751",
+    "name": "Lập Thạch",
+    "latitude": "21.4154",
+    "longitude": "105.4608",
+    "isDefault": false
+  },
+  {
+    "id": "752",
+    "name": "Sông Lô",
+    "latitude": 21.33333,
+    "longitude": 105.56667,
+    "isDefault": true
+  },
+  {
+    "id": "753",
+    "name": "Tam Đảo",
+    "latitude": "21.3932",
+    "longitude": "105.6144",
+    "isDefault": false
+  },
+  {
+    "id": "754",
+    "name": "Tam Dương",
+    "latitude": 21.33333,
+    "longitude": 105.56667,
+    "isDefault": true
+  },
+  {
+    "id": "755",
+    "name": "Vĩnh Tường",
+    "latitude": "21.2165",
+    "longitude": "105.5125",
+    "isDefault": false
+  },
+  {
+    "id": "756",
+    "name": "Yên Lạc",
+    "latitude": "21.2365",
+    "longitude": "105.5730",
+    "isDefault": false
+  },
+  {
+    "id": "757",
+    "name": "Vĩnh Yên",
+    "latitude": "21.3100",
+    "longitude": "105.5967",
+    "isDefault": false
+  },
+  {
+    "id": "758",
+    "name": "Phúc Yên",
+    "latitude": "21.2370",
+    "longitude": "105.7048",
+    "isDefault": false
+  },
+  {
+    "id": "759",
+    "name": "Lục Yên",
+    "latitude": 21.75,
+    "longitude": 104.58333,
+    "isDefault": true
+  },
+  {
+    "id": "760",
+    "name": "Mù Cang Chải",
+    "latitude": "21.8513",
+    "longitude": "104.0895",
+    "isDefault": false
+  },
+  {
+    "id": "761",
+    "name": "Trạm Tấu",
+    "latitude": "21.4666",
+    "longitude": "104.3797",
+    "isDefault": false
+  },
+  {
+    "id": "762",
+    "name": "Trấn Yên",
+    "latitude": 21.75,
+    "longitude": 104.58333,
+    "isDefault": true
+  },
+  {
+    "id": "763",
+    "name": "Văn Chấn",
+    "latitude": 21.75,
+    "longitude": 104.58333,
+    "isDefault": true
+  },
+  {
+    "id": "764",
+    "name": "Văn Yên",
+    "latitude": 21.75,
+    "longitude": 104.58333,
+    "isDefault": true
+  },
+  {
+    "id": "765",
+    "name": "Yên Bình",
+    "latitude": "22.4099",
+    "longitude": "104.5795",
+    "isDefault": false
+  },
+  {
+    "id": "766",
+    "name": "Yên Bái",
+    "latitude": "21.7000",
+    "longitude": "104.8667",
+    "isDefault": false
+  },
+  {
+    "id": "767",
+    "name": "Nghĩa Lộ",
+    "latitude": 21.75,
+    "longitude": 104.58333,
+    "isDefault": true
+  }
+]
