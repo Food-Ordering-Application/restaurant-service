@@ -1,3 +1,4 @@
+import { FavoriteRestaurant } from './favorite-restaurant.entity';
 import { Menu } from '../../menu/entities/menu.entity';
 import {
   Column,
@@ -78,6 +79,12 @@ export class Restaurant {
     cascade: ['update', 'insert'],
   })
   openHours: OpenHour[];
+
+  @OneToMany(
+    () => FavoriteRestaurant,
+    (favoriteRestaurant) => favoriteRestaurant.restaurant,
+  )
+  favoriteByUsers: FavoriteRestaurant[];
 
   @ManyToMany(() => Category, (category) => category.restaurants, {
     cascade: ['update', 'insert'],
