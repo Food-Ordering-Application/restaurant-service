@@ -265,22 +265,44 @@ export class RestaurantService {
   async getRestaurantInformation(
     getRestaurantInformationDto: GetRestaurantInformationDto,
   ): Promise<IRestaurantResponse> {
-    const { restaurantId } = getRestaurantInformationDto;
-    const doesRestaurantExist = await this.doesRestaurantExist(restaurantId);
-    if (!doesRestaurantExist) {
+    const { restaurantId, customerId } = getRestaurantInformationDto;
+    let queryBuilder: SelectQueryBuilder<Restaurant> = this.restaurantRepository
+      .createQueryBuilder('res')
+      .leftJoinAndSelect('res.categories', 'categories')
+      .leftJoinAndSelect('res.openHours', 'openHours');
+
+    if (customerId) {
+      queryBuilder = queryBuilder.leftJoinAndSelect(
+        'res.favoriteByUsers',
+        'favoriteByUsers',
+        'favoriteByUsers.customerId = :customerId',
+        { customerId: customerId },
+      );
+    }
+
+    queryBuilder = queryBuilder
+      .where('res.id = :restaurantId', {
+        restaurantId: restaurantId,
+      })
+      .andWhere('res.isActive = :active', {
+        active: true,
+      })
+      .andWhere('res.isBanned = :not_banned', {
+        not_banned: false,
+      })
+      .andWhere('res.isVerified = :verified', {
+        verified: true,
+      })
+      .select(['res', 'openHours', 'categories', 'favoriteByUsers']);
+
+    const restaurant = await queryBuilder.getOne();
+    if (!restaurant) {
       return {
         status: HttpStatus.NOT_FOUND,
         message: 'Restaurant not found',
         data: null,
       };
     }
-
-    const restaurant = await this.restaurantRepository.findOne(
-      {
-        id: restaurantId,
-      },
-      { relations: ['categories', 'openHours'] },
-    );
 
     return {
       status: HttpStatus.OK,

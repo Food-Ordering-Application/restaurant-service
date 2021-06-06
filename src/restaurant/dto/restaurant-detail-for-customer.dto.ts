@@ -17,6 +17,7 @@ export class RestaurantDetailForCustomerDto {
   };
   city?: string;
   area?: string;
+  isFavorite: boolean;
   openHours?: OpenHourDto[];
   categories?: CategoryDto[];
   merchantIdInPayPal: string;
@@ -36,6 +37,7 @@ export class RestaurantDetailForCustomerDto {
       openHours,
       categories,
       merchantIdInPayPal,
+      favoriteByUsers,
     } = restaurant;
     return {
       id,
@@ -50,6 +52,12 @@ export class RestaurantDetailForCustomerDto {
         latitude: geom.coordinates[1],
         longitude: geom.coordinates[0],
       },
+      isFavorite:
+        favoriteByUsers &&
+        Array.isArray(favoriteByUsers) &&
+        favoriteByUsers.length
+          ? true
+          : false,
       ...(city && {
         city: city.name,
       }),
@@ -62,6 +70,7 @@ export class RestaurantDetailForCustomerDto {
       ...(categories && {
         categories: categories.map(CategoryDto.EntityToDto),
       }),
+
       merchantIdInPayPal,
     };
   }
