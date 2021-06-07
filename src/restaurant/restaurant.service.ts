@@ -1,43 +1,44 @@
-import { DISTANCE_LIMIT } from './../constants';
-import { Position } from './../geo/types/position';
-import { CategoryDto } from './dto/category.dto';
-import { RestaurantSortType } from './enums/restaurant-sort-type.enum';
-import { GeoService } from './../geo/geo.service';
 import { HttpStatus, Inject, Injectable, Logger } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { InjectRepository } from '@nestjs/typeorm';
 import { USER_SERVICE } from 'src/constants';
 import { Repository, SelectQueryBuilder } from 'typeorm';
 import { MenuItem, MenuItemTopping } from '../menu/entities';
+import { DISTANCE_LIMIT } from './../constants';
+import { GeoService } from './../geo/geo.service';
+import { Position } from './../geo/types/position';
 import {
+  CreateRestaurantDto,
   FetchRestaurantDetailOfMerchantDto,
   FetchRestaurantsOfMerchantDto,
+  GetRestaurantAddressInfoDto,
   GetRestaurantInformationDto,
+  GetRestaurantInformationToCreateDeliveryDto,
   GetSomeRestaurantDto,
   RestaurantDetailForCustomerDto,
   RestaurantForCustomerDto,
-  CreateRestaurantDto,
   RestaurantForMerchantDto,
-  GetRestaurantAddressInfoDto,
-  GetRestaurantInformationToCreateDeliveryDto,
 } from './dto';
-import { Category, Restaurant, OpenHour } from './entities';
+import { CategoryDto } from './dto/category.dto';
+import { GetMetaDataDto } from './dto/get-meta-data.dto';
+import { Category, OpenHour, Restaurant } from './entities';
+import { RestaurantFilterType } from './enums';
+import { RestaurantSortType } from './enums/restaurant-sort-type.enum';
 import {
   RestaurantCreatedEventPayload,
   RestaurantProfileUpdatedEventPayload,
 } from './events';
+import { DateTimeHelper } from './helpers/datetime.helper';
 import {
+  ICreateRestaurantResponse,
   IFetchRestaurantDetailOfMerchantResponse,
   IFetchRestaurantsOfMerchantResponse,
-  IRestaurantResponse,
-  IRestaurantsResponse,
-  ICreateRestaurantResponse,
-  IGetRestaurantAddressResponse,
   IGetInformationForDeliveryResponse,
   IGetMetaDataResponse,
+  IGetRestaurantAddressResponse,
+  IRestaurantResponse,
+  IRestaurantsResponse,
 } from './interfaces';
-import { GetMetaDataDto } from './dto/get-meta-data.dto';
-import { RestaurantFilterType } from './enums';
 
 @Injectable()
 export class RestaurantService {
@@ -252,18 +253,34 @@ export class RestaurantService {
       }
     }
 
-    let queryBuilder: SelectQueryBuilder<Restaurant> = this.restaurantRepository
-      .createQueryBuilder('res')
-      .select([
-        'res.id',
-        'res.name',
-        'res.address',
-        'res.coverImageUrl',
-        'res.rating',
-        'res.numRate',
-        'res.geom',
-        'res.merchantIdInPayPal',
-      ]);
+    const hasOpeningFilter =
+      hasFilters &&
+      validFilters &&
+      filterIds.includes(RestaurantFilterType.OPENING);
+
+    let queryBuilder: SelectQueryBuilder<Restaurant> = this.restaurantRepository.createQueryBuilder(
+      'res',
+    );
+
+    if (hasOpeningFilter) {
+      const { condition, params } = DateTimeHelper.getIsOpeningCondition(
+        'openHours',
+      );
+      queryBuilder = queryBuilder.leftJoinAndSelect(
+        'res.openHours',
+        'openHours',
+        condition,
+        params,
+      );
+    } else {
+      const currentWeekDay = DateTimeHelper.getCurrentWeekDay();
+      queryBuilder = queryBuilder.leftJoinAndSelect(
+        'res.openHours',
+        'openHours',
+        'openHours.day = :currentDay',
+        { currentDay: currentWeekDay },
+      );
+    }
 
     queryBuilder = hasCategoryFilter
       ? queryBuilder.leftJoinAndSelect(
@@ -341,7 +358,20 @@ export class RestaurantService {
       }
     });
 
-    queryBuilder = queryBuilder.skip((page - 1) * size).take(size);
+    queryBuilder = queryBuilder
+      .select([
+        'res.id',
+        'res.name',
+        'res.address',
+        'res.coverImageUrl',
+        'res.rating',
+        'res.numRate',
+        'res.geom',
+        'res.merchantIdInPayPal',
+        'openHours',
+      ])
+      .skip((page - 1) * size)
+      .take(size);
 
     const restaurants = await queryBuilder.getMany();
 

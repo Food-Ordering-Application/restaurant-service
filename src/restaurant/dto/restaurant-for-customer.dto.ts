@@ -1,7 +1,7 @@
 import { CategoryDto } from '.';
 import { Position } from '../../geo/types/position';
 import { Restaurant } from '../entities';
-import { CategoryType } from '../enums';
+import { DateTimeHelper } from '../helpers/datetime.helper';
 
 export class RestaurantForCustomerDto {
   id: string;
@@ -11,6 +11,7 @@ export class RestaurantForCustomerDto {
   numRate: number;
   rating: number;
   merchantIdInPayPal: string;
+  isOpening: boolean;
   categories: CategoryDto[];
   position: Position;
   static EntityToDTO(restaurant: Restaurant): RestaurantForCustomerDto {
@@ -23,6 +24,7 @@ export class RestaurantForCustomerDto {
       rating,
       categories,
       merchantIdInPayPal,
+      openHours,
       geom,
     } = restaurant;
     return {
@@ -35,6 +37,10 @@ export class RestaurantForCustomerDto {
       categories: categories.map(CategoryDto.EntityToDto),
       merchantIdInPayPal,
       position: Position.GeometryToPosition(geom),
+      isOpening:
+        openHours && Array.isArray(openHours) && openHours.length
+          ? DateTimeHelper.getOpenStatus(openHours[0])
+          : false,
     };
   }
 }
