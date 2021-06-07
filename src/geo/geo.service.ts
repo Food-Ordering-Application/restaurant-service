@@ -1,8 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { CityDto, GetDistrictsDto } from './dto';
 import { Area, City } from './entities';
+import { IGetDistrictsResponse } from './interfaces';
 
 @Injectable()
 export class GeoService {
@@ -20,30 +22,31 @@ export class GeoService {
     });
     return count !== 0;
   }
-  // async getRestaurantAddressInfo(
-  //   getRestaurantAddressInfoDto: GetRestaurantAddressInfoDto,
-  // ): Promise<IGetRestaurantAddressResponse> {
-  //   const { restaurantId } = getRestaurantAddressInfoDto;
-  //   try {
-  //     //TODO: Lấy thông tin địa chỉ restaurant
-  //     const restaurant = await this.restaurantRepository.findOne({
-  //       id: restaurantId,
-  //     });
-  //     return {
-  //       status: HttpStatus.OK,
-  //       message: 'Restaurant address fetched successfully',
-  //       data: {
-  //         address: restaurant.address,
-  //         geom: restaurant.geom,
-  //       },
-  //     };
-  //   } catch (error) {
-  //     this.logger.error(error);
-  //     return {
-  //       status: HttpStatus.INTERNAL_SERVER_ERROR,
-  //       message: error.message,
-  //       data: null,
-  //     };
-  //   }
-  // }
+
+  async getDistrictsOfCity(
+    getDistrictsOfCityDto: GetDistrictsDto,
+  ): Promise<IGetDistrictsResponse> {
+    const { cityId } = getDistrictsOfCityDto;
+    const queryBuilder = this.cityRepository
+      .createQueryBuilder('city')
+      .leftJoinAndSelect('city.districts', 'districts')
+      .where('city.id = :cityId', { cityId: cityId })
+      .select(['city.id', 'city.name', 'districts.id', 'districts.name']);
+    const city = await queryBuilder.getOne();
+    if (!city) {
+      return {
+        status: HttpStatus.NOT_FOUND,
+        message: 'City not found',
+        data: null,
+      };
+    }
+
+    return {
+      status: HttpStatus.OK,
+      message: 'Fetched districts of city successfully',
+      data: {
+        city: CityDto.EntityToDto(city),
+      },
+    };
+  }
 }
