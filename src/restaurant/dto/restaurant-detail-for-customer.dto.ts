@@ -1,6 +1,6 @@
 import { OpenHourDto, CategoryDto } from '.';
 import { Restaurant } from '../entities';
-import { CategoryType } from '../enums';
+import { Position } from '../../geo/types/position';
 
 export class RestaurantDetailForCustomerDto {
   id: string;
@@ -11,13 +11,10 @@ export class RestaurantDetailForCustomerDto {
   numRate: number;
   rating: number;
   address: string;
-  geo: {
-    latitude: number;
-    longitude: number;
-  };
   city?: string;
   area?: string;
   isFavorite: boolean;
+  position: Position;
   openHours?: OpenHourDto[];
   categories?: CategoryDto[];
   merchantIdInPayPal: string;
@@ -48,10 +45,7 @@ export class RestaurantDetailForCustomerDto {
       rating,
       address,
       phone,
-      geo: {
-        latitude: geom.coordinates[1],
-        longitude: geom.coordinates[0],
-      },
+      position: Position.GeometryToPosition(geom),
       isFavorite:
         favoriteByUsers &&
         Array.isArray(favoriteByUsers) &&

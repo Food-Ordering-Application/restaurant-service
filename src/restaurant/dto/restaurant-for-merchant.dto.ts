@@ -1,3 +1,4 @@
+import { Position } from 'src/geo/types/position';
 import { CategoryDto, OpenHourDto } from '.';
 import { Restaurant } from '../entities';
 
@@ -10,10 +11,7 @@ export class RestaurantForMerchantDto {
   videoUrl: string;
   verifiedImageUrl: string;
   address: string;
-  geo: {
-    latitude: number;
-    longitude: number;
-  };
+  position: Position;
   city?: string;
   area?: string;
   openHours?: OpenHourDto[];
@@ -49,10 +47,7 @@ export class RestaurantForMerchantDto {
       verifiedImageUrl,
       address,
       phone,
-      geo: {
-        latitude: geom.coordinates[1],
-        longitude: geom.coordinates[0],
-      },
+      position: Position.GeometryToPosition(geom),
       ...(city && {
         city: city.name,
       }),

@@ -1,3 +1,4 @@
+import { Position } from './../../geo/types/position';
 import { City, Area } from '../../geo/entities';
 import { Restaurant } from '../../restaurant/entities';
 import { DeepPartial, MigrationInterface, QueryRunner } from 'typeorm';
@@ -198,10 +199,7 @@ export class changeCityAndArea1622904823967 implements MigrationInterface {
           id: parseInt(id),
           name,
           districts: newDistricts,
-          geometry: {
-            type: 'Point',
-            coordinates: [longitude, latitude],
-          },
+          geometry: Position.PositionToGeometry({ latitude, longitude }),
         });
       },
     );

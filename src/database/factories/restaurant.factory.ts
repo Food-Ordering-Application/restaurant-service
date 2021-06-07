@@ -4,6 +4,7 @@ import Faker from 'faker';
 import { Category, Restaurant } from '../../restaurant/entities/index';
 import { CategoryType } from '../../restaurant/enums/index';
 import * as _ from 'lodash';
+import { Position } from '../../geo/types/position';
 
 interface Context {
   restaurantId?: string;
@@ -38,10 +39,10 @@ define(Restaurant, (faker: typeof Faker, context: Context) => {
   const longtitudes = [106.7049702, 106.6626456, 106.6788235];
 
   const random = Math.floor(Math.random() * latitudes.length);
-  const geom = {
-    type: 'Point',
-    coordinates: [longtitudes[random], latitudes[random]],
-  };
+  const geom = Position.PositionToGeometry({
+    latitude: latitudes[random],
+    longitude: longtitudes[random],
+  });
 
   const restaurant = new Restaurant();
   restaurant.id = id;

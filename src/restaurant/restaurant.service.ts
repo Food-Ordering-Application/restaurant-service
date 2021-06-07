@@ -1,3 +1,4 @@
+import { Position } from './../geo/types/position';
 import { CategoryDto } from './dto/category.dto';
 import { RestaurantSortType } from './enums/restaurant-sort-type.enum';
 import { GeoService } from './../geo/geo.service';
@@ -151,10 +152,7 @@ export class RestaurantService {
       verifiedImageUrl,
       videoUrl,
       cityId,
-      geom: {
-        type: 'Point',
-        coordinates: [geo.longitude, geo.latitude],
-      },
+      geom: Position.PositionToGeometry(geo),
       openHours,
     });
     const newRestaurant = await this.restaurantRepository.save(restaurant);
@@ -213,6 +211,7 @@ export class RestaurantService {
         'res.coverImageUrl',
         'res.rating',
         'res.numRate',
+        'res.geom',
         'res.merchantIdInPayPal',
       ]);
 

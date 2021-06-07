@@ -1,3 +1,4 @@
+import { Position } from './../../geo/types/position';
 import { Area } from '../../geo/entities';
 import { MigrationInterface, QueryRunner } from 'typeorm';
 import * as fs from 'fs';
@@ -61,10 +62,7 @@ export class addGeometryForArea1622985788954 implements MigrationInterface {
         const { isDefault, latitude, longitude } = found;
         return {
           ...district,
-          geometry: {
-            type: 'Point',
-            coordinates: [longitude, latitude],
-          },
+          geometry: Position.PositionToGeometry({ longitude, latitude }),
           isPrecise: !isDefault,
         };
       }
