@@ -2,9 +2,9 @@ import { HttpStatus, Injectable } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CityDto, GetDistrictsDto } from './dto';
+import { CityDto, GetCityDto, GetDistrictsDto } from './dto';
 import { Area, City } from './entities';
-import { IGetDistrictsResponse } from './interfaces';
+import { IGetCityResponse, IGetDistrictsResponse } from './interfaces';
 
 @Injectable()
 export class GeoService {
@@ -46,6 +46,38 @@ export class GeoService {
       message: 'Fetched districts of city successfully',
       data: {
         city: CityDto.EntityToDto(city),
+      },
+    };
+  }
+
+  async getCityFromLocation(
+    getCityFromLocationDto: GetCityDto,
+  ): Promise<IGetCityResponse> {
+    const { position } = getCityFromLocationDto;
+    const { latitude, longitude } = position;
+
+    // raw query
+    //  select c."name", a."name",
+    // 	ST_Distance_Sphere(a.geometry, 'SRID=4326;POINT(106.97015310738546 11.086332346448264)') AS dist
+    //  from area a
+    //    join city c
+    //    on a."cityId" = c.id
+    //  order by a.geometry <-> 'SRID=4326;POINT(106.97015310738546 11.086332346448264)'
+    //  limit 1;
+
+    const queryBuilder = this.areaRepository
+      .createQueryBuilder('area')
+      .leftJoinAndSelect('area.city', 'city')
+      .orderBy(`area.geometry <-> 'SRID=4326;POINT(${longitude} ${latitude})'`)
+      .select(['city.id', 'city.name'])
+      .take(1);
+
+    const area = await queryBuilder.getOne();
+    return {
+      status: HttpStatus.OK,
+      message: 'Get city from location successfully',
+      data: {
+        city: CityDto.EntityToDto(area.city),
       },
     };
   }

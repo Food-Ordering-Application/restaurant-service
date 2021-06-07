@@ -10,7 +10,9 @@ export class CityDto {
     return {
       id,
       name,
-      districts: districts.map(AreaDto.EntityToDto),
+      ...(districts && {
+        districts: districts.map(AreaDto.EntityToDto),
+      }),
     };
   }
 }
