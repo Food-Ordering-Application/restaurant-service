@@ -206,7 +206,51 @@ export class RestaurantService {
 
     const hasAreaFilter = areaIds && Array.isArray(areaIds) && areaIds.length;
 
+    const hasSort = sortId !== undefined && sortId !== null ? true : false;
+    const validSort =
+      hasSort && Object.values(RestaurantSortType).includes(sortId)
+        ? true
+        : false;
+
+    const hasFilters =
+      filterIds != null && Array.isArray(filterIds) && filterIds.length
+        ? true
+        : false;
+    const validFilters =
+      hasFilters &&
+      filterIds.every((filterId) =>
+        Object.values(RestaurantFilterType).includes(filterId),
+      )
+        ? true
+        : false;
+
     const validPosition = Position.validPosition(position);
+
+    if (hasSort && !validSort) {
+      return {
+        status: HttpStatus.BAD_REQUEST,
+        message: 'Sort id is not valid',
+        data: null,
+      };
+    }
+
+    if (hasFilters && !validFilters) {
+      return {
+        status: HttpStatus.BAD_REQUEST,
+        message: 'Filter ids is not valid',
+        data: null,
+      };
+    }
+
+    if (position != null && !validPosition) {
+      if (hasSort && !validSort) {
+        return {
+          status: HttpStatus.BAD_REQUEST,
+          message: 'Position is not valid',
+          data: null,
+        };
+      }
+    }
 
     let queryBuilder: SelectQueryBuilder<Restaurant> = this.restaurantRepository
       .createQueryBuilder('res')
@@ -266,12 +310,40 @@ export class RestaurantService {
       );
     }
 
-    const restaurants = await queryBuilder
-      .orderBy('res.numRate', 'DESC')
-      .addOrderBy('res.rating', 'DESC')
-      .skip((page - 1) * size)
-      .take(size)
-      .getMany();
+    switch (sortId) {
+      case RestaurantSortType.RATING: {
+        queryBuilder = queryBuilder
+          .orderBy('res.rating', 'DESC')
+          .addOrderBy('res.numRate', 'DESC');
+        break;
+      }
+
+      case RestaurantSortType.NEARBY: {
+        const { longitude, latitude } = position;
+        queryBuilder = queryBuilder.orderBy(
+          `res.geom <-> 'SRID=4326;POINT(${longitude} ${latitude})'`,
+        );
+        break;
+      }
+    }
+
+    filterIds.forEach((filterId) => {
+      switch (filterId) {
+        case RestaurantFilterType.OPENING: {
+          // TODO
+          break;
+        }
+
+        case RestaurantFilterType.PROMOTION: {
+          // TODO
+          break;
+        }
+      }
+    });
+
+    queryBuilder = queryBuilder.skip((page - 1) * size).take(size);
+
+    const restaurants = await queryBuilder.getMany();
 
     return {
       status: HttpStatus.OK,

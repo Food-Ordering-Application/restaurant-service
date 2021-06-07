@@ -1,4 +1,4 @@
 export enum RestaurantSortType {
-  NEARBY,
-  RATING,
+  NEARBY = 1,
+  RATING = 2,
 }

@@ -1,4 +1,4 @@
 export enum RestaurantFilterType {
-  OPENING,
-  PROMOTION,
+  OPENING = 1,
+  PROMOTION = 2,
 }
