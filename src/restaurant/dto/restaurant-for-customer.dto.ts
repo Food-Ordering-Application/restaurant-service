@@ -1,4 +1,5 @@
 import { CategoryDto } from '.';
+import { Position } from '../../geo/types/position';
 import { Restaurant } from '../entities';
 import { CategoryType } from '../enums';
 
@@ -11,6 +12,7 @@ export class RestaurantForCustomerDto {
   rating: number;
   merchantIdInPayPal: string;
   categories: CategoryDto[];
+  position: Position;
   static EntityToDTO(restaurant: Restaurant): RestaurantForCustomerDto {
     const {
       id,
@@ -21,6 +23,7 @@ export class RestaurantForCustomerDto {
       rating,
       categories,
       merchantIdInPayPal,
+      geom,
     } = restaurant;
     return {
       id,
@@ -31,6 +34,7 @@ export class RestaurantForCustomerDto {
       address,
       categories: categories.map(CategoryDto.EntityToDto),
       merchantIdInPayPal,
+      position: Position.GeometryToPosition(geom),
     };
   }
 }
