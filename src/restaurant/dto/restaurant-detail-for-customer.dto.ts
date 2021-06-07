@@ -1,6 +1,7 @@
 import { OpenHourDto, CategoryDto } from '.';
 import { Restaurant } from '../entities';
 import { Position } from '../../geo/types/position';
+import { DateTimeHelper } from '../helpers/datetime.helper';
 
 export class RestaurantDetailForCustomerDto {
   id: string;
@@ -14,6 +15,7 @@ export class RestaurantDetailForCustomerDto {
   city?: string;
   area?: string;
   isFavorite: boolean;
+  isOpening: boolean;
   position: Position;
   openHours?: OpenHourDto[];
   categories?: CategoryDto[];
@@ -64,7 +66,13 @@ export class RestaurantDetailForCustomerDto {
       ...(categories && {
         categories: categories.map(CategoryDto.EntityToDto),
       }),
-
+      isOpening:
+        openHours &&
+        DateTimeHelper.getCurrentOpenHours(openHours).some(
+          DateTimeHelper.getOpenStatus,
+        )
+          ? true
+          : false,
       merchantIdInPayPal,
     };
   }

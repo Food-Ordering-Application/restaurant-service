@@ -33,6 +33,11 @@ const getOpenStatus = (openHour: OpenHour): boolean => {
   return isOpen;
 };
 
+const getCurrentOpenHours = (openHours: OpenHour[]): OpenHour[] => {
+  const currentDay = getCurrentWeekDay();
+  return openHours.filter(({ day }) => day == currentDay);
+};
+
 const getIsOpeningCondition = (
   alias: string,
 ): { condition: string; params: any } => {
@@ -64,4 +69,5 @@ export const DateTimeHelper = {
   getCurrentWeekDay,
   getIsOpeningCondition,
   getOpenStatus,
+  getCurrentOpenHours,
 };
