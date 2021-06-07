@@ -1,3 +1,5 @@
+import { CategoryDto } from './dto/category.dto';
+import { RestaurantSortType } from './enums/restaurant-sort-type.enum';
 import { GeoService } from './../geo/geo.service';
 import { HttpStatus, Inject, Injectable, Logger } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
@@ -30,7 +32,10 @@ import {
   ICreateRestaurantResponse,
   IGetRestaurantAddressResponse,
   IGetInformationForDeliveryResponse,
+  IGetMetaDataResponse,
 } from './interfaces';
+import { GetMetaDataDto } from './dto/get-meta-data.dto';
+import { RestaurantFilterType } from './enums';
 
 @Injectable()
 export class RestaurantService {
@@ -446,6 +451,49 @@ export class RestaurantService {
       message: 'Restaurant fetched successfully',
       data: {
         restaurant: RestaurantForMerchantDto.EntityToDTO(restaurant),
+      },
+    };
+  }
+  async getMetaData(
+    getMetaDataDto: GetMetaDataDto,
+  ): Promise<IGetMetaDataResponse> {
+    const response = await this.categoryRepository.find({
+      order: { displayOrder: 'ASC' },
+    });
+    const categories = response.map(CategoryDto.EntityToDto);
+    return {
+      status: HttpStatus.OK,
+      message: 'Fetched meta data successfully',
+      data: {
+        deliveryService: {
+          serviceStartTime: '7:00',
+          serviceEndTime: '22:00',
+          maxDeliverTime: 60,
+          minDeliverTime: 30,
+          averageTimePer1km: 10,
+          deliverEstimateTime: {
+            merchantTime: 15,
+            stepTime: 5,
+          },
+          closeTimeWarning: 1800, // 30'
+          callCenter: '0949 111 222',
+          distanceLimit: 10000,
+        },
+        restaurantFilterType: [
+          { id: RestaurantFilterType.OPENING, name: 'Đang mở' },
+          { id: RestaurantFilterType.PROMOTION, name: 'Ưu đãi' },
+        ],
+        restaurantSortType: [
+          {
+            id: RestaurantSortType.NEARBY,
+            name: 'Gần đây',
+          },
+          {
+            id: RestaurantSortType.RATING,
+            name: 'Đánh giá',
+          },
+        ],
+        categories,
       },
     };
   }

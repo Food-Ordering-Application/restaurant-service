@@ -16,10 +16,12 @@ import {
   IFetchRestaurantDetailOfMerchantResponse,
   IGetRestaurantAddressResponse,
   IGetInformationForDeliveryResponse,
+  IGetMetaDataResponse,
 } from './interfaces';
 import { RestaurantService } from './restaurant.service';
 import { RestaurantProfileUpdatedEventPayload } from './events/restaurant-profile-updated.event';
 import { GetRestaurantAddressInfoDto } from './dto/get-restaurant-address-info.dto';
+import { GetMetaDataDto } from './dto/get-meta-data.dto';
 
 @Controller()
 export class RestaurantController {
@@ -92,5 +94,12 @@ export class RestaurantController {
     return this.restaurantService.getRestaurantInformationToCreateDelivery(
       getRestaurantInformationToCreateDeliveryDto,
     );
+  }
+
+  @MessagePattern('getMetaData')
+  async getMetaData(
+    @Payload() getMetaDataDto: GetMetaDataDto,
+  ): Promise<IGetMetaDataResponse> {
+    return await this.restaurantService.getMetaData(getMetaDataDto);
   }
 }

@@ -11,3 +11,4 @@ export { IOrderItemToppingData } from './order-item-topping.interface';
 export { IGetRestaurantAddressResponse } from './get-restaurant-address-response.interface';
 export { IGetMenuItemResponse } from '../../menu/interfaces/get-menuitem-response.interface';
 export { IGetInformationForDeliveryResponse } from './get-restaurant-information-to-create-delivery.interface';
+export { IGetMetaDataResponse } from './get-meta-data-response.interface';
