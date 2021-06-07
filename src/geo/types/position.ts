@@ -33,4 +33,12 @@ export class Position {
       coordinates: [longitude, latitude],
     };
   }
+
+  static validPosition(position: Position): boolean {
+    const { latitude, longitude } = position || {};
+    if (latitude === undefined || longitude === undefined) {
+      return false;
+    }
+    return Math.abs(latitude) <= 90 && Math.abs(longitude) <= 180;
+  }
 }

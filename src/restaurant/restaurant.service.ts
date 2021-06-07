@@ -1,3 +1,4 @@
+import { DISTANCE_LIMIT } from './../constants';
 import { Position } from './../geo/types/position';
 import { CategoryDto } from './dto/category.dto';
 import { RestaurantSortType } from './enums/restaurant-sort-type.enum';
@@ -196,11 +197,16 @@ export class RestaurantService {
       search,
       areaIds,
       categoryIds,
+      position,
+      sortId,
+      filterIds,
     } = getSomeRestaurantDto;
     const hasCategoryFilter =
       categoryIds && Array.isArray(categoryIds) && categoryIds.length;
 
     const hasAreaFilter = areaIds && Array.isArray(areaIds) && areaIds.length;
+
+    const validPosition = Position.validPosition(position);
 
     let queryBuilder: SelectQueryBuilder<Restaurant> = this.restaurantRepository
       .createQueryBuilder('res')
@@ -248,6 +254,16 @@ export class RestaurantService {
       queryBuilder = queryBuilder.andWhere('res.name iLIKE :restaurantName', {
         restaurantName: `%${search.toLowerCase()}%`,
       });
+    }
+
+    if (validPosition) {
+      const { latitude, longitude } = position;
+      // raw query
+      // WHERE ST_DWithin('SRID=4326;POINT(106.649 10.7468)',geom,3000, true)
+      queryBuilder = queryBuilder.andWhere(
+        `ST_DWithin('SRID=4326;POINT(:longitude :latitude)', res.geom, :radius, true)`,
+        { longitude: longitude, latitude: latitude, radius: DISTANCE_LIMIT },
+      );
     }
 
     const restaurants = await queryBuilder
@@ -476,7 +492,7 @@ export class RestaurantService {
           },
           closeTimeWarning: 1800, // 30'
           callCenter: '0949 111 222',
-          distanceLimit: 10000,
+          distanceLimit: DISTANCE_LIMIT,
         },
         restaurantFilterType: [
           { id: RestaurantFilterType.OPENING, name: 'Đang mở' },
