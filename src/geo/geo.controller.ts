@@ -1,12 +1,23 @@
 import { Controller } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
-import { GetCityDto, GetDistrictsDto } from './dto';
+import { GetAllCitiesDto, GetCityDto, GetDistrictsDto } from './dto';
 import { GeoService } from './geo.service';
-import { IGetCityResponse, IGetDistrictsResponse } from './interfaces';
+import {
+  IGetCitiesResponse,
+  IGetCityResponse,
+  IGetDistrictsResponse,
+} from './interfaces';
 
 @Controller()
 export class GeoController {
   constructor(private readonly geoService: GeoService) {}
+
+  @MessagePattern('getAllCities')
+  async getAllCities(
+    @Payload() getAllCitiesDto: GetAllCitiesDto,
+  ): Promise<IGetCitiesResponse> {
+    return await this.geoService.getAllCities(getAllCitiesDto);
+  }
 
   @MessagePattern('getDistrictsOfCity')
   async getDistrictsOfCity(

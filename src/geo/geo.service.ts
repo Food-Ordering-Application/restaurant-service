@@ -2,9 +2,13 @@ import { HttpStatus, Injectable } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CityDto, GetCityDto, GetDistrictsDto } from './dto';
+import { CityDto, GetAllCitiesDto, GetCityDto, GetDistrictsDto } from './dto';
 import { Area, City } from './entities';
-import { IGetCityResponse, IGetDistrictsResponse } from './interfaces';
+import {
+  IGetCitiesResponse,
+  IGetCityResponse,
+  IGetDistrictsResponse,
+} from './interfaces';
 
 @Injectable()
 export class GeoService {
@@ -78,6 +82,21 @@ export class GeoService {
       message: 'Get city from location successfully',
       data: {
         city: CityDto.EntityToDto(area.city),
+      },
+    };
+  }
+
+  async getAllCities(
+    getAllCitiesDto: GetAllCitiesDto,
+  ): Promise<IGetCitiesResponse> {
+    const response = await this.cityRepository.find();
+    const cities = response.map(CityDto.EntityToDto);
+
+    return {
+      status: HttpStatus.OK,
+      message: 'Fetched districts of city successfully',
+      data: {
+        cities: cities,
       },
     };
   }
