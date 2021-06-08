@@ -10,6 +10,7 @@ import { Restaurant } from './entities/restaurant.entity';
 import { RestaurantController } from './restaurant.controller';
 import { RestaurantService } from './restaurant.service';
 import { MenuItem, MenuItemTopping } from '../menu/entities';
+import { FavoriteRestaurant } from './entities';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { MenuItem, MenuItemTopping } from '../menu/entities';
       Category,
       MenuItem,
       MenuItemTopping,
+      FavoriteRestaurant,
     ]),
     ClientsModule.registerAsync([
       {

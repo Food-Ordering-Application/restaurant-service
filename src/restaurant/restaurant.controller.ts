@@ -7,6 +7,7 @@ import {
   FetchRestaurantsOfMerchantDto,
   FetchRestaurantDetailOfMerchantDto,
   GetRestaurantInformationToCreateDeliveryDto,
+  UpdateFavoriteRestaurantStatusDto,
 } from './dto';
 import {
   IRestaurantResponse,
@@ -17,6 +18,7 @@ import {
   IGetRestaurantAddressResponse,
   IGetInformationForDeliveryResponse,
   IGetMetaDataResponse,
+  IUpdateFavoriteRestaurantResponse,
 } from './interfaces';
 import { RestaurantService } from './restaurant.service';
 import { RestaurantProfileUpdatedEventPayload } from './events/restaurant-profile-updated.event';
@@ -101,5 +103,14 @@ export class RestaurantController {
     @Payload() getMetaDataDto: GetMetaDataDto,
   ): Promise<IGetMetaDataResponse> {
     return await this.restaurantService.getMetaData(getMetaDataDto);
+  }
+
+  @MessagePattern('updateFavoriteRestaurant')
+  async updateFavoriteRestaurant(
+    @Payload() updateFavoriteRestaurantDto: UpdateFavoriteRestaurantStatusDto,
+  ): Promise<IUpdateFavoriteRestaurantResponse> {
+    return await this.restaurantService.updateFavoriteRestaurant(
+      updateFavoriteRestaurantDto,
+    );
   }
 }

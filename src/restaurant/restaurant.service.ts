@@ -18,10 +18,11 @@ import {
   RestaurantDetailForCustomerDto,
   RestaurantForCustomerDto,
   RestaurantForMerchantDto,
+  UpdateFavoriteRestaurantStatusDto,
 } from './dto';
 import { CategoryDto } from './dto/category.dto';
 import { GetMetaDataDto } from './dto/get-meta-data.dto';
-import { Category, OpenHour, Restaurant } from './entities';
+import { Category, FavoriteRestaurant, OpenHour, Restaurant } from './entities';
 import { RestaurantFilterType } from './enums';
 import { RestaurantSortType } from './enums/restaurant-sort-type.enum';
 import {
@@ -38,6 +39,7 @@ import {
   IGetRestaurantAddressResponse,
   IRestaurantResponse,
   IRestaurantsResponse,
+  IUpdateFavoriteRestaurantResponse,
 } from './interfaces';
 
 @Injectable()
@@ -55,6 +57,8 @@ export class RestaurantService {
     private openHourRepository: Repository<OpenHour>,
     @InjectRepository(Category)
     private categoryRepository: Repository<Category>,
+    @InjectRepository(FavoriteRestaurant)
+    private favoriteRestaurantRepository: Repository<FavoriteRestaurant>,
 
     private geoService: GeoService,
   ) {}
@@ -571,6 +575,7 @@ export class RestaurantService {
       },
     };
   }
+
   async getMetaData(
     getMetaDataDto: GetMetaDataDto,
   ): Promise<IGetMetaDataResponse> {
@@ -613,5 +618,56 @@ export class RestaurantService {
         categories,
       },
     };
+  }
+
+  async updateFavoriteRestaurant(
+    updateFavoriteRestaurantDto: UpdateFavoriteRestaurantStatusDto,
+  ): Promise<IUpdateFavoriteRestaurantResponse> {
+    const {
+      customerId,
+      restaurantId,
+      isFavorite,
+    } = updateFavoriteRestaurantDto;
+
+    const queryBuilder = this.favoriteRestaurantRepository
+      .createQueryBuilder('favorite')
+      .where('favorite.customerId = :customerId', {
+        customerId: customerId,
+      })
+      .andWhere('favorite.restaurantId = :restaurantId', {
+        restaurantId: restaurantId,
+      });
+
+    const favoriteStatus = await queryBuilder.getOne();
+    const isCurrentFavorite = favoriteStatus == null ? false : true;
+
+    if (isCurrentFavorite == isFavorite) {
+      return {
+        status: HttpStatus.OK,
+        message: 'Nothing to update',
+      };
+    }
+
+    try {
+      if (isFavorite) {
+        const newFavoriteStatus = this.favoriteRestaurantRepository.create({
+          customerId,
+          restaurantId,
+        });
+        await this.favoriteRestaurantRepository.create(newFavoriteStatus);
+      } else {
+        await this.favoriteRestaurantRepository.remove(favoriteStatus);
+      }
+
+      return {
+        status: HttpStatus.OK,
+        message: isFavorite ? 'Like' : 'Unlike' + ' restaurant successfully',
+      };
+    } catch (e) {
+      return {
+        status: HttpStatus.INTERNAL_SERVER_ERROR,
+        message: e.message,
+      };
+    }
   }
 }
