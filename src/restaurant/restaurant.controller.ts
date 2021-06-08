@@ -8,6 +8,7 @@ import {
   FetchRestaurantDetailOfMerchantDto,
   GetRestaurantInformationToCreateDeliveryDto,
   UpdateFavoriteRestaurantStatusDto,
+  GetFavoriteRestaurantsDto,
 } from './dto';
 import {
   IRestaurantResponse,
@@ -111,6 +112,15 @@ export class RestaurantController {
   ): Promise<IUpdateFavoriteRestaurantResponse> {
     return await this.restaurantService.updateFavoriteRestaurant(
       updateFavoriteRestaurantDto,
+    );
+  }
+
+  @MessagePattern('getFavoriteRestaurants')
+  async getFavoriteRestaurants(
+    @Payload() getFavoriteRestaurantsDto: GetFavoriteRestaurantsDto,
+  ): Promise<IRestaurantsResponse> {
+    return await this.restaurantService.getFavoriteRestaurants(
+      getFavoriteRestaurantsDto,
     );
   }
 }

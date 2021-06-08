@@ -11,6 +11,7 @@ import {
   CreateRestaurantDto,
   FetchRestaurantDetailOfMerchantDto,
   FetchRestaurantsOfMerchantDto,
+  GetFavoriteRestaurantsDto,
   GetRestaurantAddressInfoDto,
   GetRestaurantInformationDto,
   GetRestaurantInformationToCreateDeliveryDto,
@@ -669,5 +670,66 @@ export class RestaurantService {
         message: e.message,
       };
     }
+  }
+
+  async getFavoriteRestaurants(
+    getFavoriteRestaurantsDto: GetFavoriteRestaurantsDto,
+  ): Promise<IRestaurantsResponse> {
+    const { customerId, page, size } = getFavoriteRestaurantsDto;
+    let queryBuilder: SelectQueryBuilder<Restaurant> = this.restaurantRepository.createQueryBuilder(
+      'res',
+    );
+
+    const currentWeekDay = DateTimeHelper.getCurrentWeekDay();
+    queryBuilder = queryBuilder
+      .leftJoinAndSelect(
+        'res.favoriteByUsers',
+        'favorite',
+        'favorite.customerId = :customerId',
+        {
+          customerId: customerId,
+        },
+      )
+      .leftJoinAndSelect(
+        'res.openHours',
+        'openHours',
+        'openHours.day = :currentDay',
+        { currentDay: currentWeekDay },
+      );
+
+    queryBuilder = queryBuilder
+      .where('res.isActive = :active', {
+        active: true,
+      })
+      .andWhere('res.isBanned = :not_banned', {
+        not_banned: false,
+      })
+      .andWhere('res.isVerified = :verified', {
+        verified: true,
+      })
+      .orderBy('favorite.created_at', 'DESC')
+      .select([
+        'res.id',
+        'res.name',
+        'res.address',
+        'res.coverImageUrl',
+        'res.rating',
+        'res.numRate',
+        'res.geom',
+        'res.merchantIdInPayPal',
+        'openHours',
+      ])
+      .skip((page - 1) * size)
+      .take(size);
+
+    const restaurants = await queryBuilder.getMany();
+
+    return {
+      status: HttpStatus.OK,
+      message: 'Fetched favorite restaurant successfully',
+      data: {
+        restaurants: restaurants.map(RestaurantForCustomerDto.EntityToDTO),
+      },
+    };
   }
 }
