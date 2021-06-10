@@ -8,12 +8,12 @@ export class RestaurantForCustomerDto {
   name: string;
   address: string;
   coverImageUrl: string;
-  numRate: number;
   rating: number;
-  merchantIdInPayPal: string;
-  isOpening: boolean;
-  categories: CategoryDto[];
+  numRate: number;
   position: Position;
+  merchantIdInPayPal: string;
+  categories: CategoryDto[];
+  isOpening: boolean;
   static EntityToDTO(restaurant: Restaurant): RestaurantForCustomerDto {
     const {
       id,

@@ -1,6 +1,7 @@
 import { HttpStatus, Inject, Injectable, Logger } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { InjectRepository } from '@nestjs/typeorm';
+import { query } from 'express';
 import { USER_SERVICE } from 'src/constants';
 import { Repository, SelectQueryBuilder } from 'typeorm';
 import { MenuItem, MenuItemTopping } from '../menu/entities';
@@ -197,7 +198,7 @@ export class RestaurantService {
     getSomeRestaurantDto: GetSomeRestaurantDto,
   ): Promise<IRestaurantsResponse> {
     const {
-      page,
+      page = 1,
       size = 10,
       cityId,
       search,
@@ -562,7 +563,7 @@ export class RestaurantService {
   async fetchRestaurantsOfMerchant(
     fetchRestaurantsOfMerchantDto: FetchRestaurantsOfMerchantDto,
   ): Promise<IFetchRestaurantsOfMerchantResponse> {
-    const { merchantId, size, page } = fetchRestaurantsOfMerchantDto;
+    const { merchantId, size = 10, page = 1 } = fetchRestaurantsOfMerchantDto;
 
     const [results, total] = await this.restaurantRepository.findAndCount({
       where: [{ owner: merchantId }],
@@ -692,14 +693,14 @@ export class RestaurantService {
           customerId,
           restaurantId,
         });
-        await this.favoriteRestaurantRepository.create(newFavoriteStatus);
+        await this.favoriteRestaurantRepository.save(newFavoriteStatus);
       } else {
         await this.favoriteRestaurantRepository.remove(favoriteStatus);
       }
 
       return {
         status: HttpStatus.OK,
-        message: isFavorite ? 'Like' : 'Unlike' + ' restaurant successfully',
+        message: (isFavorite ? 'Like' : 'Unlike') + ' restaurant successfully',
       };
     } catch (e) {
       return {
@@ -712,29 +713,28 @@ export class RestaurantService {
   async getFavoriteRestaurants(
     getFavoriteRestaurantsDto: GetFavoriteRestaurantsDto,
   ): Promise<IRestaurantsResponse> {
-    const { customerId, page, size } = getFavoriteRestaurantsDto;
-    let queryBuilder: SelectQueryBuilder<Restaurant> = this.restaurantRepository.createQueryBuilder(
+    const {
+      customerId,
+      page: pageData,
+      size: sizeData,
+    } = getFavoriteRestaurantsDto;
+    const page = pageData || 1;
+    const size = sizeData || 10;
+
+    let logicQueryBuilder: SelectQueryBuilder<Restaurant> = this.restaurantRepository.createQueryBuilder(
       'res',
     );
 
-    const currentWeekDay = DateTimeHelper.getCurrentWeekDay();
-    queryBuilder = queryBuilder
-      .innerJoinAndSelect(
-        'res.favoriteByUsers',
-        'favorite',
-        'favorite.customerId = :customerId',
-        {
-          customerId: customerId,
-        },
-      )
-      .leftJoinAndSelect(
-        'res.openHours',
-        'openHours',
-        'openHours.day = :currentDay',
-        { currentDay: currentWeekDay },
-      );
+    logicQueryBuilder = logicQueryBuilder.innerJoinAndSelect(
+      'res.favoriteByUsers',
+      'favorite',
+      'favorite.customerId = :customerId',
+      {
+        customerId: customerId,
+      },
+    );
 
-    queryBuilder = queryBuilder
+    logicQueryBuilder = logicQueryBuilder
       .where('res.isActive = :active', {
         active: true,
       })
@@ -743,24 +743,20 @@ export class RestaurantService {
       })
       .andWhere('res.isVerified = :verified', {
         verified: true,
-      })
-      .orderBy('favorite.created_at', 'DESC')
-      .select([
-        'res.id',
-        'res.name',
-        'res.address',
-        'res.coverImageUrl',
-        'res.rating',
-        'res.numRate',
-        'res.geom',
-        'res.merchantIdInPayPal',
-        'openHours',
-      ])
-      .skip((page - 1) * size)
-      .take(size);
+      });
+    logicQueryBuilder = logicQueryBuilder
+      .groupBy('res.id')
+      .addGroupBy('favorite.created_at');
+    logicQueryBuilder = logicQueryBuilder.orderBy(
+      'favorite.created_at',
+      'DESC',
+    );
+    logicQueryBuilder = logicQueryBuilder.select(['res.id']);
+    logicQueryBuilder = logicQueryBuilder.offset((page - 1) * size).limit(size);
 
-    const restaurants = await queryBuilder.getMany();
-
+    const idResponses = await logicQueryBuilder.getMany();
+    const ids = idResponses.map(({ id }) => id);
+    const restaurants = await this.getRestaurantsByIds(ids);
     return {
       status: HttpStatus.OK,
       message: 'Fetched favorite restaurant successfully',
@@ -768,5 +764,35 @@ export class RestaurantService {
         restaurants: restaurants.map(RestaurantForCustomerDto.EntityToDTO),
       },
     };
+  }
+
+  async getRestaurantsByIds(ids: string[]): Promise<Restaurant[]> {
+    let queryBuilder: SelectQueryBuilder<Restaurant> = this.restaurantRepository.createQueryBuilder(
+      'res',
+    );
+    const currentWeekDay = DateTimeHelper.getCurrentWeekDay();
+    queryBuilder = queryBuilder.leftJoinAndSelect(
+      'res.openHours',
+      'openHours',
+      'openHours.day = :currentDay',
+      { currentDay: currentWeekDay },
+    );
+    queryBuilder = queryBuilder.where('res.id IN (:...ids)', { ids: ids });
+    queryBuilder = queryBuilder.select(['res', 'openHours']);
+    const restaurants = await queryBuilder.getMany();
+    const result = ids.map((id) => restaurants.find((r) => r.id == id));
+    return result;
+  }
+
+  async getRestaurantsById(id: string): Promise<Restaurant[]> {
+    let queryBuilder: SelectQueryBuilder<Restaurant> = this.restaurantRepository.createQueryBuilder(
+      'res',
+    );
+    queryBuilder = queryBuilder
+      .leftJoinAndSelect('res.categories', 'categories')
+      .leftJoinAndSelect('res.openHours', 'openHours');
+    queryBuilder = queryBuilder.where('res.id = :id', { id: id });
+    queryBuilder = queryBuilder.select(['res', 'openHours', 'categories']);
+    return queryBuilder.getMany();
   }
 }
