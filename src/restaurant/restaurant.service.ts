@@ -590,21 +590,15 @@ export class RestaurantService {
     fetchRestaurantDetailOfMerchantDto: FetchRestaurantDetailOfMerchantDto,
   ): Promise<IFetchRestaurantDetailOfMerchantResponse> {
     const { restaurantId, merchantId } = fetchRestaurantDetailOfMerchantDto;
-    const doesRestaurantExist = await this.doesRestaurantExist(restaurantId);
-    if (!doesRestaurantExist) {
+    // const doesRestaurantExist = await this.doesRestaurantExist(restaurantId);
+    const restaurant = await this.getRestaurantById(restaurantId);
+    if (!restaurant) {
       return {
         status: HttpStatus.NOT_FOUND,
         message: 'Restaurant not found',
         data: null,
       };
     }
-
-    const restaurant = await this.restaurantRepository.findOne(
-      {
-        id: restaurantId,
-      },
-      { relations: ['categories', 'openHours', 'city', 'area'] },
-    );
 
     return {
       status: HttpStatus.OK,
@@ -784,15 +778,23 @@ export class RestaurantService {
     return result;
   }
 
-  async getRestaurantsById(id: string): Promise<Restaurant[]> {
+  async getRestaurantById(id: string): Promise<Restaurant> {
     let queryBuilder: SelectQueryBuilder<Restaurant> = this.restaurantRepository.createQueryBuilder(
       'res',
     );
     queryBuilder = queryBuilder
       .leftJoinAndSelect('res.categories', 'categories')
-      .leftJoinAndSelect('res.openHours', 'openHours');
+      .leftJoinAndSelect('res.openHours', 'openHours')
+      .leftJoinAndSelect('res.city', 'city')
+      .leftJoinAndSelect('res.area', 'area');
     queryBuilder = queryBuilder.where('res.id = :id', { id: id });
-    queryBuilder = queryBuilder.select(['res', 'openHours', 'categories']);
-    return queryBuilder.getMany();
+    queryBuilder = queryBuilder.select([
+      'res',
+      'openHours',
+      'categories',
+      'city',
+      'area',
+    ]);
+    return queryBuilder.getOne();
   }
 }
