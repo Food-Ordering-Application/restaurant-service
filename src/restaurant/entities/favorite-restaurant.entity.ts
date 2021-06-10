@@ -12,6 +12,7 @@ import { Restaurant } from '.';
 @Index(['customerId', 'restaurantId'], { unique: true })
 export class FavoriteRestaurant {
   @PrimaryColumn('uuid')
+  @Index()
   customerId: string;
 
   @ManyToOne(() => Restaurant, (restaurant) => restaurant.favoriteByUsers)
@@ -22,5 +23,6 @@ export class FavoriteRestaurant {
   restaurantId: string;
 
   @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
+  @Index()
   created_at: Date;
 }

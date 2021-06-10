@@ -2,6 +2,7 @@ import {
   Column,
   DeleteDateColumn,
   Entity,
+  Index,
   JoinColumn,
   ManyToOne,
   OneToMany,
@@ -20,6 +21,7 @@ export class MenuGroup {
   menu: Menu;
 
   @Column({ nullable: true })
+  @Index()
   menuId: string;
 
   @OneToMany(() => MenuItem, (menuItem) => menuItem.menuGroup)
@@ -29,9 +31,11 @@ export class MenuGroup {
   name: string;
 
   @Column({ default: true })
+  @Index()
   isActive: boolean;
 
   @Column()
+  @Index()
   index: number;
 
   @DeleteDateColumn()

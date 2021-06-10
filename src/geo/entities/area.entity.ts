@@ -21,6 +21,7 @@ export class Area {
   city: City;
 
   @Column()
+  @Index()
   cityId: number;
 
   @Column({

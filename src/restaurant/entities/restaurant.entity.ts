@@ -16,14 +16,17 @@ import { Category, OpenHour } from '.';
 import { Area, City } from '../../geo/entities';
 
 @Entity()
+@Index(['isVerified', 'isActive', 'isBanned'])
 export class Restaurant {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column({ nullable: false })
+  @Index()
   owner: string;
 
   @Column({ nullable: false })
+  @Index()
   name: string;
 
   @Column({ nullable: false })
@@ -42,6 +45,7 @@ export class Restaurant {
   numRate: number;
 
   @Column({ default: 0 })
+  @Index()
   rating: number;
 
   @Column({ nullable: false })
@@ -69,12 +73,14 @@ export class Restaurant {
   city: City;
 
   @Column()
+  @Index()
   cityId: number;
 
   @ManyToOne(() => Area, (area) => area.restaurants)
   area: Area;
 
   @Column()
+  @Index()
   areaId: number;
 
   @OneToMany(() => OpenHour, (openHours) => openHours.restaurant, {

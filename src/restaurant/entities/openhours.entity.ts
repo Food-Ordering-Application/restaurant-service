@@ -1,6 +1,7 @@
 import {
   Column,
   Entity,
+  Index,
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
@@ -18,6 +19,7 @@ export class OpenHour {
   restaurant: Restaurant;
 
   @Column({ enum: DaysOfWeek })
+  @Index()
   day: string;
 
   @Column()
