@@ -1,3 +1,4 @@
+import { Position } from 'src/geo/types/position';
 import { CategoryDto, OpenHourDto } from '.';
 import { Restaurant } from '../entities';
 
@@ -10,12 +11,11 @@ export class RestaurantForMerchantDto {
   videoUrl: string;
   verifiedImageUrl: string;
   address: string;
-  city: string;
-  area: string;
-  geo: {
-    latitude: number;
-    longitude: number;
-  };
+  position: Position;
+  city?: string;
+  area?: string;
+  cityId: number;
+  areaId: number;
   openHours?: OpenHourDto[];
   categories?: CategoryDto[];
   isActive: boolean;
@@ -32,7 +32,9 @@ export class RestaurantForMerchantDto {
       verifiedImageUrl,
       address,
       city,
+      cityId,
       area,
+      areaId,
       geom,
       openHours,
       categories,
@@ -48,13 +50,16 @@ export class RestaurantForMerchantDto {
       videoUrl,
       verifiedImageUrl,
       address,
-      city,
-      area,
       phone,
-      geo: {
-        latitude: geom.coordinates[1],
-        longitude: geom.coordinates[0],
-      },
+      position: Position.GeometryToPosition(geom),
+      ...(city && {
+        city: city.name,
+      }),
+      cityId,
+      ...(area && {
+        area: area.name,
+      }),
+      areaId,
       ...(openHours && {
         openHours: openHours.map((openHour) =>
           OpenHourDto.EntityToDto(openHour),

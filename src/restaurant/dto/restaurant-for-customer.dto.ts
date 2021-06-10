@@ -1,15 +1,19 @@
+import { CategoryDto } from '.';
+import { Position } from '../../geo/types/position';
 import { Restaurant } from '../entities';
-import { CategoryType } from '../enums';
+import { DateTimeHelper } from '../helpers/datetime.helper';
 
 export class RestaurantForCustomerDto {
   id: string;
   name: string;
   address: string;
   coverImageUrl: string;
-  numRate: number;
   rating: number;
+  numRate: number;
+  position: Position;
   merchantIdInPayPal: string;
-  categories: CategoryType[];
+  categories: CategoryDto[];
+  isOpening: boolean;
   static EntityToDTO(restaurant: Restaurant): RestaurantForCustomerDto {
     const {
       id,
@@ -20,6 +24,8 @@ export class RestaurantForCustomerDto {
       rating,
       categories,
       merchantIdInPayPal,
+      openHours,
+      geom,
     } = restaurant;
     return {
       id,
@@ -28,8 +34,20 @@ export class RestaurantForCustomerDto {
       numRate,
       rating,
       address,
-      categories: categories.map(({ type }) => type as CategoryType),
+      ...(categories && {
+        categories: categories.map(CategoryDto.EntityToDto),
+      }),
       merchantIdInPayPal,
+      position: Position.GeometryToPosition(geom),
+      isOpening:
+        openHours &&
+        Array.isArray(openHours) &&
+        openHours &&
+        DateTimeHelper.getCurrentOpenHours(openHours).some(
+          DateTimeHelper.getOpenStatus,
+        )
+          ? true
+          : false,
     };
   }
 }

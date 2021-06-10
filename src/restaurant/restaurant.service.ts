@@ -1,34 +1,47 @@
 import { HttpStatus, Inject, Injectable, Logger } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { InjectRepository } from '@nestjs/typeorm';
+import { query } from 'express';
 import { USER_SERVICE } from 'src/constants';
 import { Repository, SelectQueryBuilder } from 'typeorm';
 import { MenuItem, MenuItemTopping } from '../menu/entities';
+import { DISTANCE_LIMIT } from './../constants';
+import { GeoService } from './../geo/geo.service';
+import { Position } from './../geo/types/position';
 import {
+  CreateRestaurantDto,
   FetchRestaurantDetailOfMerchantDto,
   FetchRestaurantsOfMerchantDto,
+  GetFavoriteRestaurantsDto,
+  GetRestaurantAddressInfoDto,
   GetRestaurantInformationDto,
+  GetRestaurantInformationToCreateDeliveryDto,
   GetSomeRestaurantDto,
   RestaurantDetailForCustomerDto,
   RestaurantForCustomerDto,
-  CreateRestaurantDto,
   RestaurantForMerchantDto,
-  GetRestaurantAddressInfoDto,
-  GetRestaurantInformationToCreateDeliveryDto,
+  UpdateFavoriteRestaurantStatusDto,
 } from './dto';
-import { Category, Restaurant, OpenHour } from './entities';
+import { CategoryDto } from './dto/category.dto';
+import { GetMetaDataDto } from './dto/get-meta-data.dto';
+import { Category, FavoriteRestaurant, OpenHour, Restaurant } from './entities';
+import { RestaurantFilterType } from './enums';
+import { RestaurantSortType } from './enums/restaurant-sort-type.enum';
 import {
   RestaurantCreatedEventPayload,
   RestaurantProfileUpdatedEventPayload,
 } from './events';
+import { DateTimeHelper } from './helpers/datetime.helper';
 import {
+  ICreateRestaurantResponse,
   IFetchRestaurantDetailOfMerchantResponse,
   IFetchRestaurantsOfMerchantResponse,
+  IGetInformationForDeliveryResponse,
+  IGetMetaDataResponse,
+  IGetRestaurantAddressResponse,
   IRestaurantResponse,
   IRestaurantsResponse,
-  ICreateRestaurantResponse,
-  IGetRestaurantAddressResponse,
-  IGetInformationForDeliveryResponse,
+  IUpdateFavoriteRestaurantResponse,
 } from './interfaces';
 
 @Injectable()
@@ -46,6 +59,10 @@ export class RestaurantService {
     private openHourRepository: Repository<OpenHour>,
     @InjectRepository(Category)
     private categoryRepository: Repository<Category>,
+    @InjectRepository(FavoriteRestaurant)
+    private favoriteRestaurantRepository: Repository<FavoriteRestaurant>,
+
+    private geoService: GeoService,
   ) {}
 
   async handleRestaurantProfileUpdated(
@@ -76,19 +93,50 @@ export class RestaurantService {
       name,
       phone,
       address,
-      area,
-      city,
+      areaId,
+      cityId,
       geo,
       coverImageUrl,
       verifiedImageUrl,
       videoUrl = '',
-      categories: categoriesData,
+      categoryIds,
       openHours: openHoursData,
     } = createRestaurantDto;
 
-    const categories: Category[] = categoriesData.map((category) =>
-      this.categoryRepository.create({ type: category }),
+    if (!categoryIds.length) {
+      return {
+        status: HttpStatus.BAD_REQUEST,
+        message: 'Restaurant must belong to at least 1 category',
+        data: null,
+      };
+    }
+    const categoriesPromise = this.categoryRepository.findByIds(categoryIds);
+    const checkCityAndAreaPromise = this.geoService.validCityAndArea(
+      cityId,
+      areaId,
     );
+
+    const [categories, validCityAndArea] = await Promise.all([
+      categoriesPromise,
+      checkCityAndAreaPromise,
+    ]);
+
+    if (categories.length != categoryIds.length) {
+      return {
+        status: HttpStatus.BAD_REQUEST,
+        message: 'One of category Ids does not exists',
+        data: null,
+      };
+    }
+
+    if (!validCityAndArea) {
+      return {
+        status: HttpStatus.BAD_REQUEST,
+        message: 'City and area id is not valid',
+        data: null,
+      };
+    }
+
     const openHours: OpenHour[] = openHoursData.map(
       ({ fromHour, fromMinute, toHour, toMinute, day }) => {
         return this.openHourRepository.create({
@@ -106,16 +154,13 @@ export class RestaurantService {
       name,
       phone,
       address,
-      area,
+      areaId,
       categories,
       coverImageUrl,
       verifiedImageUrl,
       videoUrl,
-      city,
-      geom: {
-        type: 'Point',
-        coordinates: [geo.longitude, geo.latitude],
-      },
+      cityId,
+      geom: Position.PositionToGeometry(geo),
       openHours,
     });
     const newRestaurant = await this.restaurantRepository.save(restaurant);
@@ -126,13 +171,13 @@ export class RestaurantService {
       data: {
         name,
         phone,
-        area,
+        cityId,
+        areaId,
         address,
         coverImageUrl,
         isActive,
         isBanned,
         isVerified,
-        city,
       },
     };
 
@@ -152,22 +197,116 @@ export class RestaurantService {
   async getSomeRestaurant(
     getSomeRestaurantDto: GetSomeRestaurantDto,
   ): Promise<IRestaurantsResponse> {
-    const { area, page, size = 10, category, search } = getSomeRestaurantDto;
-    const pageSize = 0;
-    let queryBuilder: SelectQueryBuilder<Restaurant> = this.restaurantRepository
-      .createQueryBuilder('res')
-      .select([
-        'res.id',
-        'res.name',
-        'res.address',
-        'res.coverImageUrl',
-        'res.rating',
-        'res.numRate',
-        'res.merchantIdInPayPal',
-      ])
-      .leftJoinAndSelect('res.categories', 'categories')
-      .where('res.area = :area', {
-        area: area,
+    const {
+      page = 1,
+      size = 10,
+      cityId,
+      search,
+      areaIds,
+      categoryIds,
+      position,
+      sortId,
+      filterIds,
+    } = getSomeRestaurantDto;
+    const hasCategoryFilter =
+      categoryIds && Array.isArray(categoryIds) && categoryIds.length;
+
+    const hasAreaFilter = areaIds && Array.isArray(areaIds) && areaIds.length;
+
+    const hasSort = sortId !== undefined && sortId !== null ? true : false;
+    const validSort =
+      hasSort && Object.values(RestaurantSortType).includes(sortId)
+        ? true
+        : false;
+
+    const hasFilters =
+      filterIds != null && Array.isArray(filterIds) && filterIds.length
+        ? true
+        : false;
+    const validFilters =
+      hasFilters &&
+      filterIds.every((filterId) =>
+        Object.values(RestaurantFilterType).includes(filterId),
+      )
+        ? true
+        : false;
+
+    const validPosition = Position.validPosition(position);
+
+    if (hasSort && !validSort) {
+      return {
+        status: HttpStatus.BAD_REQUEST,
+        message: 'Sort id is not valid',
+        data: null,
+      };
+    }
+
+    if (hasFilters && !validFilters) {
+      return {
+        status: HttpStatus.BAD_REQUEST,
+        message: 'Filter ids is not valid',
+        data: null,
+      };
+    }
+
+    if (position != null && !validPosition) {
+      return {
+        status: HttpStatus.BAD_REQUEST,
+        message: 'Position is not valid',
+        data: null,
+      };
+    }
+
+    if (!position && sortId == RestaurantSortType.NEARBY) {
+      return {
+        status: HttpStatus.BAD_REQUEST,
+        message: 'You need to provide location to sort nearby',
+        data: null,
+      };
+    }
+
+    const hasOpeningFilter =
+      hasFilters &&
+      validFilters &&
+      filterIds.includes(RestaurantFilterType.OPENING);
+
+    let queryBuilder: SelectQueryBuilder<Restaurant> = this.restaurantRepository.createQueryBuilder(
+      'res',
+    );
+
+    if (hasOpeningFilter) {
+      const { condition, params } = DateTimeHelper.getIsOpeningCondition(
+        'openHours',
+      );
+      queryBuilder = queryBuilder.innerJoinAndSelect(
+        'res.openHours',
+        'openHours',
+        condition,
+        params,
+      );
+    } else {
+      const currentWeekDay = DateTimeHelper.getCurrentWeekDay();
+      queryBuilder = queryBuilder.leftJoinAndSelect(
+        'res.openHours',
+        'openHours',
+        'openHours.day = :currentDay',
+        { currentDay: currentWeekDay },
+      );
+    }
+
+    queryBuilder = hasCategoryFilter
+      ? queryBuilder.innerJoinAndSelect(
+          'res.categories',
+          'categories',
+          'categories.id IN (:...categoryIds)',
+          { categoryIds },
+        )
+      : // : queryBuilder.leftJoinAndSelect('res.categories', 'categories');
+        queryBuilder;
+
+    queryBuilder = queryBuilder
+      .where('res.cityId = :cityId', {
+        cityId: cityId,
       })
       .andWhere('res.isActive = :active', {
         active: true,
@@ -178,9 +317,10 @@ export class RestaurantService {
       .andWhere('res.isVerified = :verified', {
         verified: true,
       });
-    if (category) {
-      queryBuilder = queryBuilder.andWhere('categories.type = :categoryType', {
-        categoryType: category,
+
+    if (hasAreaFilter) {
+      queryBuilder = queryBuilder.andWhere('res.areaId IN (:...areaIds)', {
+        areaIds: areaIds,
       });
     }
 
@@ -190,13 +330,84 @@ export class RestaurantService {
       });
     }
 
-    const restaurants = await queryBuilder
-      .orderBy('res.rating', 'DESC')
-      .addOrderBy('res.numRate', 'DESC')
-      .skip((page - 1) * size)
-      .take(size)
-      .getMany();
+    if (validPosition) {
+      const { latitude, longitude } = position;
+      queryBuilder = queryBuilder
+        .andWhere(
+          `ST_DWithin(ST_GeomFromGeoJSON(:origin)::geography::geometry, res.geom, :radius, true)`,
+          {
+            radius: DISTANCE_LIMIT,
+          },
+        )
+        .setParameters({
+          origin: JSON.stringify(
+            Position.PositionToGeometry({ latitude, longitude }),
+          ),
+        });
+    }
+    switch (sortId) {
+      case RestaurantSortType.RATING: {
+        queryBuilder = queryBuilder
+          .orderBy('res.rating', 'DESC')
+          .addOrderBy('res.numRate', 'DESC');
+        break;
+      }
 
+      case RestaurantSortType.NEARBY: {
+        const { latitude, longitude } = position;
+        // TODO: improve this
+        // queryBuilder = queryBuilder.orderBy(
+        //   `ST_Distance(res.geom, ST_GeomFromGeoJSON(:origin)::geography::geometry)`,
+        // );
+        // queryBuilder = queryBuilder
+        //   // .orderBy({
+        //   //   'ST_Distance(res.geom, ST_GeomFromGeoJSON(:origin)::geography::geometry)': {
+        //   //     order: 'ASC',
+        //   //   },
+        //   // });
+        //   .orderBy(
+        //     `res.geom <-> ST_GeomFromGeoJSON(:origin)::geography::geometry`,
+        //   );
+        break;
+      }
+    }
+
+    if (hasFilters && validFilters) {
+      filterIds.forEach((filterId) => {
+        switch (filterId) {
+          case RestaurantFilterType.OPENING: {
+            // TODO
+            break;
+          }
+
+          case RestaurantFilterType.PROMOTION: {
+            // TODO
+            break;
+          }
+        }
+      });
+    }
+
+    queryBuilder = queryBuilder
+      .select([
+        'res.id',
+        'res.name',
+        'res.address',
+        'res.coverImageUrl',
+        'res.rating',
+        'res.numRate',
+        'res.geom',
+        'res.merchantIdInPayPal',
+        'openHours',
+      ])
+      // .offset((page - 1) * size)
+      // .limit(size);
+      .skip((page - 1) * size)
+      .take(size);
+    // console.log(queryBuilder.getSql(), queryBuilder.getParameters());
+    const restaurants = await queryBuilder.getMany();
+
+    // console.dir({ restaurants }, { depth: 3 });
     return {
       status: HttpStatus.OK,
       message: 'Restaurant fetched successfully',
@@ -209,22 +420,54 @@ export class RestaurantService {
   async getRestaurantInformation(
     getRestaurantInformationDto: GetRestaurantInformationDto,
   ): Promise<IRestaurantResponse> {
-    const { restaurantId } = getRestaurantInformationDto;
-    const doesRestaurantExist = await this.doesRestaurantExist(restaurantId);
-    if (!doesRestaurantExist) {
+    const { restaurantId, customerId } = getRestaurantInformationDto;
+    let queryBuilder: SelectQueryBuilder<Restaurant> = this.restaurantRepository
+      .createQueryBuilder('res')
+      .leftJoinAndSelect('res.categories', 'categories')
+      .leftJoinAndSelect('res.openHours', 'openHours');
+
+    if (customerId) {
+      queryBuilder = queryBuilder.leftJoinAndSelect(
+        'res.favoriteByUsers',
+        'favoriteByUsers',
+        'favoriteByUsers.customerId = :customerId',
+        { customerId: customerId },
+      );
+    }
+
+    queryBuilder = queryBuilder
+      .where('res.id = :restaurantId', {
+        restaurantId: restaurantId,
+      })
+      .andWhere('res.isActive = :active', {
+        active: true,
+      })
+      .andWhere('res.isBanned = :not_banned', {
+        not_banned: false,
+      })
+      .andWhere('res.isVerified = :verified', {
+        verified: true,
+      });
+
+    if (customerId) {
+      queryBuilder = queryBuilder.select([
+        'res',
+        'openHours',
+        'categories',
+        'favoriteByUsers',
+      ]);
+    } else {
+      queryBuilder = queryBuilder.select(['res', 'openHours', 'categories']);
+    }
+
+    const restaurant = await queryBuilder.getOne();
+    if (!restaurant) {
       return {
         status: HttpStatus.NOT_FOUND,
         message: 'Restaurant not found',
         data: null,
       };
     }
-
-    const restaurant = await this.restaurantRepository.findOne(
-      {
-        id: restaurantId,
-      },
-      { relations: ['categories', 'openHours'] },
-    );
 
     return {
       status: HttpStatus.OK,
@@ -320,7 +563,7 @@ export class RestaurantService {
   async fetchRestaurantsOfMerchant(
     fetchRestaurantsOfMerchantDto: FetchRestaurantsOfMerchantDto,
   ): Promise<IFetchRestaurantsOfMerchantResponse> {
-    const { merchantId, size, page } = fetchRestaurantsOfMerchantDto;
+    const { merchantId, size = 10, page = 1 } = fetchRestaurantsOfMerchantDto;
 
     const [results, total] = await this.restaurantRepository.findAndCount({
       where: [{ owner: merchantId }],
@@ -347,21 +590,15 @@ export class RestaurantService {
     fetchRestaurantDetailOfMerchantDto: FetchRestaurantDetailOfMerchantDto,
   ): Promise<IFetchRestaurantDetailOfMerchantResponse> {
     const { restaurantId, merchantId } = fetchRestaurantDetailOfMerchantDto;
-    const doesRestaurantExist = await this.doesRestaurantExist(restaurantId);
-    if (!doesRestaurantExist) {
+    // const doesRestaurantExist = await this.doesRestaurantExist(restaurantId);
+    const restaurant = await this.getRestaurantById(restaurantId);
+    if (!restaurant) {
       return {
         status: HttpStatus.NOT_FOUND,
         message: 'Restaurant not found',
         data: null,
       };
     }
-
-    const restaurant = await this.restaurantRepository.findOne(
-      {
-        id: restaurantId,
-      },
-      { relations: ['categories', 'openHours'] },
-    );
 
     return {
       status: HttpStatus.OK,
@@ -370,5 +607,194 @@ export class RestaurantService {
         restaurant: RestaurantForMerchantDto.EntityToDTO(restaurant),
       },
     };
+  }
+
+  async getMetaData(
+    getMetaDataDto: GetMetaDataDto,
+  ): Promise<IGetMetaDataResponse> {
+    const response = await this.categoryRepository.find({
+      order: { displayOrder: 'ASC' },
+    });
+    const categories = response.map(CategoryDto.EntityToDto);
+    return {
+      status: HttpStatus.OK,
+      message: 'Fetched meta data successfully',
+      data: {
+        deliveryService: {
+          serviceStartTime: '7:00',
+          serviceEndTime: '22:00',
+          maxDeliverTime: 60,
+          minDeliverTime: 30,
+          averageTimePer1km: 10,
+          deliverEstimateTime: {
+            merchantTime: 15,
+            stepTime: 5,
+          },
+          closeTimeWarning: 1800, // 30'
+          callCenter: '0949 111 222',
+          distanceLimit: DISTANCE_LIMIT,
+        },
+        restaurantFilterType: [
+          { id: RestaurantFilterType.OPENING, name: 'Đang mở' },
+          // { id: RestaurantFilterType.PROMOTION, name: 'Ưu đãi' },
+        ],
+        restaurantSortType: [
+          // {
+          //   id: RestaurantSortType.NEARBY,
+          //   name: 'Gần đây',
+          // },
+          {
+            id: RestaurantSortType.RATING,
+            name: 'Đánh giá',
+          },
+        ],
+        categories,
+      },
+    };
+  }
+
+  async updateFavoriteRestaurant(
+    updateFavoriteRestaurantDto: UpdateFavoriteRestaurantStatusDto,
+  ): Promise<IUpdateFavoriteRestaurantResponse> {
+    const {
+      customerId,
+      restaurantId,
+      isFavorite,
+    } = updateFavoriteRestaurantDto;
+
+    const queryBuilder = this.favoriteRestaurantRepository
+      .createQueryBuilder('favorite')
+      .where('favorite.customerId = :customerId', {
+        customerId: customerId,
+      })
+      .andWhere('favorite.restaurantId = :restaurantId', {
+        restaurantId: restaurantId,
+      });
+
+    const favoriteStatus = await queryBuilder.getOne();
+    const isCurrentFavorite = favoriteStatus == null ? false : true;
+
+    if (isCurrentFavorite == isFavorite) {
+      return {
+        status: HttpStatus.OK,
+        message: 'Nothing to update',
+      };
+    }
+
+    try {
+      if (isFavorite) {
+        const newFavoriteStatus = this.favoriteRestaurantRepository.create({
+          customerId,
+          restaurantId,
+        });
+        await this.favoriteRestaurantRepository.save(newFavoriteStatus);
+      } else {
+        await this.favoriteRestaurantRepository.remove(favoriteStatus);
+      }
+
+      return {
+        status: HttpStatus.OK,
+        message: (isFavorite ? 'Like' : 'Unlike') + ' restaurant successfully',
+      };
+    } catch (e) {
+      return {
+        status: HttpStatus.INTERNAL_SERVER_ERROR,
+        message: e.message,
+      };
+    }
+  }
+
+  async getFavoriteRestaurants(
+    getFavoriteRestaurantsDto: GetFavoriteRestaurantsDto,
+  ): Promise<IRestaurantsResponse> {
+    const {
+      customerId,
+      page: pageData,
+      size: sizeData,
+    } = getFavoriteRestaurantsDto;
+    const page = pageData || 1;
+    const size = sizeData || 10;
+
+    let logicQueryBuilder: SelectQueryBuilder<Restaurant> = this.restaurantRepository.createQueryBuilder(
+      'res',
+    );
+
+    logicQueryBuilder = logicQueryBuilder.innerJoinAndSelect(
+      'res.favoriteByUsers',
+      'favorite',
+      'favorite.customerId = :customerId',
+      {
+        customerId: customerId,
+      },
+    );
+
+    logicQueryBuilder = logicQueryBuilder
+      .where('res.isActive = :active', {
+        active: true,
+      })
+      .andWhere('res.isBanned = :not_banned', {
+        not_banned: false,
+      })
+      .andWhere('res.isVerified = :verified', {
+        verified: true,
+      });
+    logicQueryBuilder = logicQueryBuilder
+      .groupBy('res.id')
+      .addGroupBy('favorite.created_at');
+    logicQueryBuilder = logicQueryBuilder.orderBy(
+      'favorite.created_at',
+      'DESC',
+    );
+    logicQueryBuilder = logicQueryBuilder.select(['res.id']);
+    logicQueryBuilder = logicQueryBuilder.offset((page - 1) * size).limit(size);
+
+    const idResponses = await logicQueryBuilder.getMany();
+    const ids = idResponses.map(({ id }) => id);
+    const restaurants = await this.getRestaurantsByIds(ids);
+    return {
+      status: HttpStatus.OK,
+      message: 'Fetched favorite restaurant successfully',
+      data: {
+        restaurants: restaurants.map(RestaurantForCustomerDto.EntityToDTO),
+      },
+    };
+  }
+
+  async getRestaurantsByIds(ids: string[]): Promise<Restaurant[]> {
+    let queryBuilder: SelectQueryBuilder<Restaurant> = this.restaurantRepository.createQueryBuilder(
+      'res',
+    );
+    const currentWeekDay = DateTimeHelper.getCurrentWeekDay();
+    queryBuilder = queryBuilder.leftJoinAndSelect(
+      'res.openHours',
+      'openHours',
+      'openHours.day = :currentDay',
+      { currentDay: currentWeekDay },
+    );
+    queryBuilder = queryBuilder.where('res.id IN (:...ids)', { ids: ids });
+    queryBuilder = queryBuilder.select(['res', 'openHours']);
+    const restaurants = await queryBuilder.getMany();
+    const result = ids.map((id) => restaurants.find((r) => r.id == id));
+    return result;
+  }
+
+  async getRestaurantById(id: string): Promise<Restaurant> {
+    let queryBuilder: SelectQueryBuilder<Restaurant> = this.restaurantRepository.createQueryBuilder(
+      'res',
+    );
+    queryBuilder = queryBuilder
+      .leftJoinAndSelect('res.categories', 'categories')
+      .leftJoinAndSelect('res.openHours', 'openHours')
+      .leftJoinAndSelect('res.city', 'city')
+      .leftJoinAndSelect('res.area', 'area');
+    queryBuilder = queryBuilder.where('res.id = :id', { id: id });
+    queryBuilder = queryBuilder.select([
+      'res',
+      'openHours',
+      'categories',
+      'city',
+      'area',
+    ]);
+    return queryBuilder.getOne();
   }
 }

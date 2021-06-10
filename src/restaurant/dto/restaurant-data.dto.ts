@@ -11,8 +11,8 @@ export class RestaurantDataDto {
     latitude: number;
     longitude: number;
   };
-  city: string;
-  area: string;
+  cityId: number;
+  areaId: number;
   openHours: {
     fromHour: number;
     fromMinute: number;
@@ -20,5 +20,5 @@ export class RestaurantDataDto {
     toMinute: number;
     day: DaysOfWeek;
   }[];
-  categories: CategoryType[];
+  categoryIds: number[];
 }

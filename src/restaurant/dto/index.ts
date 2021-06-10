@@ -10,3 +10,5 @@ export { RestaurantDetailForCustomerDto } from './restaurant-detail-for-customer
 export { RestaurantForCustomerDto } from './restaurant-for-customer.dto';
 export { GetRestaurantAddressInfoDto } from './get-restaurant-address-info.dto';
 export { GetRestaurantInformationToCreateDeliveryDto } from './get-restaurant-information-to-create-delivery.dto';
+export { UpdateFavoriteRestaurantStatusDto } from './update-favorite-restaurant.dto';
+export { GetFavoriteRestaurantsDto } from './get-favorite-restaurants.dto';

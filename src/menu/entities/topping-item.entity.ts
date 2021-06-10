@@ -2,6 +2,7 @@ import {
   Column,
   DeleteDateColumn,
   Entity,
+  Index,
   JoinColumn,
   ManyToOne,
   OneToMany,
@@ -22,6 +23,7 @@ export class ToppingItem {
   menu: Menu;
 
   @Column({ nullable: true })
+  @Index()
   menuId: string;
 
   @ManyToOne(() => ToppingGroup, (toppingGroup) => toppingGroup.toppingItems)
@@ -29,6 +31,7 @@ export class ToppingItem {
   toppingGroup: ToppingGroup;
 
   @Column()
+  @Index()
   toppingGroupId: string;
 
   @OneToMany(
@@ -50,9 +53,11 @@ export class ToppingItem {
   maxQuantity: number;
 
   @Column()
+  @Index()
   index: number;
 
   @Column({ default: true })
+  @Index()
   isActive: boolean;
 
   @Column({ enum: State, default: State.IN_STOCK })

@@ -1,6 +1,7 @@
-import { OpenHourDto } from '.';
+import { OpenHourDto, CategoryDto } from '.';
 import { Restaurant } from '../entities';
-import { CategoryType } from '../enums';
+import { Position } from '../../geo/types/position';
+import { DateTimeHelper } from '../helpers/datetime.helper';
 
 export class RestaurantDetailForCustomerDto {
   id: string;
@@ -11,14 +12,15 @@ export class RestaurantDetailForCustomerDto {
   numRate: number;
   rating: number;
   address: string;
-  city: string;
-  area: string;
-  geo: {
-    latitude: number;
-    longitude: number;
-  };
+  city?: string;
+  area?: string;
+  cityId: number;
+  areaId: number;
+  isFavorite: boolean;
+  isOpening: boolean;
+  position: Position;
   openHours?: OpenHourDto[];
-  categories?: CategoryType[];
+  categories?: CategoryDto[];
   merchantIdInPayPal: string;
   static EntityToDTO(restaurant: Restaurant): RestaurantDetailForCustomerDto {
     const {
@@ -31,11 +33,14 @@ export class RestaurantDetailForCustomerDto {
       rating,
       address,
       city,
+      cityId,
       area,
+      areaId,
       geom,
       openHours,
       categories,
       merchantIdInPayPal,
+      favoriteByUsers,
     } = restaurant;
     return {
       id,
@@ -45,21 +50,35 @@ export class RestaurantDetailForCustomerDto {
       numRate,
       rating,
       address,
-      city,
-      area,
       phone,
-      geo: {
-        latitude: geom.coordinates[1],
-        longitude: geom.coordinates[0],
-      },
+      position: Position.GeometryToPosition(geom),
+      isFavorite:
+        favoriteByUsers &&
+        Array.isArray(favoriteByUsers) &&
+        favoriteByUsers.length
+          ? true
+          : false,
+      ...(city && {
+        city: city.name,
+      }),
+      cityId,
+      ...(area && {
+        area: area.name,
+      }),
+      areaId,
       ...(openHours && {
-        openHours: openHours.map((openHour) =>
-          OpenHourDto.EntityToDto(openHour),
-        ),
+        openHours: openHours.map(OpenHourDto.EntityToDto),
       }),
       ...(categories && {
-        categories: categories.map(({ type }) => type as CategoryType),
+        categories: categories.map(CategoryDto.EntityToDto),
       }),
+      isOpening:
+        openHours &&
+        DateTimeHelper.getCurrentOpenHours(openHours).some(
+          DateTimeHelper.getOpenStatus,
+        )
+          ? true
+          : false,
       merchantIdInPayPal,
     };
   }

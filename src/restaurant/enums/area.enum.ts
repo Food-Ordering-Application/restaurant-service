@@ -1,7 +1,0 @@
-export enum Area {
-  TPHCM = 'TPHCM',
-  HANOI = 'HANOI',
-  BACNINH = 'BACNINH',
-  LAMDONG = 'LAMDONG',
-  BINHDUONG = 'BINHDUONG',
-}

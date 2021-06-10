@@ -1,3 +1,4 @@
+import { GeoModule } from './../geo/geo.module';
 import { Category } from './entities/category.entity';
 import { OpenHour } from './entities/openhours.entity';
 import { Module } from '@nestjs/common';
@@ -9,6 +10,7 @@ import { Restaurant } from './entities/restaurant.entity';
 import { RestaurantController } from './restaurant.controller';
 import { RestaurantService } from './restaurant.service';
 import { MenuItem, MenuItemTopping } from '../menu/entities';
+import { FavoriteRestaurant } from './entities';
 
 @Module({
   imports: [
@@ -18,6 +20,7 @@ import { MenuItem, MenuItemTopping } from '../menu/entities';
       Category,
       MenuItem,
       MenuItemTopping,
+      FavoriteRestaurant,
     ]),
     ClientsModule.registerAsync([
       {
@@ -36,6 +39,7 @@ import { MenuItem, MenuItemTopping } from '../menu/entities';
         }),
       },
     ]),
+    GeoModule,
   ],
   controllers: [RestaurantController],
   providers: [RestaurantService],

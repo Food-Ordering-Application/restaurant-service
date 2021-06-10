@@ -1,8 +1,10 @@
+import { Area, City } from '../../geo/entities';
 import { define } from 'typeorm-seeding';
 import Faker from 'faker';
 import { Category, Restaurant } from '../../restaurant/entities/index';
-import { Area, CategoryType } from '../../restaurant/enums/index';
+import { CategoryType } from '../../restaurant/enums/index';
 import * as _ from 'lodash';
+import { Position } from '../../geo/types/position';
 
 interface Context {
   restaurantId?: string;
@@ -10,7 +12,7 @@ interface Context {
 }
 
 define(Restaurant, (faker: typeof Faker, context: Context) => {
-  const { restaurantId, categories } = context;
+  const { restaurantId } = context;
   let id;
   if (!restaurantId) {
     id = faker.random.uuid();
@@ -26,8 +28,10 @@ define(Restaurant, (faker: typeof Faker, context: Context) => {
   const numRate = faker.random.number({ max: 999 });
   const rating = faker.random.number({ min: 0, max: 5 });
   const address = faker.address.streetAddress();
-  const city = faker.address.city();
-  const area = _.sample(Object.values(Area)) as Area;
+  const city = new City();
+  city.id = 5;
+  const area = new Area();
+  area.id = faker.random.number({ min: 136, max: 154 });
   const isActive = true;
   const isVerified = true;
 
@@ -35,10 +39,10 @@ define(Restaurant, (faker: typeof Faker, context: Context) => {
   const longtitudes = [106.7049702, 106.6626456, 106.6788235];
 
   const random = Math.floor(Math.random() * latitudes.length);
-  const geom = {
-    type: 'Point',
-    coordinates: [longtitudes[random], latitudes[random]],
-  };
+  const geom = Position.PositionToGeometry({
+    latitude: latitudes[random],
+    longitude: longtitudes[random],
+  });
 
   const restaurant = new Restaurant();
   restaurant.id = id;
@@ -58,7 +62,7 @@ define(Restaurant, (faker: typeof Faker, context: Context) => {
   restaurant.isVerified = isVerified;
 
   const newCategory = new Category();
-  newCategory.type = _.sample(Object.values(CategoryType)) as CategoryType;
+  newCategory.name = _.sample(Object.values(CategoryType)) as CategoryType;
 
   restaurant.categories = [newCategory];
   return restaurant;
