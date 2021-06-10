@@ -9,6 +9,7 @@ import {
   IGetCityResponse,
   IGetDistrictsResponse,
 } from './interfaces';
+import { Position } from './types/position';
 
 @Injectable()
 export class GeoService {
@@ -72,9 +73,16 @@ export class GeoService {
     const queryBuilder = this.areaRepository
       .createQueryBuilder('area')
       .leftJoinAndSelect('area.city', 'city')
-      .orderBy(`area.geometry <-> 'SRID=4326;POINT(${longitude} ${latitude})'`)
-      .select(['city.id', 'city.name'])
-      .take(1);
+      .orderBy(
+        `area.geometry <-> ST_GeomFromGeoJSON(:origin)::geography::geometry`,
+      )
+      .setParameters({
+        origin: JSON.stringify(
+          Position.PositionToGeometry({ latitude, longitude }),
+        ),
+      })
+      .select(['area', 'city.id', 'city.name'])
+      .limit(1);
 
     const area = await queryBuilder.getOne();
     return {
@@ -89,7 +97,7 @@ export class GeoService {
   async getAllCities(
     getAllCitiesDto: GetAllCitiesDto,
   ): Promise<IGetCitiesResponse> {
-    const response = await this.cityRepository.find();
+    const response = await this.cityRepository.find({ order: { id: 'ASC' } });
     const cities = response.map(CityDto.EntityToDto);
 
     return {
