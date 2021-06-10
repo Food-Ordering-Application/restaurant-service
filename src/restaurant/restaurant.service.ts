@@ -446,8 +446,18 @@ export class RestaurantService {
       })
       .andWhere('res.isVerified = :verified', {
         verified: true,
-      })
-      .select(['res', 'openHours', 'categories', 'favoriteByUsers']);
+      });
+
+    if (customerId) {
+      queryBuilder = queryBuilder.select([
+        'res',
+        'openHours',
+        'categories',
+        'favoriteByUsers',
+      ]);
+    } else {
+      queryBuilder = queryBuilder.select(['res', 'openHours', 'categories']);
+    }
 
     const restaurant = await queryBuilder.getOne();
     if (!restaurant) {
