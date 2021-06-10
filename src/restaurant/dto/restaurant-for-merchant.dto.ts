@@ -14,6 +14,8 @@ export class RestaurantForMerchantDto {
   position: Position;
   city?: string;
   area?: string;
+  cityId: number;
+  areaId: number;
   openHours?: OpenHourDto[];
   categories?: CategoryDto[];
   isActive: boolean;
@@ -30,7 +32,9 @@ export class RestaurantForMerchantDto {
       verifiedImageUrl,
       address,
       city,
+      cityId,
       area,
+      areaId,
       geom,
       openHours,
       categories,
@@ -51,9 +55,11 @@ export class RestaurantForMerchantDto {
       ...(city && {
         city: city.name,
       }),
+      cityId,
       ...(area && {
         area: area.name,
       }),
+      areaId,
       ...(openHours && {
         openHours: openHours.map((openHour) =>
           OpenHourDto.EntityToDto(openHour),

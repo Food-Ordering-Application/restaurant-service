@@ -34,12 +34,19 @@ export class RestaurantForCustomerDto {
       numRate,
       rating,
       address,
-      categories: categories.map(CategoryDto.EntityToDto),
+      ...(categories && {
+        categories: categories.map(CategoryDto.EntityToDto),
+      }),
       merchantIdInPayPal,
       position: Position.GeometryToPosition(geom),
       isOpening:
-        openHours && Array.isArray(openHours) && openHours.length
-          ? DateTimeHelper.getOpenStatus(openHours[0])
+        openHours &&
+        Array.isArray(openHours) &&
+        openHours &&
+        DateTimeHelper.getCurrentOpenHours(openHours).some(
+          DateTimeHelper.getOpenStatus,
+        )
+          ? true
           : false,
     };
   }

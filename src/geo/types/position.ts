@@ -35,6 +35,7 @@ export class Position {
   }
 
   static validPosition(position: Position): boolean {
+    if (!position) return false;
     const { latitude, longitude } = position || {};
     if (latitude === undefined || longitude === undefined) {
       return false;

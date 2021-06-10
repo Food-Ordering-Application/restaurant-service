@@ -249,13 +249,19 @@ export class RestaurantService {
     }
 
     if (position != null && !validPosition) {
-      if (hasSort && !validSort) {
-        return {
-          status: HttpStatus.BAD_REQUEST,
-          message: 'Position is not valid',
-          data: null,
-        };
-      }
+      return {
+        status: HttpStatus.BAD_REQUEST,
+        message: 'Position is not valid',
+        data: null,
+      };
+    }
+
+    if (!position && sortId == RestaurantSortType.NEARBY) {
+      return {
+        status: HttpStatus.BAD_REQUEST,
+        message: 'You need to provide location to sort nearby',
+        data: null,
+      };
     }
 
     const hasOpeningFilter =
@@ -271,7 +277,7 @@ export class RestaurantService {
       const { condition, params } = DateTimeHelper.getIsOpeningCondition(
         'openHours',
       );
-      queryBuilder = queryBuilder.leftJoinAndSelect(
+      queryBuilder = queryBuilder.innerJoinAndSelect(
         'res.openHours',
         'openHours',
         condition,
@@ -288,13 +294,14 @@ export class RestaurantService {
     }
 
     queryBuilder = hasCategoryFilter
-      ? queryBuilder.leftJoinAndSelect(
+      ? queryBuilder.innerJoinAndSelect(
           'res.categories',
           'categories',
           'categories.id IN (:...categoryIds)',
           { categoryIds },
         )
-      : queryBuilder.leftJoinAndSelect('res.categories', 'categories');
+      : // : queryBuilder.leftJoinAndSelect('res.categories', 'categories');
+        queryBuilder;
 
     queryBuilder = queryBuilder
       .where('res.cityId = :cityId', {
@@ -324,14 +331,19 @@ export class RestaurantService {
 
     if (validPosition) {
       const { latitude, longitude } = position;
-      // raw query
-      // WHERE ST_DWithin('SRID=4326;POINT(106.649 10.7468)',geom,3000, true)
-      queryBuilder = queryBuilder.andWhere(
-        `ST_DWithin('SRID=4326;POINT(:longitude :latitude)', res.geom, :radius, true)`,
-        { longitude: longitude, latitude: latitude, radius: DISTANCE_LIMIT },
-      );
+      queryBuilder = queryBuilder
+        .andWhere(
+          `ST_DWithin(ST_GeomFromGeoJSON(:origin)::geography::geometry, res.geom, :radius, true)`,
+          {
+            radius: DISTANCE_LIMIT,
+          },
+        )
+        .setParameters({
+          origin: JSON.stringify(
+            Position.PositionToGeometry({ latitude, longitude }),
+          ),
+        });
     }
-
     switch (sortId) {
       case RestaurantSortType.RATING: {
         queryBuilder = queryBuilder
@@ -341,27 +353,39 @@ export class RestaurantService {
       }
 
       case RestaurantSortType.NEARBY: {
-        const { longitude, latitude } = position;
-        queryBuilder = queryBuilder.orderBy(
-          `res.geom <-> 'SRID=4326;POINT(${longitude} ${latitude})'`,
-        );
+        const { latitude, longitude } = position;
+        // TODO: improve this
+        // queryBuilder = queryBuilder.orderBy(
+        //   `ST_Distance(res.geom, ST_GeomFromGeoJSON(:origin)::geography::geometry)`,
+        // );
+        // queryBuilder = queryBuilder
+        //   // .orderBy({
+        //   //   'ST_Distance(res.geom, ST_GeomFromGeoJSON(:origin)::geography::geometry)': {
+        //   //     order: 'ASC',
+        //   //   },
+        //   // });
+        //   .orderBy(
+        //     `res.geom <-> ST_GeomFromGeoJSON(:origin)::geography::geometry`,
+        //   );
         break;
       }
     }
 
-    filterIds.forEach((filterId) => {
-      switch (filterId) {
-        case RestaurantFilterType.OPENING: {
-          // TODO
-          break;
-        }
+    if (hasFilters && validFilters) {
+      filterIds.forEach((filterId) => {
+        switch (filterId) {
+          case RestaurantFilterType.OPENING: {
+            // TODO
+            break;
+          }
 
-        case RestaurantFilterType.PROMOTION: {
-          // TODO
-          break;
+          case RestaurantFilterType.PROMOTION: {
+            // TODO
+            break;
+          }
         }
-      }
-    });
+      });
+    }
 
     queryBuilder = queryBuilder
       .select([
@@ -375,11 +399,14 @@ export class RestaurantService {
         'res.merchantIdInPayPal',
         'openHours',
       ])
+      // .offset((page - 1) * size)
+      // .limit(size);
       .skip((page - 1) * size)
       .take(size);
-
+    // console.log(queryBuilder.getSql(), queryBuilder.getParameters());
     const restaurants = await queryBuilder.getMany();
 
+    // console.dir({ restaurants }, { depth: 3 });
     return {
       status: HttpStatus.OK,
       message: 'Restaurant fetched successfully',
@@ -604,13 +631,13 @@ export class RestaurantService {
         },
         restaurantFilterType: [
           { id: RestaurantFilterType.OPENING, name: 'Đang mở' },
-          { id: RestaurantFilterType.PROMOTION, name: 'Ưu đãi' },
+          // { id: RestaurantFilterType.PROMOTION, name: 'Ưu đãi' },
         ],
         restaurantSortType: [
-          {
-            id: RestaurantSortType.NEARBY,
-            name: 'Gần đây',
-          },
+          // {
+          //   id: RestaurantSortType.NEARBY,
+          //   name: 'Gần đây',
+          // },
           {
             id: RestaurantSortType.RATING,
             name: 'Đánh giá',
@@ -682,7 +709,7 @@ export class RestaurantService {
 
     const currentWeekDay = DateTimeHelper.getCurrentWeekDay();
     queryBuilder = queryBuilder
-      .leftJoinAndSelect(
+      .innerJoinAndSelect(
         'res.favoriteByUsers',
         'favorite',
         'favorite.customerId = :customerId',

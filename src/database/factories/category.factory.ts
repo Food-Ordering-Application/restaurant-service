@@ -9,7 +9,7 @@ interface Context {
 define(Category, (faker: typeof Faker, context: Context) => {
   const { restaurant } = context;
   const category = new Category();
-  category.id = faker.random.uuid();
-  category.restaurant = restaurant;
+  category.id = faker.random.number();
+  category.restaurants = [restaurant];
   return category;
 });

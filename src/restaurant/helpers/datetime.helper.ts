@@ -56,7 +56,7 @@ const getIsOpeningCondition = (
   const currentMinutes = current.getHours();
   const currentWeekDay = getDay(current.getDay());
   return {
-    condition: `${alias}.day = :currentDay and (:currentHour > ${alias}.fromHour or (:currentHour = ${alias}.fromHour and ::currentMinute > ${alias}.fromMinute)) and (:currentHour < ${alias}.toHour or (:currentHour = ${alias}.toHour and ::currentMinute < ${alias}.toMinute))`,
+    condition: `${alias}.day = :currentDay and (:currentHour > ${alias}.fromHour or (:currentHour = ${alias}.fromHour and :currentMinute > ${alias}.fromMinute)) and (:currentHour < ${alias}.toHour or (:currentHour = ${alias}.toHour and :currentMinute < ${alias}.toMinute))`,
     params: {
       currentDay: currentWeekDay,
       currentHour: currentHours,

@@ -94,7 +94,7 @@ export class GeoService {
 
     return {
       status: HttpStatus.OK,
-      message: 'Fetched districts of city successfully',
+      message: 'Fetched all cities successfully',
       data: {
         cities: cities,
       },

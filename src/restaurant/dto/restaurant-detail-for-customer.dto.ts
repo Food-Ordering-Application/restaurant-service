@@ -14,6 +14,8 @@ export class RestaurantDetailForCustomerDto {
   address: string;
   city?: string;
   area?: string;
+  cityId: number;
+  areaId: number;
   isFavorite: boolean;
   isOpening: boolean;
   position: Position;
@@ -31,7 +33,9 @@ export class RestaurantDetailForCustomerDto {
       rating,
       address,
       city,
+      cityId,
       area,
+      areaId,
       geom,
       openHours,
       categories,
@@ -57,9 +61,11 @@ export class RestaurantDetailForCustomerDto {
       ...(city && {
         city: city.name,
       }),
+      cityId,
       ...(area && {
         area: area.name,
       }),
+      areaId,
       ...(openHours && {
         openHours: openHours.map(OpenHourDto.EntityToDto),
       }),
