@@ -8,7 +8,6 @@ import { Position } from '../../geo/types/position';
 
 interface Context {
   restaurantId?: string;
-  categories: CategoryType[];
 }
 
 define(Restaurant, (faker: typeof Faker, context: Context) => {
@@ -28,20 +27,16 @@ define(Restaurant, (faker: typeof Faker, context: Context) => {
   const numRate = faker.random.number({ max: 999 });
   const rating = faker.random.number({ min: 0, max: 5 });
   const address = faker.address.streetAddress();
-  const city = new City();
-  city.id = 5;
-  const area = new Area();
-  area.id = faker.random.number({ min: 136, max: 154 });
   const isActive = true;
   const isVerified = true;
 
   const latitudes = [10.7058661, 10.7566764, 10.7380495];
-  const longtitudes = [106.7049702, 106.6626456, 106.6788235];
+  const longitudes = [106.7049702, 106.6626456, 106.6788235];
 
   const random = Math.floor(Math.random() * latitudes.length);
   const geom = Position.PositionToGeometry({
     latitude: latitudes[random],
-    longitude: longtitudes[random],
+    longitude: longitudes[random],
   });
 
   const restaurant = new Restaurant();
@@ -55,15 +50,29 @@ define(Restaurant, (faker: typeof Faker, context: Context) => {
   restaurant.numRate = numRate;
   restaurant.rating = rating;
   restaurant.address = address;
-  restaurant.city = city;
   restaurant.geom = geom;
-  restaurant.area = area;
   restaurant.isActive = isActive;
   restaurant.isVerified = isVerified;
 
-  const newCategory = new Category();
-  newCategory.name = _.sample(Object.values(CategoryType)) as CategoryType;
+  function randomInteger(min, max): number {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
 
-  restaurant.categories = [newCategory];
+  const getCategoryId = () => randomInteger(0, 12);
+  const getCityId = () => 5;
+  const getAreaId = () => randomInteger(136, 154);
+
+  const city = new City();
+  city.id = getCityId();
+  restaurant.city = city;
+
+  const area = new Area();
+  area.id = getAreaId();
+  restaurant.area = area;
+
+  // const newCategory = new Category();
+  // newCategory.id = getCategoryId();
+  // restaurant.categories = [newCategory];
+
   return restaurant;
 });

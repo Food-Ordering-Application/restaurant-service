@@ -1,11 +1,8 @@
-import {
-  Category,
-  OpenHour,
-  Restaurant,
-} from '../../restaurant/entities/index';
-import { Connection } from 'typeorm';
+import { Position } from './../../geo/types/position';
+import * as fs from 'fs';
+import * as path from 'path';
+import { Connection, DeepPartial, QueryRunner } from 'typeorm';
 import { Factory, Seeder } from 'typeorm-seeding';
-import { CategoryType } from '../../restaurant/enums/category-type.enum';
 import {
   Menu,
   MenuGroup,
@@ -14,8 +11,14 @@ import {
   ToppingGroup,
   ToppingItem,
 } from '../../menu/entities/index';
+import {
+  Category,
+  OpenHour,
+  Restaurant,
+} from '../../restaurant/entities/index';
+import { Area, City } from './../../geo/entities/';
 
-const NUMBER_OF_RESETAURANTS = 50;
+const NUMBER_OF_RESETAURANTS = 1;
 const NUMBER_OF_OPENHOURS = 7;
 
 const NUMBER_OF_MENU_GROUP_PER_RESTAURANT = 3;
@@ -100,6 +103,11 @@ const createRestaurant = async (factory: Factory, restaurant: Restaurant) => {
 
 export default class CreateFakeData implements Seeder {
   public async run(factory: Factory, connection: Connection): Promise<any> {
+    const queryRunner: QueryRunner = connection.createQueryRunner();
+    await queryRunner.connect();
+    await this.seedCategories(queryRunner);
+    await this.seedCities(queryRunner);
+
     const restaurants = await factory(Restaurant)({}).createMany(
       NUMBER_OF_RESETAURANTS,
     );
@@ -116,5 +124,128 @@ export default class CreateFakeData implements Seeder {
       ];
       position += batchSize;
     }
+    await queryRunner.release();
+  }
+
+  async seedCities(queryRunner: QueryRunner) {
+    type DistrictsJsonSchema = {
+      id: string;
+      name: string;
+      latitude: number;
+      longitude: number;
+      isDefault: boolean;
+    }[];
+
+    type CitiesJsonSchema = Record<
+      string,
+      {
+        name: string;
+        latitude: number;
+        longitude: number;
+        districts: Record<string, string>;
+      }
+    >;
+    const createCity = (data: DeepPartial<City>): City =>
+      queryRunner.manager.create(City, data);
+    const createArea = (data: DeepPartial<Area>): Area =>
+      queryRunner.manager.create(Area, data);
+
+    const getCitiesData = (): CitiesJsonSchema => {
+      const seedJsonFileName = 'cities.json';
+      const _path = `./${seedJsonFileName}`;
+      const absolutePath = path.resolve(__dirname, _path);
+      const response: CitiesJsonSchema = JSON.parse(
+        fs.readFileSync(absolutePath, 'utf8'),
+      );
+      return response;
+    };
+
+    const getDistrictsData = (): DistrictsJsonSchema => {
+      const seedJsonFileName = 'districts.json';
+      const _path = `./${seedJsonFileName}`;
+      const absolutePath = path.resolve(__dirname, _path);
+      const response: DistrictsJsonSchema = JSON.parse(
+        fs.readFileSync(absolutePath, 'utf8'),
+      );
+      return response;
+    };
+
+    const citiesData = getCitiesData();
+    const districtsData = getDistrictsData();
+
+    const cities: City[] = Object.entries(citiesData).map(
+      ([id, { districts, name, latitude, longitude }]) => {
+        const newDistricts: Area[] = Object.entries(districts).map(
+          ([id, districtName]) => {
+            const found = districtsData.find(
+              (data) => data.id.toString() == id.toString(),
+            );
+            if (found) {
+              const {
+                isDefault,
+                latitude: areaLatitude,
+                longitude: areaLongitude,
+              } = found;
+              return createArea({
+                id: parseInt(id),
+                name: districtName,
+                geometry: Position.PositionToGeometry({
+                  longitude: areaLongitude,
+                  latitude: areaLatitude,
+                }),
+                isPrecise: !isDefault,
+              });
+            }
+            return createArea({
+              id: parseInt(id),
+              name: districtName,
+              geometry: Position.PositionToGeometry({
+                longitude: latitude,
+                latitude: longitude,
+              }),
+              isPrecise: false,
+            });
+          },
+        );
+
+        return createCity({
+          id: parseInt(id),
+          name,
+          districts: newDistricts,
+          geometry: Position.PositionToGeometry({ latitude, longitude }),
+        });
+      },
+    );
+
+    return await queryRunner.manager.save(City, cities);
+  }
+
+  async seedCategories(queryRunner: QueryRunner) {
+    type CategoryJsonSchema = {
+      categories: {
+        name: string;
+        icon: {
+          value: string;
+        }[];
+      }[];
+    };
+
+    const seedJsonFileName = 'categories.json';
+    const _path = `./${seedJsonFileName}`;
+    const absolutePath = path.resolve(__dirname, _path);
+    const response: CategoryJsonSchema = JSON.parse(
+      fs.readFileSync(absolutePath, 'utf8'),
+    );
+    const { categories } = response;
+    const createCategory = (data: DeepPartial<Category>): Category =>
+      queryRunner.manager.create(Category, data);
+
+    const categoryEntities = categories.map((category) => {
+      const { name, icon } = category;
+      const iconUrl = icon[1].value;
+      return createCategory({ name, iconUrl });
+    });
+
+    return await queryRunner.manager.save(Category, categoryEntities);
   }
 }
