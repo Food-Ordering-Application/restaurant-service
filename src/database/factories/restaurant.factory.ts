@@ -53,6 +53,7 @@ define(Restaurant, (faker: typeof Faker, context: Context) => {
   restaurant.geom = geom;
   restaurant.isActive = isActive;
   restaurant.isVerified = isVerified;
+  restaurant.merchantIdInPayPal = 'DD64LQSRDC2UN';
 
   function randomInteger(min, max): number {
     return Math.floor(Math.random() * (max - min + 1)) + min;
