@@ -20,7 +20,9 @@ import {
   RestaurantDetailForCustomerDto,
   RestaurantForCustomerDto,
   RestaurantForMerchantDto,
+  UpdatedRestaurantDataDto,
   UpdateFavoriteRestaurantStatusDto,
+  UpdateRestaurantDto,
 } from './dto';
 import { CategoryDto } from './dto/category.dto';
 import { GetMetaDataDto } from './dto/get-meta-data.dto';
@@ -30,6 +32,7 @@ import { RestaurantSortType } from './enums/restaurant-sort-type.enum';
 import {
   RestaurantCreatedEventPayload,
   RestaurantProfileUpdatedEventPayload,
+  RestaurantUpdatedEventPayload,
 } from './events';
 import { DateTimeHelper } from './helpers/datetime.helper';
 import {
@@ -84,6 +87,42 @@ export class RestaurantService {
       typeof templateObject[key] == 'undefined' ? delete data[key] : {},
     );
     await this.restaurantRepository.update(restaurantId, data);
+  }
+
+  async handleRestaurantUpdatedSideEffect(restaurantId: string) {
+    // invalidate cache
+    const restaurant = await this.restaurantRepository.findOne({
+      id: restaurantId,
+    });
+    const {
+      owner: merchantId,
+      id,
+      name,
+      phone,
+      address,
+      coverImageUrl,
+      isActive,
+      verifiedImageUrl,
+      videoUrl,
+    } = restaurant;
+    const restaurantUpdatedEventPayload: RestaurantUpdatedEventPayload = {
+      merchantId,
+      restaurantId: id,
+      data: {
+        name,
+        phone,
+        address,
+        coverImageUrl,
+        isActive,
+        verifiedImageUrl,
+        videoUrl,
+      },
+    };
+
+    this.userServiceClient.emit(
+      { event: 'restaurant_updated' },
+      restaurantUpdatedEventPayload,
+    );
   }
 
   async create(dto: CreateRestaurantDto): Promise<ICreateRestaurantResponse> {
@@ -796,5 +835,70 @@ export class RestaurantService {
       'area',
     ]);
     return queryBuilder.getOne();
+  }
+
+  async update(updateRestaurantDto: UpdateRestaurantDto) {
+    const {
+      data,
+      merchantId,
+      // restaurantId,
+      // merchantId,
+      restaurantId,
+    } = updateRestaurantDto;
+
+    const fetchCountRestaurant = await this.restaurantRepository.count({
+      id: restaurantId,
+      owner: merchantId,
+      // menuId: menuId,
+    });
+    if (fetchCountRestaurant === 0) {
+      return {
+        status: HttpStatus.NOT_FOUND,
+        message: 'Restaurant not found',
+      };
+    }
+    // remove unwanted field
+    const templateObject: UpdatedRestaurantDataDto = {
+      name: null,
+      isActive: null,
+      address: null,
+      coverImageUrl: null,
+      geo: null,
+      phone: null,
+      verifiedImageUrl: null,
+      videoUrl: null,
+    };
+    Object.keys(data).forEach((key) =>
+      typeof templateObject[key] == undefined ? delete data[key] : {},
+    );
+
+    let geom = null;
+    if (data.geo) {
+      geom = Position.PositionToGeometry(data?.geo);
+      delete data.geo;
+    }
+
+    // save to database
+    try {
+      await this.restaurantRepository.update(
+        { id: restaurantId },
+        {
+          ...data,
+          ...(geom && {
+            geom: geom,
+          }),
+        },
+      );
+      this.handleRestaurantUpdatedSideEffect(restaurantId);
+      return {
+        status: HttpStatus.OK,
+        message: 'Restaurant updated successfully',
+      };
+    } catch (e) {
+      return {
+        status: HttpStatus.INTERNAL_SERVER_ERROR,
+        message: e.message,
+      };
+    }
   }
 }
