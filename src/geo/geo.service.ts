@@ -89,7 +89,7 @@ export class GeoService {
       status: HttpStatus.OK,
       message: 'Get city from location successfully',
       data: {
-        city: CityDto.EntityToDto(area.city),
+        city: CityDto.EntityToDto({ ...area.city, districts: [area] }),
       },
     };
   }
