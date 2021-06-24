@@ -1,11 +1,11 @@
-import { MenuService } from '../menu.service';
 import { HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Like, Repository } from 'typeorm';
+import { Like, Repository, SelectQueryBuilder } from 'typeorm';
 import { MenuItem } from '../entities/menu-item.entity';
 import {
   CreateMenuItemDto,
   DeleteMenuItemDto,
+  GetMenuItemInfosDto,
   UpdatedMenuItemDataDto,
   UpdateMenuItemDto,
 } from './dto';
@@ -14,10 +14,12 @@ import { MenuItemDto } from './dto/menu-item.dto';
 import {
   ICreateMenuItemResponse,
   IDeleteMenuItemResponse,
+  IGetMenuItemInfosResponse,
   IUpdateMenuItemResponse,
 } from './interfaces';
 import { IFetchMenuItemOfMenuResponse } from './interfaces/fetch-menu-item-of-menu-response.interface';
 import { MenuGroupService } from '../menu-group/menu-group.service';
+import { MenuItemForOrder } from '../dto/menu-for-order/menu-item-for-order.dto';
 @Injectable()
 export class MenuItemService {
   constructor(
@@ -182,5 +184,32 @@ export class MenuItemService {
       status: HttpStatus.OK,
       message: 'MenuItem deleted successfully',
     };
+  }
+
+  async getMenuItemInfos(
+    getMenuItemInfosDto: GetMenuItemInfosDto,
+  ): Promise<IGetMenuItemInfosResponse> {
+    const { menuItemIds } = getMenuItemInfosDto;
+    const menuItems = await this.getMenuItemsByIds(menuItemIds);
+    return {
+      status: HttpStatus.OK,
+      message: 'Populate menu item infos menu item successfully',
+      data: {
+        menuItems,
+      },
+    };
+  }
+
+  async getMenuItemsByIds(ids: string[]): Promise<MenuItemForOrder[]> {
+    if (!ids.length) return [];
+    let queryBuilder: SelectQueryBuilder<MenuItem> = this.menuItemRepository.createQueryBuilder(
+      'item',
+    );
+    queryBuilder = queryBuilder.where('item.id IN (:...ids)', { ids: ids });
+    const menuItems = await queryBuilder.getMany();
+    const result = ids.map((id) =>
+      MenuItemForOrder.EntityToDto(menuItems.find((r) => r.id == id)),
+    );
+    return result;
   }
 }

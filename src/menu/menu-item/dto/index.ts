@@ -7,3 +7,4 @@ export {
   UpdatedMenuItemDataDto,
 } from './update-menu-item.dto';
 export { DeleteMenuItemDto } from './delete-menu-item.dto';
+export { GetMenuItemInfosDto } from './get-menu-item-infos.dto';
