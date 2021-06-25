@@ -10,6 +10,7 @@ import {
   UpdateFavoriteRestaurantStatusDto,
   GetFavoriteRestaurantsDto,
   UpdateRestaurantDto,
+  UpdateRestaurantRatingDto,
 } from './dto';
 import {
   IRestaurantResponse,
@@ -128,5 +129,15 @@ export class RestaurantController {
   @MessagePattern('updateRestaurant')
   async update(@Payload() updateRestaurantDto: UpdateRestaurantDto) {
     return await this.restaurantService.update(updateRestaurantDto);
+  }
+
+  @EventPattern('updateRestaurantRating')
+  async updateRestaurantRating(
+    @Payload() updateRestaurantRatingDto: UpdateRestaurantRatingDto,
+  ) {
+    console.log({ updateRestaurantRatingDto });
+    return await this.restaurantService.updateRestaurantRating(
+      updateRestaurantRatingDto,
+    );
   }
 }

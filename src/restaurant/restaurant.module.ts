@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AppModule } from 'src/app.module';
 import { MenuItem, MenuItemTopping } from '../menu/entities';
 import { GeoModule } from './../geo/geo.module';
 import { FavoriteRestaurant } from './entities';
@@ -19,7 +20,6 @@ import { RestaurantService } from './restaurant.service';
       MenuItemTopping,
       FavoriteRestaurant,
     ]),
-
     GeoModule,
   ],
   controllers: [RestaurantController],

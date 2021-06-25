@@ -16,3 +16,4 @@ export {
   UpdateRestaurantDto,
   UpdatedRestaurantDataDto,
 } from './update-restaurant.dto';
+export { UpdateRestaurantRatingDto } from './update-restaurant-rating.dto';

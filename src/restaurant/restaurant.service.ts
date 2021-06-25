@@ -23,6 +23,7 @@ import {
   UpdatedRestaurantDataDto,
   UpdateFavoriteRestaurantStatusDto,
   UpdateRestaurantDto,
+  UpdateRestaurantRatingDto,
 } from './dto';
 import { CategoryDto } from './dto/category.dto';
 import { GetMetaDataDto } from './dto/get-meta-data.dto';
@@ -51,7 +52,8 @@ import {
 export class RestaurantService {
   private readonly logger = new Logger('RestaurantService');
   constructor(
-    @Inject(USER_SERVICE) private userServiceClient: ClientProxy,
+    @Inject(USER_SERVICE)
+    private userServiceClient: ClientProxy,
     @InjectRepository(Restaurant)
     private restaurantRepository: Repository<Restaurant>,
     @InjectRepository(MenuItem)
@@ -899,6 +901,30 @@ export class RestaurantService {
         status: HttpStatus.INTERNAL_SERVER_ERROR,
         message: e.message,
       };
+    }
+  }
+
+  async updateRestaurantRating(
+    updateRestaurantRatingDto: UpdateRestaurantRatingDto,
+  ) {
+    const { restaurantId, rateCount, avgRating } = updateRestaurantRatingDto;
+    try {
+      const { affected } = await this.restaurantRepository.update(
+        { id: restaurantId },
+        {
+          numRate: rateCount,
+          rating: Math.round(avgRating * 10) / 10,
+        },
+      );
+      if (!affected) {
+        this.logger.error(
+          `Error to update rating of restaurant ${restaurantId}`,
+        );
+      }
+    } catch (e) {
+      this.logger.error(
+        `Error to update rating of restaurant ${restaurantId}: ${e.message}`,
+      );
     }
   }
 }
