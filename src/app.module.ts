@@ -1,14 +1,13 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 import * as Joi from 'joi';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { DatabaseModule } from './database/database.module';
-import { RestaurantModule } from './restaurant/restaurant.module';
-import { MenuModule } from './menu/menu.module';
 import { GeoModule } from './geo/geo.module';
-import { ClientsModule, Transport } from '@nestjs/microservices';
-import { USER_SERVICE } from './constants';
+import { MenuModule } from './menu/menu.module';
+import { MicroserviceModule } from './microservice/microservice.module';
+import { RestaurantModule } from './restaurant/restaurant.module';
 
 @Module({
   imports: [
@@ -21,23 +20,8 @@ import { USER_SERVICE } from './constants';
         POSTGRES_DB: Joi.string().required(),
       }),
     }),
-    ClientsModule.registerAsync([
-      {
-        name: USER_SERVICE,
-        imports: [ConfigModule],
-        inject: [ConfigService],
-        useFactory: (configService: ConfigService) => ({
-          transport: Transport.RMQ,
-          options: {
-            urls: [configService.get('AMQP_URL') as string],
-            queue: configService.get('USERS_AMQP_QUEUE'),
-            queueOptions: {
-              durable: false,
-            },
-          },
-        }),
-      },
-    ]),
+
+    MicroserviceModule,
     DatabaseModule,
     RestaurantModule,
     MenuModule,
