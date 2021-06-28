@@ -8,6 +8,7 @@ import {
   CreateToppingItemDto,
   DeleteToppingItemDto,
   FetchMenuItemToppingsOfCurrentToppingItemDto,
+  GetToppingItemDetailDto,
   MenuItemToppingOfToppingItemDto,
   UpdatedToppingItemDataDto,
   UpdateMenuItemToppingsOfCurrentToppingItemDto,
@@ -19,6 +20,7 @@ import {
   ICreateToppingItemResponse,
   IDeleteToppingItemResponse,
   IFetchMenuItemToppingsOfCurrentToppingItemResponse,
+  IGetToppingItemDetailResponse,
   IUpdateMenuItemToppingsOfCurrentToppingItemResponse,
   IUpdateToppingItemResponse,
 } from './interfaces';
@@ -265,6 +267,36 @@ export class ToppingItemService {
     return {
       status: HttpStatus.OK,
       message: 'Topping item updated successfully',
+    };
+  }
+
+  async getToppingItemDetail(
+    getToppingItemDetailDto: GetToppingItemDetailDto,
+  ): Promise<IGetToppingItemDetailResponse> {
+    const {
+      menuId,
+      restaurantId,
+      merchantId,
+      toppingItemId,
+    } = getToppingItemDetailDto;
+    const toppingItem = await this.toppingItemRepository.findOne({
+      id: toppingItemId,
+      menuId: menuId,
+    });
+    if (!toppingItem) {
+      return {
+        status: HttpStatus.NOT_FOUND,
+        message: 'Topping item not found',
+        data: null,
+      };
+    }
+
+    return {
+      status: HttpStatus.OK,
+      message: 'Topping item deleted successfully',
+      data: {
+        toppingItem: ToppingItemDto.EntityToDto(toppingItem),
+      },
     };
   }
 }

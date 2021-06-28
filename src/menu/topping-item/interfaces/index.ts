@@ -4,3 +4,4 @@ export { IUpdateToppingItemResponse } from './update-topping-item-response.inter
 export { IDeleteToppingItemResponse } from './delete-topping-item-response.interface';
 export { IFetchMenuItemToppingsOfCurrentToppingItemResponse } from './fetch-menu-item-toppings-of-current-topping-item-response.interface';
 export { IUpdateMenuItemToppingsOfCurrentToppingItemResponse } from './update-menu-item-toppings-of-current-topping-item-response.interface';
+export { IGetToppingItemDetailResponse } from './get-topping-item-detail-response.interface';

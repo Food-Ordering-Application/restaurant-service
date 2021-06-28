@@ -4,6 +4,7 @@ import {
   CreateToppingItemDto,
   DeleteToppingItemDto,
   FetchMenuItemToppingsOfCurrentToppingItemDto,
+  GetToppingItemDetailDto,
   UpdateMenuItemToppingsOfCurrentToppingItemDto,
   UpdateToppingItemDto,
 } from './dto';
@@ -13,6 +14,7 @@ import {
   IDeleteToppingItemResponse,
   IFetchMenuItemToppingsOfCurrentToppingItemResponse,
   IFetchToppingItemOfMenuResponse,
+  IGetToppingItemDetailResponse,
   IUpdateMenuItemToppingsOfCurrentToppingItemResponse,
   IUpdateToppingItemResponse,
 } from './interfaces';
@@ -43,11 +45,13 @@ export class ToppingItemController {
     return await this.menuGroupService.update(updateToppingItemDto);
   }
 
-  @MessagePattern('deleteToppingItem')
-  async delete(
-    @Payload() deleteToppingItemDto: DeleteToppingItemDto,
-  ): Promise<IDeleteToppingItemResponse> {
-    return await this.menuGroupService.delete(deleteToppingItemDto);
+  @MessagePattern('getToppingItemDetail')
+  async getToppingItemDetail(
+    @Payload() getToppingItemDetailDto: GetToppingItemDetailDto,
+  ): Promise<IGetToppingItemDetailResponse> {
+    return await this.menuGroupService.getToppingItemDetail(
+      getToppingItemDetailDto,
+    );
   }
 
   @MessagePattern('fetchMenuItemToppingsOfCurrentToppingItem')
@@ -68,5 +72,12 @@ export class ToppingItemController {
     return await this.menuGroupService.updateMenuItemTopping(
       updateMenuItemToppingDto,
     );
+  }
+
+  @MessagePattern('deleteToppingItem')
+  async delete(
+    @Payload() deleteToppingItemDto: DeleteToppingItemDto,
+  ): Promise<IDeleteToppingItemResponse> {
+    return await this.menuGroupService.delete(deleteToppingItemDto);
   }
 }
