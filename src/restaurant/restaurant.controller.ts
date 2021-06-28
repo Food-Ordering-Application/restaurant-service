@@ -135,7 +135,6 @@ export class RestaurantController {
   async updateRestaurantRating(
     @Payload() updateRestaurantRatingDto: UpdateRestaurantRatingDto,
   ) {
-    console.log({ updateRestaurantRatingDto });
     return await this.restaurantService.updateRestaurantRating(
       updateRestaurantRatingDto,
     );

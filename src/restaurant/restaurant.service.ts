@@ -611,7 +611,7 @@ export class RestaurantService {
       take: size,
       skip: page * size,
       loadEagerRelations: false,
-      order: { isVerified: 'ASC', isActive: 'ASC', created_at: 'ASC' },
+      order: { isVerified: 'DESC', isActive: 'DESC', created_at: 'DESC' },
     });
 
     return {
