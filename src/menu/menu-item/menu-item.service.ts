@@ -5,6 +5,7 @@ import { MenuItem } from '../entities/menu-item.entity';
 import {
   CreateMenuItemDto,
   DeleteMenuItemDto,
+  GetMenuItemDetailDto,
   GetMenuItemInfosDto,
   UpdatedMenuItemDataDto,
   UpdateMenuItemDto,
@@ -14,6 +15,7 @@ import { MenuItemDto } from './dto/menu-item.dto';
 import {
   ICreateMenuItemResponse,
   IDeleteMenuItemResponse,
+  IGetMenuItemDetailResponse,
   IGetMenuItemInfosResponse,
   IUpdateMenuItemResponse,
 } from './interfaces';
@@ -211,5 +213,37 @@ export class MenuItemService {
       MenuItemForOrder.EntityToDto(menuItems.find((r) => r.id == id)),
     );
     return result;
+  }
+
+  async getMenuItemDetail(
+    getMenuItemDetailDto: GetMenuItemDetailDto,
+  ): Promise<IGetMenuItemDetailResponse> {
+    const {
+      menuId,
+      merchantId,
+      restaurantId,
+      menuItemId,
+    } = getMenuItemDetailDto;
+
+    const menuItem = await this.menuItemRepository.findOne({
+      id: menuItemId,
+      menuId: menuId,
+    });
+
+    if (!menuItem) {
+      return {
+        status: HttpStatus.NOT_FOUND,
+        message: 'Menu item not found',
+        data: null,
+      };
+    }
+
+    return {
+      status: HttpStatus.OK,
+      message: 'Get menu item detail successfully',
+      data: {
+        menuItem: MenuItemDto.EntityToDto(menuItem),
+      },
+    };
   }
 }

@@ -3,6 +3,7 @@ import { MessagePattern, Payload } from '@nestjs/microservices';
 import {
   CreateMenuItemDto,
   DeleteMenuItemDto,
+  GetMenuItemDetailDto,
   GetMenuItemInfosDto,
   UpdateMenuItemDto,
 } from './dto';
@@ -11,6 +12,7 @@ import {
   ICreateMenuItemResponse,
   IDeleteMenuItemResponse,
   IFetchMenuItemOfMenuResponse,
+  IGetMenuItemDetailResponse,
   IGetMenuItemInfosResponse,
   IUpdateMenuItemResponse,
 } from './interfaces';
@@ -32,6 +34,13 @@ export class MenuItemController {
     @Payload() fetchMenuItemDto: FetchMenuItemOfMenuDto,
   ): Promise<IFetchMenuItemOfMenuResponse> {
     return await this.menuItemService.findAll(fetchMenuItemDto);
+  }
+
+  @MessagePattern('getMenuItemDetail')
+  async getMenuItemDetail(
+    @Payload() getMenuItemDetailDto: GetMenuItemDetailDto,
+  ): Promise<IGetMenuItemDetailResponse> {
+    return await this.menuItemService.getMenuItemDetail(getMenuItemDetailDto);
   }
 
   @MessagePattern('updateMenuItem')
