@@ -1,14 +1,17 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Like, Repository, SelectQueryBuilder } from 'typeorm';
+import { In, Like, Repository, SelectQueryBuilder } from 'typeorm';
 import { MenuItem } from '../entities/menu-item.entity';
 import {
   CreateMenuItemDto,
   DeleteMenuItemDto,
   GetMenuItemDetailDto,
   GetMenuItemInfosDto,
+  GetMenuItemToppingsOfCurrentMenuItemDto,
+  MenuItemToppingOfMenuItemDto,
   UpdatedMenuItemDataDto,
   UpdateMenuItemDto,
+  UpdateMenuItemToppingsOfCurrentMenuItemDto,
 } from './dto';
 import { FetchMenuItemOfMenuDto } from './dto/fetch-menu-item-of-menu.dto';
 import { MenuItemDto } from './dto/menu-item.dto';
@@ -17,16 +20,23 @@ import {
   IDeleteMenuItemResponse,
   IGetMenuItemDetailResponse,
   IGetMenuItemInfosResponse,
+  IGetMenuItemToppingsOfCurrentMenuItemResponse,
   IUpdateMenuItemResponse,
+  IUpdateMenuItemToppingsOfCurrentMenuItemResponse,
 } from './interfaces';
 import { IFetchMenuItemOfMenuResponse } from './interfaces/fetch-menu-item-of-menu-response.interface';
 import { MenuGroupService } from '../menu-group/menu-group.service';
 import { MenuItemForOrder } from '../dto/menu-for-order/menu-item-for-order.dto';
+import { MenuItemTopping, ToppingItem } from '../entities';
 @Injectable()
 export class MenuItemService {
   constructor(
     @InjectRepository(MenuItem)
     private menuItemRepository: Repository<MenuItem>,
+    @InjectRepository(ToppingItem)
+    private toppingItemRepository: Repository<ToppingItem>,
+    @InjectRepository(MenuItemTopping)
+    private menuItemToppingRepository: Repository<MenuItemTopping>,
     private menuGroupService: MenuGroupService,
   ) {}
 
@@ -244,6 +254,84 @@ export class MenuItemService {
       data: {
         menuItem: MenuItemDto.EntityToDto(menuItem),
       },
+    };
+  }
+
+  async fetchMenuItemTopping(
+    fetchMenuItemToppingDto: GetMenuItemToppingsOfCurrentMenuItemDto,
+  ): Promise<IGetMenuItemToppingsOfCurrentMenuItemResponse> {
+    const { menuItemId } = fetchMenuItemToppingDto;
+    const menuItemTopping = await this.menuItemToppingRepository.find({
+      menuItemId,
+    });
+    // TODO
+    return {
+      status: HttpStatus.OK,
+      message: 'Fetched menu item toppings of menu item successfully',
+      data: {
+        menuItemId,
+        results: menuItemTopping.map((menuItemTopping) =>
+          MenuItemToppingOfMenuItemDto.EntityToDto(menuItemTopping),
+        ),
+      },
+    };
+  }
+
+  async updateMenuItemTopping(
+    updateMenuItemToppingDto: UpdateMenuItemToppingsOfCurrentMenuItemDto,
+  ): Promise<IUpdateMenuItemToppingsOfCurrentMenuItemResponse> {
+    const {
+      data,
+      menuId,
+      restaurantId,
+      merchantId,
+      menuItemId,
+    } = updateMenuItemToppingDto;
+
+    const fetchCountMenuItem = await this.menuItemRepository.count({
+      id: menuItemId,
+      menuId: menuId,
+    });
+    if (fetchCountMenuItem === 0) {
+      return {
+        status: HttpStatus.NOT_FOUND,
+        message: 'Menu item not found',
+      };
+    }
+
+    const { menuItemToppings = [] } = data;
+
+    const toppingItemIds = menuItemToppings.map(
+      ({ toppingItemId }) => toppingItemId,
+    );
+    const numberOfValidToppingItemIds = await this.toppingItemRepository.count({
+      id: In(toppingItemIds),
+    });
+
+    if (numberOfValidToppingItemIds !== toppingItemIds.length) {
+      return {
+        status: HttpStatus.BAD_REQUEST,
+        message: 'One of topping item ids is not valid. Please check again',
+      };
+    }
+
+    // save to database
+    await this.menuItemToppingRepository.delete({ menuItemId });
+
+    const menuItemToppingsEntity = menuItemToppings.map(
+      ({ toppingItemId, customPrice }) =>
+        this.menuItemToppingRepository.create({
+          menuId,
+          toppingItemId,
+          menuItemId,
+          customPrice,
+        }),
+    );
+
+    await this.menuItemToppingRepository.save(menuItemToppingsEntity);
+    return {
+      status: HttpStatus.OK,
+      message: 'Menu item updated successfully',
     };
   }
 }

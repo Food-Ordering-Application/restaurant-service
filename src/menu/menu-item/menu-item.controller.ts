@@ -5,7 +5,9 @@ import {
   DeleteMenuItemDto,
   GetMenuItemDetailDto,
   GetMenuItemInfosDto,
+  GetMenuItemToppingsOfCurrentMenuItemDto,
   UpdateMenuItemDto,
+  UpdateMenuItemToppingsOfCurrentMenuItemDto,
 } from './dto';
 import { FetchMenuItemOfMenuDto } from './dto/fetch-menu-item-of-menu.dto';
 import {
@@ -14,7 +16,9 @@ import {
   IFetchMenuItemOfMenuResponse,
   IGetMenuItemDetailResponse,
   IGetMenuItemInfosResponse,
+  IGetMenuItemToppingsOfCurrentMenuItemResponse,
   IUpdateMenuItemResponse,
+  IUpdateMenuItemToppingsOfCurrentMenuItemResponse,
 } from './interfaces';
 import { MenuItemService } from './menu-item.service';
 
@@ -62,5 +66,25 @@ export class MenuItemController {
     @Payload() getMenuItemInfosDto: GetMenuItemInfosDto,
   ): Promise<IGetMenuItemInfosResponse> {
     return await this.menuItemService.getMenuItemInfos(getMenuItemInfosDto);
+  }
+
+  @MessagePattern('fetchMenuItemToppingsOfCurrentMenuItem')
+  async fetchMenuItemTopping(
+    @Payload()
+    getMenuItemToppingsOfCurrentMenuItemDto: GetMenuItemToppingsOfCurrentMenuItemDto,
+  ): Promise<IGetMenuItemToppingsOfCurrentMenuItemResponse> {
+    return await this.menuItemService.fetchMenuItemTopping(
+      getMenuItemToppingsOfCurrentMenuItemDto,
+    );
+  }
+
+  @MessagePattern('updateMenuItemToppingsOfCurrentMenuItem')
+  async updateMenuItemTopping(
+    @Payload()
+    updateMenuItemToppingsOfCurrentMenuItemDto: UpdateMenuItemToppingsOfCurrentMenuItemDto,
+  ): Promise<IUpdateMenuItemToppingsOfCurrentMenuItemResponse> {
+    return await this.menuItemService.updateMenuItemTopping(
+      updateMenuItemToppingsOfCurrentMenuItemDto,
+    );
   }
 }
