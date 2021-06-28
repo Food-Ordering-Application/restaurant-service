@@ -293,7 +293,7 @@ export class ToppingItemService {
 
     return {
       status: HttpStatus.OK,
-      message: 'Topping item deleted successfully',
+      message: 'Get topping item detail successfully',
       data: {
         toppingItem: ToppingItemDto.EntityToDto(toppingItem),
       },
