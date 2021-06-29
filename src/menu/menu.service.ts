@@ -354,10 +354,9 @@ export class MenuService {
         orderItem.orderItemToppings.length !== 0
       ) {
         // console.log('Have topping');
-        const menuItemToppingIds = [];
-        for (let i = 0; i < orderItem.orderItemToppings.length; i++) {
-          menuItemToppingIds.push(orderItem.orderItemToppings[i].toppingItemId);
-        }
+        const menuItemToppingIds = orderItem.orderItemToppings.map(
+          ({ toppingItemId }) => toppingItemId,
+        );
         // console.log('menuItemToppingIds', menuItemToppingIds);
         //TODO: Lấy thông tin menuItem, menuItemTopping bao gồm price và name
         const [menuItem, menuItemToppings] = await Promise.all([
@@ -369,11 +368,6 @@ export class MenuService {
           ),
           this.menuItemToppingRepository
             .createQueryBuilder('menuITop')
-            .select([
-              'menuITop.customPrice',
-              'menuITop.menuItemId',
-              'menuITop.toppingItemId',
-            ])
             .leftJoinAndSelect('menuITop.toppingItem', 'topI')
             .where('menuITop.menuItemId = :menuItemId', {
               menuItemId: orderItem.menuItemId,
@@ -381,6 +375,13 @@ export class MenuService {
             .andWhere('menuITop.toppingItemId IN (:...ids)', {
               ids: menuItemToppingIds,
             })
+            .select([
+              'topI.name',
+              'topI.price',
+              'menuITop.customPrice',
+              'menuITop.menuItemId',
+              'menuITop.toppingItemId',
+            ])
             .getMany(),
         ]);
         // console.log('menuItem', menuItem);
@@ -395,11 +396,12 @@ export class MenuService {
               toppingItemId,
             } = menuItemTopping;
             // console.log(menuItemId, toppingItemId);
+            const { name = null, price = 0 } = toppingItem || {};
             return {
               menuItemId: menuItemId,
               toppingItemId: toppingItemId,
-              price: customPrice,
-              name: toppingItem.name,
+              price: customPrice === null ? price : customPrice,
+              name: name,
             };
           },
         );
