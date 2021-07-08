@@ -30,6 +30,34 @@ export class RestaurantElasticsearchService {
     });
   }
 
+  async updateRestaurant(id: string, restaurantSearch: RestaurantSearchDto) {
+    const result = await this.client.search({
+      index: INDEX,
+      body: {
+        query: {
+          term: {
+            id: id,
+          },
+        },
+      },
+      filter_path: ['hits.hits._id'],
+    });
+    const { body } = result;
+    const { hits: { hits = [] } = {} } = body;
+    const docId: string = hits[0]?._id;
+    if (!docId) {
+      throw new Error('not found');
+    }
+
+    return this.client.update<RestaurantSearchDto, any>({
+      id: docId,
+      index: INDEX,
+      body: {
+        doc: restaurantSearch,
+      },
+    });
+  }
+
   async bulkIndexRestaurant(restaurantSearch: RestaurantSearchDto[]) {
     const body: any[] = restaurantSearch
       .map((res) => [{ index: { _index: INDEX } }, res])
