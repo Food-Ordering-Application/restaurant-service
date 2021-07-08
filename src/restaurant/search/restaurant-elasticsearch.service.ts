@@ -49,6 +49,8 @@ export class RestaurantElasticsearchService {
       categoryIds = [],
       isFilterOpenRestaurant = false,
       query = '',
+      offset = 0,
+      limit = 10,
     }: SearchDto,
   ) {
     const currentDateEncode = DateTimeHelper.encodeDate();
@@ -78,6 +80,8 @@ export class RestaurantElasticsearchService {
         areaIds,
         cityId,
       },
+      offset: offset,
+      limit: limit,
       relevantOptions: mode == 'RELEVANCE' ? relevantOptions : null,
     });
     // console.dir(

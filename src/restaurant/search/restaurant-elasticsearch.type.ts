@@ -61,4 +61,6 @@ export type SearchDto = {
   categoryIds?: number[];
   areaIds?: number[];
   query?: string;
+  offset: number;
+  limit: number;
 };
