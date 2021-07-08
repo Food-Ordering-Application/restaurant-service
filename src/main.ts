@@ -19,3 +19,5 @@ async function bootstrap() {
   app.listen(() => console.log('Restaurant microservice is listening'));
 }
 bootstrap();
+
+// import './script/sync-restaurant-to-elasticsearch';
