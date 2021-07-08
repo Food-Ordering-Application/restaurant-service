@@ -1,6 +1,6 @@
-import { MenuItem } from '../../menu/entities/menu-item.entity';
+import { MenuItemSearchDto } from '.';
+import { OpenHour, Restaurant } from '../entities';
 import { Category } from '../entities/category.entity';
-import { Restaurant, OpenHour } from '../entities';
 import { DateTimeHelper } from '../helpers/datetime.helper';
 export class RestaurantSearchDto {
   id: string;
@@ -15,13 +15,7 @@ export class RestaurantSearchDto {
 
   // favoriteUserIds: string[];
   name: string;
-  menuItems: {
-    id: string;
-    name: string;
-    price: number;
-    // isActive: boolean;
-    imageUrl: string;
-  }[];
+  menuItems: MenuItemSearchDto[];
 
   location: number[];
 
@@ -53,28 +47,6 @@ export class RestaurantSearchDto {
       return category.id;
     };
 
-    const convertMenuItem = ({
-      id,
-      name,
-      price,
-      // isActive,
-      imageUrl,
-    }: MenuItem): {
-      id: string;
-      name: string;
-      price: number;
-      // isActive: boolean;
-      imageUrl: string;
-    } => {
-      return {
-        id,
-        name,
-        price,
-        // isActive,
-        imageUrl,
-      };
-    };
-
     const convertLocation = ({ geom }: Restaurant): number[] => {
       return geom?.coordinates;
     };
@@ -91,7 +63,7 @@ export class RestaurantSearchDto {
       location: convertLocation(restaurant),
       openHours: openHours?.map(DateTimeHelper.encodeOpenHour) || [],
       categoryIds: categories?.map(convertCategory) || [],
-      menuItems: menuItemEntities?.map(convertMenuItem) || [],
+      menuItems: menuItemEntities?.map(MenuItemSearchDto.convertMenuItem) || [],
     };
   }
 }

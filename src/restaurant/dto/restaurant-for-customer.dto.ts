@@ -1,4 +1,4 @@
-import { CategoryDto } from '.';
+import { CategoryDto, MenuItemSearchDto } from '.';
 import { Position } from '../../geo/types/position';
 import { Restaurant } from '../entities';
 import { DateTimeHelper } from '../helpers/datetime.helper';
@@ -14,7 +14,11 @@ export class RestaurantForCustomerDto {
   merchantIdInPayPal: string;
   categories: CategoryDto[];
   isOpening: boolean;
-  static EntityToDTO(restaurant: Restaurant): RestaurantForCustomerDto {
+  menuItems?: MenuItemSearchDto[];
+  static EntityToDTO(
+    restaurant: Restaurant,
+    menuItems: MenuItemSearchDto[] = [],
+  ): RestaurantForCustomerDto {
     const {
       id,
       name,
@@ -48,6 +52,7 @@ export class RestaurantForCustomerDto {
         )
           ? true
           : false,
+      menuItems,
     };
   }
 }

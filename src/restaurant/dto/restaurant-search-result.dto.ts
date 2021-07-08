@@ -1,3 +1,5 @@
+import { MenuItemSearchDto } from '.';
+
 export class RestaurantSearchResultDto {
   took: number;
   timed_out: boolean;
@@ -11,12 +13,7 @@ export class RestaurantSearchResultDto {
         menuItems: {
           hits: {
             hits: Array<{
-              _source: {
-                id: string;
-                name: string;
-                price: number;
-                imageUrl: string;
-              };
+              _source: MenuItemSearchDto;
             }>;
           };
         };

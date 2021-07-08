@@ -19,3 +19,4 @@ export {
 export { UpdateRestaurantRatingDto } from './update-restaurant-rating.dto';
 export { RestaurantSearchDto } from './restaurant-search.dto';
 export { RestaurantSearchResultDto } from './restaurant-search-result.dto';
+export { MenuItemSearchDto } from './menu-item-search.dto';
