@@ -67,6 +67,8 @@ const testSearch = async () => {
       longitude: 106.66122381058468,
     },
     distance: 10,
+    offset: 0,
+    limit: 10,
   });
   writeToFile('results.json', result);
 };

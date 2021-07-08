@@ -4,6 +4,7 @@ import {
   QueryContainer,
   Sort,
 } from '@elastic/elasticsearch/api/types';
+import { Injectable } from '@nestjs/common';
 import { ElasticsearchService } from '@nestjs/elasticsearch';
 import { DateTimeHelper } from 'src/restaurant/helpers/datetime.helper';
 import { RestaurantSearchDto, RestaurantSearchResultDto } from '../dto/';
@@ -17,6 +18,7 @@ import {
 
 const INDEX = 'restaurants';
 
+@Injectable()
 export class RestaurantElasticsearchService {
   constructor(private readonly client: ElasticsearchService) {}
 

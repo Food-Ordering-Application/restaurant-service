@@ -813,6 +813,9 @@ export class RestaurantService {
   }
 
   async getRestaurantsByIds(ids: string[]): Promise<Restaurant[]> {
+    if (!ids.length) {
+      return [];
+    }
     let queryBuilder: SelectQueryBuilder<Restaurant> = this.restaurantRepository.createQueryBuilder(
       'res',
     );
