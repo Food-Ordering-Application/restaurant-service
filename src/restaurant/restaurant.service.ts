@@ -19,6 +19,7 @@ import {
   RestaurantDetailForCustomerDto,
   RestaurantForCustomerDto,
   RestaurantForMerchantDto,
+  RestaurantSearchDto,
   UpdatedRestaurantDataDto,
   UpdateFavoriteRestaurantStatusDto,
   UpdateRestaurantDto,
@@ -92,6 +93,7 @@ export class RestaurantService {
       typeof templateObject[key] == 'undefined' ? delete data[key] : {},
     );
     await this.restaurantRepository.update(restaurantId, data);
+    this.handleRestaurantChangeSideEffect(restaurantId);
   }
 
   async handleRestaurantUpdatedSideEffect(restaurantId: string) {
@@ -229,6 +231,7 @@ export class RestaurantService {
       { event: 'restaurant_created' },
       restaurantCreatedEventPayload,
     );
+    this.handleRestaurantChangeSideEffect(id);
     return {
       status: HttpStatus.CREATED,
       message: 'Restaurant was created',
@@ -906,6 +909,7 @@ export class RestaurantService {
         },
       );
       this.handleRestaurantUpdatedSideEffect(restaurantId);
+      this.handleRestaurantChangeSideEffect(restaurantId);
       return {
         status: HttpStatus.OK,
         message: 'Restaurant updated successfully',
@@ -934,6 +938,8 @@ export class RestaurantService {
         this.logger.error(
           `Error to update rating of restaurant ${restaurantId}`,
         );
+      } else {
+        this.handleRestaurantChangeSideEffect(restaurantId);
       }
     } catch (e) {
       this.logger.error(
@@ -1047,5 +1053,26 @@ export class RestaurantService {
         ),
       },
     };
+  }
+
+  async handleRestaurantChangeSideEffect(restaurantId: string) {
+    try {
+      const queryBuilder = this.restaurantRepository.createQueryBuilder('res');
+
+      const getRestaurant = queryBuilder
+        .leftJoinAndSelect('res.menu', 'menu')
+        .leftJoinAndSelect('res.categories', 'categories')
+        .leftJoinAndSelect('res.openHours', 'openHours')
+        .leftJoinAndSelect('menu.menuItems', 'menuItems')
+        .where('res.id = :restaurantId', {
+          restaurantId: restaurantId,
+        });
+
+      const restaurant = await getRestaurant.getOne();
+      const data = RestaurantSearchDto.fromEntity(restaurant);
+      await this.searchService.updateRestaurant(restaurantId, data);
+    } catch (e) {
+      console.log('Error when sync restaurant: ' + e.message);
+    }
   }
 }
