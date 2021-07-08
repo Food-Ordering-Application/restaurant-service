@@ -1,27 +1,53 @@
 import { OpenHour } from './../entities/openhours.entity';
 import { DaysOfWeek } from '../enums';
 
+const enumToDay = [
+  DaysOfWeek.Sunday,
+  DaysOfWeek.Monday,
+  DaysOfWeek.TuesDay,
+  DaysOfWeek.Wednesday,
+  DaysOfWeek.Thursday,
+  DaysOfWeek.Friday,
+  DaysOfWeek.Saturday,
+];
+
+const getVietnamTimezoneDate = (): Date =>
+  new Date(
+    new Date().toLocaleString('en-US', { timeZone: 'Asia/Ho_Chi_Minh' }),
+  );
 const getDay = (day: number): DaysOfWeek => {
-  const enumToDay = [
-    DaysOfWeek.Sunday,
-    DaysOfWeek.Monday,
-    DaysOfWeek.TuesDay,
-    DaysOfWeek.Wednesday,
-    DaysOfWeek.Thursday,
-    DaysOfWeek.Friday,
-    DaysOfWeek.Saturday,
-  ];
   return enumToDay[day];
 };
 
+const encodeOpenHour = ({
+  day,
+  fromHour,
+  fromMinute,
+  toHour,
+  toMinute,
+}: OpenHour): { gte: number; lt: number } => {
+  const dayIndex = enumToDay.findIndex((e) => e == day) + 1;
+  const start = dayIndex * 10000 + fromHour * 60 + fromMinute;
+  const end = dayIndex * 10000 + toHour * 60 + toMinute;
+  return { gte: start, lt: end };
+};
+
+const encodeDate = (date: Date = getVietnamTimezoneDate()): number => {
+  const dayIndex = date.getDay() + 1;
+  const hour = date.getHours();
+  const minute = date.getMinutes();
+  const current = dayIndex * 10000 + hour * 60 + minute;
+  return current;
+};
+
 const getCurrentWeekDay = (): DaysOfWeek => {
-  return getDay(new Date().getDay());
+  return getDay(getVietnamTimezoneDate().getDay());
 };
 
 const getOpenStatus = (openHour: OpenHour): boolean => {
-  const current = new Date();
+  const current = getVietnamTimezoneDate();
   const currentHours = current.getHours();
-  const currentMinutes = current.getHours();
+  const currentMinutes = current.getMinutes();
   const { fromHour, fromMinute, toHour, toMinute } = openHour;
   const laterThanOpening =
     currentHours > fromHour ||
@@ -70,4 +96,6 @@ export const DateTimeHelper = {
   getIsOpeningCondition,
   getOpenStatus,
   getCurrentOpenHours,
+  encodeOpenHour,
+  encodeDate,
 };
