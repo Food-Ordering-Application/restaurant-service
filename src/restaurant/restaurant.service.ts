@@ -1,7 +1,6 @@
 import { HttpStatus, Inject, Injectable, Logger } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { InjectRepository } from '@nestjs/typeorm';
-import { query } from 'express';
 import { USER_SERVICE } from 'src/constants';
 import { Repository, SelectQueryBuilder } from 'typeorm';
 import { MenuItem, MenuItemTopping } from '../menu/entities';
@@ -47,6 +46,8 @@ import {
   IRestaurantsResponse,
   IUpdateFavoriteRestaurantResponse,
 } from './interfaces';
+import { RestaurantElasticsearchService } from './search/restaurant-elasticsearch.service';
+import { SortMode } from './search/restaurant-elasticsearch.type';
 
 @Injectable()
 export class RestaurantService {
@@ -68,6 +69,8 @@ export class RestaurantService {
     private favoriteRestaurantRepository: Repository<FavoriteRestaurant>,
 
     private geoService: GeoService,
+
+    private searchService: RestaurantElasticsearchService,
   ) {}
 
   async handleRestaurantProfileUpdated(
@@ -453,7 +456,9 @@ export class RestaurantService {
       status: HttpStatus.OK,
       message: 'Restaurant fetched successfully',
       data: {
-        restaurants: restaurants.map(RestaurantForCustomerDto.EntityToDTO),
+        restaurants: restaurants.map((restaurant) =>
+          RestaurantForCustomerDto.EntityToDTO(restaurant),
+        ),
       },
     };
   }
@@ -680,10 +685,14 @@ export class RestaurantService {
           // { id: RestaurantFilterType.PROMOTION, name: 'Ưu đãi' },
         ],
         restaurantSortType: [
-          // {
-          //   id: RestaurantSortType.NEARBY,
-          //   name: 'Gần đây',
-          // },
+          {
+            id: RestaurantSortType.RELEVANCE,
+            name: 'Liên quan',
+          },
+          {
+            id: RestaurantSortType.NEARBY,
+            name: 'Gần đây',
+          },
           {
             id: RestaurantSortType.RATING,
             name: 'Đánh giá',
@@ -796,12 +805,17 @@ export class RestaurantService {
       status: HttpStatus.OK,
       message: 'Fetched favorite restaurant successfully',
       data: {
-        restaurants: restaurants.map(RestaurantForCustomerDto.EntityToDTO),
+        restaurants: restaurants.map((restaurant) =>
+          RestaurantForCustomerDto.EntityToDTO(restaurant),
+        ),
       },
     };
   }
 
   async getRestaurantsByIds(ids: string[]): Promise<Restaurant[]> {
+    if (!ids.length) {
+      return [];
+    }
     let queryBuilder: SelectQueryBuilder<Restaurant> = this.restaurantRepository.createQueryBuilder(
       'res',
     );
@@ -926,5 +940,112 @@ export class RestaurantService {
         `Error to update rating of restaurant ${restaurantId}: ${e.message}`,
       );
     }
+  }
+
+  async searchRestaurant(
+    getSomeRestaurantDto: GetSomeRestaurantDto,
+  ): Promise<IRestaurantsResponse> {
+    const {
+      page = 1,
+      size = 10,
+      cityId,
+      search,
+      areaIds,
+      categoryIds,
+      position,
+      sortId,
+      filterIds,
+    } = getSomeRestaurantDto;
+
+    const hasSort = sortId !== undefined && sortId !== null ? true : false;
+    const validSort =
+      hasSort && Object.values(RestaurantSortType).includes(sortId)
+        ? true
+        : false;
+
+    const hasFilters =
+      filterIds != null && Array.isArray(filterIds) && filterIds.length
+        ? true
+        : false;
+    const validFilters =
+      hasFilters &&
+      filterIds.every((filterId) =>
+        Object.values(RestaurantFilterType).includes(filterId),
+      )
+        ? true
+        : false;
+
+    const validPosition = Position.validPosition(position);
+
+    if (hasSort && !validSort) {
+      return {
+        status: HttpStatus.BAD_REQUEST,
+        message: 'Sort id is not valid',
+        data: null,
+      };
+    }
+
+    if (hasFilters && !validFilters) {
+      return {
+        status: HttpStatus.BAD_REQUEST,
+        message: 'Filter ids is not valid',
+        data: null,
+      };
+    }
+
+    if (position != null && !validPosition) {
+      return {
+        status: HttpStatus.BAD_REQUEST,
+        message: 'Position is not valid',
+        data: null,
+      };
+    }
+
+    if (!position && sortId == RestaurantSortType.NEARBY) {
+      return {
+        status: HttpStatus.BAD_REQUEST,
+        message: 'You need to provide location to sort nearby',
+        data: null,
+      };
+    }
+
+    const hasOpeningFilter =
+      hasFilters &&
+      validFilters &&
+      filterIds.includes(RestaurantFilterType.OPENING);
+
+    const mode: SortMode =
+      sortId == RestaurantSortType.NEARBY
+        ? 'NEARBY'
+        : sortId == RestaurantSortType.RATING
+        ? 'RATING'
+        : 'RELEVANCE';
+
+    const searchResult = await this.searchService.searchRestaurant(mode, {
+      query: search,
+      areaIds,
+      categoryIds,
+      isFilterOpenRestaurant: hasOpeningFilter,
+      cityId: cityId,
+      location: position,
+      distance: 10,
+      offset: (page - 1) * size,
+      limit: size,
+    });
+    const restaurantIds = searchResult.map(({ id }) => id);
+    const restaurants = await this.getRestaurantsByIds(restaurantIds);
+    console.log({ searchResult, restaurantIds });
+    return {
+      status: HttpStatus.OK,
+      message: 'Restaurant fetched successfully',
+      data: {
+        restaurants: restaurants.map((restaurant, index) =>
+          RestaurantForCustomerDto.EntityToDTO(
+            restaurant,
+            searchResult[index]?.menuItems,
+          ),
+        ),
+      },
+    };
   }
 }

@@ -30,7 +30,7 @@ export interface IGetMetaDataResponse {
       id: RestaurantFilterType;
     }[];
     restaurantSortType: {
-      name: 'Gần đây' | 'Đánh giá';
+      name: 'Gần đây' | 'Đánh giá' | 'Liên quan';
       id: RestaurantSortType;
     }[];
   };
