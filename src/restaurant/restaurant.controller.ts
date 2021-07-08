@@ -65,6 +65,13 @@ export class RestaurantController {
     return this.restaurantService.getSomeRestaurant(getSomeRestaurantDto);
   }
 
+  @MessagePattern('searchRestaurant')
+  searchRestaurant(
+    @Payload() getSomeRestaurantDto: GetSomeRestaurantDto,
+  ): Promise<IRestaurantsResponse> {
+    return this.restaurantService.searchRestaurant(getSomeRestaurantDto);
+  }
+
   @MessagePattern('getRestaurantInformation')
   getRestaurantInformation(
     @Payload() getRestaurantInformationDto: GetRestaurantInformationDto,
