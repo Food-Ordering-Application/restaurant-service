@@ -46,6 +46,7 @@ export class RestaurantElasticsearchService {
     const { hits: { hits = [] } = {} } = body;
     const docId: string = hits[0]?._id;
     if (!docId) {
+      this.indexRestaurant(id, restaurantSearch);
       throw new Error('not found');
     }
 
